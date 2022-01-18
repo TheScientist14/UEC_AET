@@ -3,13 +3,17 @@
 
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
+	Camera->SetupAttachment(GetMesh());
+	Camera->SetWorldLocation(FVector::FVector(-200, 0, 300));
 }
 
 // Called when the game starts or when spawned
