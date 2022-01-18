@@ -176,17 +176,6 @@
 			"Type": "SymbolFile"
 		},
 		{
-<<<<<<< HEAD
-			"Path": "$(EngineDir)/Plugins/Developer/RiderLink/Binaries/Win64/UE4Editor-RiderShaderInfoDump.dll",
-			"Type": "DynamicLibrary"
-		},
-		{
-			"Path": "$(EngineDir)/Plugins/Developer/RiderLink/Binaries/Win64/UE4Editor-RiderShaderInfoDump.pdb",
-			"Type": "SymbolFile"
-		},
-		{
-=======
->>>>>>> d1b61adc2ed9df64c60ec96b69b6de708cb652f0
 			"Path": "$(EngineDir)/Plugins/Developer/RiderSourceCodeAccess/Binaries/Win64/UE4Editor-RiderSourceCodeAccess.dll",
 			"Type": "DynamicLibrary"
 		},
