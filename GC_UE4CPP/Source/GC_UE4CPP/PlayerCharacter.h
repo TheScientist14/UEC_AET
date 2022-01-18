@@ -17,6 +17,17 @@ public:
 
 	APlayerController* PlayerController;
 
+	UPROPERTY(EditAnywhere)
+	float Speed = 300;
+
+	FVector MovementDir = FVector::ZeroVector;
+
+	UFUNCTION()
+	void Move(FVector dir);
+
+	UFUNCTION()
+	void Interact();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
