@@ -24,13 +24,25 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	AddActorWorldOffset(MovementDir * DeltaTime);
+}
 
+void APlayerCharacter::Move(FVector Dir) {
+	if (!Dir.IsZero()) {
+		SetActorRotation(FQuat::MakeFromEuler(Dir));
+		MovementDir = GetActorForwardVector()* Dir.Size() * Speed;
+	}
+}
+
+void APlayerCharacter::Interact() {
+	// find food, set it up as child
 }
 
 // Called to bind functionality to input
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
+
+
 
