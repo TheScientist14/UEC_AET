@@ -73,8 +73,8 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 *.log
-GC_UE4CPP/.idea/.idea.GC_UE4CPP.dir/.idea/encodings.xml
-GC_UE4CPP/.idea/.idea.GC_UE4CPP.dir/.idea/indexLayout.xml
-GC_UE4CPP/.idea/.idea.GC_UE4CPP.dir/.idea/vcs.xml
-GC_UE4CPP/Binaries/Win64/GC_UE4CPPEditor.target
+.idea/.idea.GC_UE4CPP.dir/.idea/encodings.xml
+.idea/.idea.GC_UE4CPP.dir/.idea/indexLayout.xml
+.idea/.idea.GC_UE4CPP.dir/.idea/vcs.xml
+Binaries/Win64/GC_UE4CPPEditor.target
 *.pdb
