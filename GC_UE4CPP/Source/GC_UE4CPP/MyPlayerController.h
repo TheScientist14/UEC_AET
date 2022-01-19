@@ -8,9 +8,6 @@
 
 class APlayerCharacter;
 
-/**
- * 
- */
 UCLASS()
 class GC_UE4CPP_API AMyPlayerController : public APlayerController
 {
@@ -20,22 +17,16 @@ public:
 
 	AMyPlayerController();
 
-	float ForwardDelta = 0;
-	float RightDelta = 0;
 	APlayerCharacter* PlayerCharacter;
 
 	virtual void BeginPlay() override;
-
-	virtual void Tick(float DeltaTime) override;
 	
 	virtual void SetupInputComponent() override;
-
-	UFUNCTION()
-	void Interact();
 
 	UFUNCTION()
 	void MoveForward(float DeltaX);
 
 	UFUNCTION()
 	void MoveRight(float DeltaY);
+
 };

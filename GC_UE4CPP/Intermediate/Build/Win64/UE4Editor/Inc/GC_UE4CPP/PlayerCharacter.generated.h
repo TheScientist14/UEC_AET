@@ -8,7 +8,6 @@
 #include "UObject/ScriptMacros.h"
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
-struct FVector;
 #ifdef GC_UE4CPP_PlayerCharacter_generated_h
 #error "PlayerCharacter.generated.h already included, missing '#pragma once' in PlayerCharacter.h"
 #endif
@@ -17,14 +16,14 @@ struct FVector;
 #define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_SPARSE_DATA
 #define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_RPC_WRAPPERS \
  \
-	DECLARE_FUNCTION(execInteract); \
-	DECLARE_FUNCTION(execMove);
+	DECLARE_FUNCTION(execZoomIn); \
+	DECLARE_FUNCTION(execInteract);
 
 
 #define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
  \
-	DECLARE_FUNCTION(execInteract); \
-	DECLARE_FUNCTION(execMove);
+	DECLARE_FUNCTION(execZoomIn); \
+	DECLARE_FUNCTION(execInteract);
 
 
 #define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_INCLASS_NO_PURE_DECLS \

@@ -34,44 +34,14 @@ void EmptyLinkFunctionForGeneratedCodeMyPlayerController() {}
 		P_THIS->MoveForward(Z_Param_DeltaX);
 		P_NATIVE_END;
 	}
-	DEFINE_FUNCTION(AMyPlayerController::execInteract)
-	{
-		P_FINISH;
-		P_NATIVE_BEGIN;
-		P_THIS->Interact();
-		P_NATIVE_END;
-	}
 	void AMyPlayerController::StaticRegisterNativesAMyPlayerController()
 	{
 		UClass* Class = AMyPlayerController::StaticClass();
 		static const FNameNativePtrPair Funcs[] = {
-			{ "Interact", &AMyPlayerController::execInteract },
 			{ "MoveForward", &AMyPlayerController::execMoveForward },
 			{ "MoveRight", &AMyPlayerController::execMoveRight },
 		};
 		FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
-	}
-	struct Z_Construct_UFunction_AMyPlayerController_Interact_Statics
-	{
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
-#endif
-		static const UE4CodeGen_Private::FFunctionParams FuncParams;
-	};
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_AMyPlayerController_Interact_Statics::Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "MyPlayerController.h" },
-	};
-#endif
-	const UE4CodeGen_Private::FFunctionParams Z_Construct_UFunction_AMyPlayerController_Interact_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AMyPlayerController, nullptr, "Interact", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_AMyPlayerController_Interact_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_AMyPlayerController_Interact_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_AMyPlayerController_Interact()
-	{
-		static UFunction* ReturnFunction = nullptr;
-		if (!ReturnFunction)
-		{
-			UE4CodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_AMyPlayerController_Interact_Statics::FuncParams);
-		}
-		return ReturnFunction;
 	}
 	struct Z_Construct_UFunction_AMyPlayerController_MoveForward_Statics
 	{
@@ -156,13 +126,11 @@ void EmptyLinkFunctionForGeneratedCodeMyPlayerController() {}
 		(UObject* (*)())Z_Construct_UPackage__Script_GC_UE4CPP,
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_AMyPlayerController_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_AMyPlayerController_Interact, "Interact" }, // 642224499
 		{ &Z_Construct_UFunction_AMyPlayerController_MoveForward, "MoveForward" }, // 4209814419
 		{ &Z_Construct_UFunction_AMyPlayerController_MoveRight, "MoveRight" }, // 1344065932
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_AMyPlayerController_Statics::Class_MetaDataParams[] = {
-		{ "Comment", "/**\n * \n */" },
 		{ "HideCategories", "Collision Rendering Utilities|Transformation" },
 		{ "IncludePath", "MyPlayerController.h" },
 		{ "ModuleRelativePath", "MyPlayerController.h" },
@@ -195,7 +163,7 @@ void EmptyLinkFunctionForGeneratedCodeMyPlayerController() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(AMyPlayerController, 2266627549);
+	IMPLEMENT_CLASS(AMyPlayerController, 3859960024);
 	template<> GC_UE4CPP_API UClass* StaticClass<AMyPlayerController>()
 	{
 		return AMyPlayerController::StaticClass();

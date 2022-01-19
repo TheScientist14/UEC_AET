@@ -8,45 +8,31 @@
 // Sets default values
 AMyPlayerController::AMyPlayerController()
 {
-    PrimaryActorTick.bCanEverTick = true;
+    PrimaryActorTick.bCanEverTick = false;
 }
 
 void AMyPlayerController::BeginPlay() {
     PlayerCharacter = (APlayerCharacter*)UGameplayStatics::GetPlayerCharacter(this, 0);
-    
-}
-
-void AMyPlayerController::Tick(float DeltaTime) {
-    Super::Tick(DeltaTime);
-
-    FVector Tmp = FVector::FVector(ForwardDelta, RightDelta, 0);
-    if (Tmp.SizeSquared() >= 1) {
-        PlayerCharacter->Move(Tmp.GetSafeNormal());
-    }
-    else {
-        PlayerCharacter->Move(Tmp);
-    }
+    GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Controller initilized");
 }
 
 void AMyPlayerController::SetupInputComponent()
 {
     Super::SetupInputComponent();
 
-    InputComponent->BindAction("Interact", IE_Pressed, this, &AMyPlayerController::Interact);
+    InputComponent->BindAction("Interact", IE_Pressed, PlayerCharacter, &APlayerCharacter::Interact);
     InputComponent->BindAxis("MoveForward", this, &AMyPlayerController::MoveForward);
     InputComponent->BindAxis("MoveRight", this, &AMyPlayerController::MoveRight);
     InputComponent->BindAxis("Turn", PlayerCharacter, &APawn::AddControllerYawInput);
     InputComponent->BindAxis("LookUp", PlayerCharacter, &APawn::AddControllerPitchInput);
-}
-
-void AMyPlayerController::Interact() {
-    PlayerCharacter->Interact();
+    InputComponent->BindAxis("Zoom", PlayerCharacter, &APlayerCharacter::ZoomIn);
+    GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Inputs set up");
 }
 
 void AMyPlayerController::MoveForward(float DeltaX) {
-    ForwardDelta = DeltaX;
+    PlayerCharacter->AddMovementInput(FVector::ForwardVector, DeltaX);
 }
 
 void AMyPlayerController::MoveRight(float DeltaY) {
-    RightDelta = DeltaY;
+    PlayerCharacter->AddMovementInput(FVector::RightVector, DeltaY);
 }

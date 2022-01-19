@@ -3,7 +3,7 @@
   <ItemGroup>
     <None Include="..\..\GC_UE4CPP.uproject" />
     <Filter Include="Source">
-      <UniqueIdentifier>{0156BD24-F299-428E-B311-C94F4DDBF542}</UniqueIdentifier>
+      <UniqueIdentifier>{2CBC429D-798E-4A7D-AF79-096DDF0EBB86}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\GC_UE4CPP.Target.cs">
       <Filter>Source</Filter>
@@ -12,7 +12,7 @@
       <Filter>Source</Filter>
     </None>
     <Filter Include="Config">
-      <UniqueIdentifier>{E8552C32-6D94-49B1-BE11-4A987CF7D5F7}</UniqueIdentifier>
+      <UniqueIdentifier>{3431EE20-6D84-4FAE-A90F-66CB4689D570}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Config\DefaultEditor.ini">
       <Filter>Config</Filter>
@@ -23,9 +23,18 @@
     <None Include="..\..\Config\DefaultGame.ini">
       <Filter>Config</Filter>
     </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
     <Filter Include="Source\GC_UE4CPP">
-      <UniqueIdentifier>{3FC64BDE-8092-44C9-A04C-B50801BFBF3B}</UniqueIdentifier>
+      <UniqueIdentifier>{92A03BE8-C3C2-4E82-A484-61255EADD31E}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\GC_UE4CPP\AI_Enemie.cpp">
+      <Filter>Source\GC_UE4CPP</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GC_UE4CPP\AI_Enemie.h">
+      <Filter>Source\GC_UE4CPP</Filter>
+    </ClInclude>
     <None Include="..\..\Source\GC_UE4CPP\GC_UE4CPP.Build.cs">
       <Filter>Source\GC_UE4CPP</Filter>
     </None>
@@ -39,6 +48,18 @@
       <Filter>Source\GC_UE4CPP</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\GC_UE4CPP\GC_UE4CPPGameModeBase.h">
+      <Filter>Source\GC_UE4CPP</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GC_UE4CPP\Goblin.cpp">
+      <Filter>Source\GC_UE4CPP</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GC_UE4CPP\Goblin.h">
+      <Filter>Source\GC_UE4CPP</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GC_UE4CPP\MyPlayerController.cpp">
+      <Filter>Source\GC_UE4CPP</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GC_UE4CPP\MyPlayerController.h">
       <Filter>Source\GC_UE4CPP</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\GC_UE4CPP\PlayerCharacter.cpp">

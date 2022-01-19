@@ -6,8 +6,8 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
-//class USpringArmComponent;
-//class UCameraComponent;
+class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class GC_UE4CPP_API APlayerCharacter : public ACharacter
@@ -23,19 +23,36 @@ public:
 	UPROPERTY(EditAnywhere)
 	float Speed = 300;
 
-	/*UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
+	float MinArmLength = 100;
+
+	UPROPERTY(EditAnywhere)
+	float MaxArmLength = 500;
+
+	UPROPERTY(EditAnywhere)
+	float ArmLengthStep = 100;
+
+	UPROPERTY(EditAnywhere)
+	float ZoomThresholdLimit = 1;
+
+	float ZoomThreshold = 0;
+
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
 	UPROPERTY(VisibleAnywhere)
-	class USpringArmComponent* SpringArmComp;*/
+	USpringArmComponent* SpringArmComp;
 
 	FVector MovementDir = FVector::ZeroVector;
 
-	UFUNCTION()
-	void Move(FVector dir);
+	//UFUNCTION()
+	//void Move(FVector dir);
 
 	UFUNCTION()
 	void Interact();
+
+	UFUNCTION()
+	void ZoomIn(float DeltaZoom);
 
 protected:
 	// Called when the game starts or when spawned
