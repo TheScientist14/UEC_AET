@@ -126,9 +126,11 @@ void EmptyLinkFunctionForGeneratedCodePlayerCharacter() {}
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_APlayerCharacter_Statics::Class_MetaDataParams[] = {
+		{ "Comment", "//class USpringArmComponent;\n//class UCameraComponent;\n" },
 		{ "HideCategories", "Navigation" },
 		{ "IncludePath", "PlayerCharacter.h" },
 		{ "ModuleRelativePath", "PlayerCharacter.h" },
+		{ "ToolTip", "class USpringArmComponent;\nclass UCameraComponent;" },
 	};
 #endif
 #if WITH_METADATA
@@ -168,7 +170,7 @@ void EmptyLinkFunctionForGeneratedCodePlayerCharacter() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(APlayerCharacter, 4002143848);
+	IMPLEMENT_CLASS(APlayerCharacter, 4170587728);
 	template<> GC_UE4CPP_API UClass* StaticClass<APlayerCharacter>()
 	{
 		return APlayerCharacter::StaticClass();

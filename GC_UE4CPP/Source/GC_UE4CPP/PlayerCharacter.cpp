@@ -4,16 +4,22 @@
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	UCameraComponent* Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	//Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	//SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 
-	Camera->SetupAttachment(GetMesh());
-	Camera->SetWorldLocation(FVector::FVector(-200, 0, 300));
+	//SpringArmComp->SetupAttachment(GetMesh());
+	//Camera->AttachToComponent(SpringArmComp, FAttachmentTransformRules::KeepRelativeTransform);
+	//SpringArmComp->bUsePawnControlRotation = true;
+	//SpringArmComp->bEnableCameraLag = true;
+	//SpringArmComp->TargetArmLength = 300.0f;
+
 }
 
 // Called when the game starts or when spawned

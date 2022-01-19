@@ -14,8 +14,16 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #define GC_UE4CPP_AI_Enemie_generated_h
 
 #define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_SPARSE_DATA
-#define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_RPC_WRAPPERS
-#define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_RPC_WRAPPERS_NO_PURE_DECLS
+#define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_RPC_WRAPPERS \
+ \
+	DECLARE_FUNCTION(execGoToRandomPoints);
+
+
+#define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execGoToRandomPoints);
+
+
 #define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAAI_Enemie(); \
@@ -60,7 +68,10 @@ public: \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AAI_Enemie)
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_PRIVATE_PROPERTY_OFFSET
+#define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_PRIVATE_PROPERTY_OFFSET \
+	FORCEINLINE static uint32 __PPO__Points() { return STRUCT_OFFSET(AAI_Enemie, Points); }
+
+
 #define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_12_PROLOG
 #define GC_UE4CPP_Source_GC_UE4CPP_AI_Enemie_h_15_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \

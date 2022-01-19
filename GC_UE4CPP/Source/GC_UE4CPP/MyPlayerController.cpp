@@ -35,6 +35,8 @@ void AMyPlayerController::SetupInputComponent()
     InputComponent->BindAction("Interact", IE_Pressed, this, &AMyPlayerController::Interact);
     InputComponent->BindAxis("MoveForward", this, &AMyPlayerController::MoveForward);
     InputComponent->BindAxis("MoveRight", this, &AMyPlayerController::MoveRight);
+    InputComponent->BindAxis("Turn", PlayerCharacter, &APawn::AddControllerYawInput);
+    InputComponent->BindAxis("LookUp", PlayerCharacter, &APawn::AddControllerPitchInput);
 }
 
 void AMyPlayerController::Interact() {

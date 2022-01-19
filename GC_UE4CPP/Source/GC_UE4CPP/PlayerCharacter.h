@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
+//class USpringArmComponent;
+//class UCameraComponent;
+
 UCLASS()
 class GC_UE4CPP_API APlayerCharacter : public ACharacter
 {
@@ -19,6 +22,12 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float Speed = 300;
+
+	/*UPROPERTY(VisibleAnywhere)
+	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere)
+	class USpringArmComponent* SpringArmComp;*/
 
 	FVector MovementDir = FVector::ZeroVector;
 

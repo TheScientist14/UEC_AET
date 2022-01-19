@@ -14,20 +14,20 @@ struct FVector;
 #endif
 #define GC_UE4CPP_PlayerCharacter_generated_h
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_SPARSE_DATA
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_RPC_WRAPPERS \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_SPARSE_DATA
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_RPC_WRAPPERS \
  \
 	DECLARE_FUNCTION(execInteract); \
 	DECLARE_FUNCTION(execMove);
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
  \
 	DECLARE_FUNCTION(execInteract); \
 	DECLARE_FUNCTION(execMove);
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_INCLASS_NO_PURE_DECLS \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAPlayerCharacter(); \
 	friend struct Z_Construct_UClass_APlayerCharacter_Statics; \
@@ -36,7 +36,7 @@ public: \
 	DECLARE_SERIALIZER(APlayerCharacter)
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_INCLASS \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_INCLASS \
 private: \
 	static void StaticRegisterNativesAPlayerCharacter(); \
 	friend struct Z_Construct_UClass_APlayerCharacter_Statics; \
@@ -45,7 +45,7 @@ public: \
 	DECLARE_SERIALIZER(APlayerCharacter)
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_STANDARD_CONSTRUCTORS \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API APlayerCharacter(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(APlayerCharacter) \
@@ -58,7 +58,7 @@ private: \
 public:
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_ENHANCED_CONSTRUCTORS \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	NO_API APlayerCharacter(APlayerCharacter&&); \
@@ -69,28 +69,28 @@ public: \
 	DEFINE_DEFAULT_CONSTRUCTOR_CALL(APlayerCharacter)
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_PRIVATE_PROPERTY_OFFSET
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_9_PROLOG
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_GENERATED_BODY_LEGACY \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_PRIVATE_PROPERTY_OFFSET
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_PROLOG
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_PRIVATE_PROPERTY_OFFSET \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_SPARSE_DATA \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_RPC_WRAPPERS \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_INCLASS \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_STANDARD_CONSTRUCTORS \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_PRIVATE_PROPERTY_OFFSET \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_SPARSE_DATA \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_RPC_WRAPPERS \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_INCLASS \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_GENERATED_BODY \
+#define GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_PRIVATE_PROPERTY_OFFSET \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_SPARSE_DATA \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_INCLASS_NO_PURE_DECLS \
-	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_12_ENHANCED_CONSTRUCTORS \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_PRIVATE_PROPERTY_OFFSET \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_SPARSE_DATA \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_INCLASS_NO_PURE_DECLS \
+	GC_UE4CPP_Source_GC_UE4CPP_PlayerCharacter_h_15_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
