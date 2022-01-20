@@ -54,6 +54,12 @@ public:
 	UFUNCTION()
 	void ZoomIn(float DeltaZoom);
 
+	UFUNCTION()
+	void MoveForward(float DeltaX);
+
+	UFUNCTION()
+	void MoveRight(float DeltaY);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

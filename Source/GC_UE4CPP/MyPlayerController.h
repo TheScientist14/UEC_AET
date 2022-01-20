@@ -23,10 +23,6 @@ public:
 	
 	virtual void SetupInputComponent() override;
 
-	UFUNCTION()
-	void MoveForward(float DeltaX);
 
-	UFUNCTION()
-	void MoveRight(float DeltaY);
 
 };
