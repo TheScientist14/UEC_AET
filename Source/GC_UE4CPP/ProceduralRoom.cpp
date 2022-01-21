@@ -21,11 +21,12 @@ void AProceduralRoom::BeginPlay()
 	//SpawnCrate(CrateClass);
 	FloorHalfSize = (FloorSize % 2 == 0) ? FloorSize / 2 : FloorSize / 2 + 1;
 	SpawnFloor(FloorClass);
+	SpawnBarrels(Barrel);
 	SpawnCrates(CrateClump, CrateClumpSize, ChanceOfCrateClump, SpawnHeight);
 	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight);
-	
-	
-	UE_LOG(LogTemp, Warning, TEXT("testing"));
+
+
+	//UE_LOG(LogTemp, Warning, TEXT("testing"));
 }
 
 // Called every frame
@@ -36,12 +37,12 @@ void AProceduralRoom::Tick(float DeltaTime)
 
 void AProceduralRoom::SpawnCrate(UClass* CrateToSpawn)
 {
-	GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(0,0,50), FRotator(0.f));
+	GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(0, 0, 50), FRotator(0.f));
 }
 
 void AProceduralRoom::SpawnFloor(UClass* Floor)
 {
-	UE_LOG(LogTemp, Warning, TEXT("testing 1 : %d"), FloorHalfSize);
+	//UE_LOG(LogTemp, Warning, TEXT("testing 1 : %d"), FloorHalfSize);
 
 	for (int i = -FloorHalfSize; i <= FloorHalfSize; i++)
 	{
@@ -98,20 +99,6 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 			//spawn : air, 2 high, 1 high, barrel spawn all at random and then spawn the 10 barrels if collision
 			//with actors then destroy actor and place the barrel
 
-			// if (i != -FloorHalfSize || i != FloorHalfSize || j != -FloorHalfSize || j != FloorHalfSize)
-			// {
-			// 	int randSpawn = FMath::RandRange(0, 10);
-			// 	switch (randSpawn)
-			// 	{
-			// 	case 1:
-			// 		GetWorld()->SpawnActor<AActor>(CrateClass, FVector(i * 140, j * 140, 0),
-			// 		                               FRotator(0.f));
-			// 		break;
-			// 	default:
-			// 		break;
-			// 	}
-			// }
-
 			GetWorld()->SpawnActor<AActor>(Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
 			                               FRotator(0, angle, 0));
 		}
@@ -135,19 +122,34 @@ void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int Spawn
 
 	for (int i = -HalfSpawnSize + 1; i < HalfSpawnSize; ++i)
 	{
-		for (int j = -HalfSpawnSize  + 1; j < HalfSpawnSize; ++j)
+		for (int j = -HalfSpawnSize + 1; j < HalfSpawnSize; ++j)
 		{
+			int ChanceOfSpawn = FMath::RandRange(0, 100);
+			int Rotation = FMath::RandRange(0, 360);
 
-			int ChanceOfSpawn = FMath::RandRange(0,100);
-			int Rotation = FMath::RandRange(0,360);
-			
 			if (ChanceOfSpawn <= SpawnChance)
 			{
 				FActorSpawnParameters SpawnInfo;
 				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
-				GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(i * ActorSize, j * ActorSize, Height), FRotator(0,Rotation,0),SpawnInfo);
+				GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(i * ActorSize, j * ActorSize, Height),
+				                               FRotator(0, 0/*Rotation*/, 0), SpawnInfo);
 			}
-			
 		}
+	}
+}
+
+void AProceduralRoom::SpawnBarrels(UClass* BarrelClass)
+{
+	UE_LOG(LogTemp, Warning, TEXT("testing 1 : %d"), FloorHalfSize);
+	
+	for (int i = 0; i < 10; ++i)
+	{
+		int Rotation = FMath::RandRange(0, 360);
+		int XSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+		int YSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+		UE_LOG(LogTemp, Warning, TEXT("X : %d"), XSpawn);
+		UE_LOG(LogTemp, Warning, TEXT("Y : %d"), YSpawn);
+		
+		GetWorld()->SpawnActor<AActor>(Barrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight), FRotator(0, Rotation, 0));
 	}
 }

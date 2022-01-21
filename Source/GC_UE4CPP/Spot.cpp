@@ -10,6 +10,7 @@ ASpot::ASpot()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
+	SetRootComponent(StaticMesh);
 }
 
 // Called when the game starts or when spawned

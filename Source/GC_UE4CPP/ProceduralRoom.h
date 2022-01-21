@@ -59,6 +59,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room")
 	float SpawnHeight;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room")
+	TSubclassOf<AActor> Barrel;
+
 	void SpawnCrate(UClass* CrateToSpawn);
 
 	void SpawnFloor(UClass* Floor);
@@ -67,6 +70,7 @@ public:
 
 	void SpawnCrates(UClass* CrateToSpawn, int ActorSize, int SpawnChance, float SpawnHeight);
 
+	void SpawnBarrels(UClass* BarrelClass);
 private:
 
 	UPROPERTY()
