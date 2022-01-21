@@ -14,15 +14,18 @@ class GC_UE4CPP_API AGoblin : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AGoblin();
+	
+	UPROPERTY(EditAnywhere)
+	TArray<AActor*> Spots;
+	
+	UPROPERTY(EditAnywhere)
+	AActor* Spawn;
 
 protected:
 
 	UPROPERTY(EditAnywhere)
 	AActor* Food;
-	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* StaticMesh;
-	UPROPERTY(EditAnywhere)
-	TArray<AActor*> Spots;
+	
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -13,10 +13,10 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define GC_UE4CPP_Food_generated_h
 
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_SPARSE_DATA
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS_NO_PURE_DECLS
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_INCLASS_NO_PURE_DECLS \
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_SPARSE_DATA
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS_NO_PURE_DECLS
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAFood(); \
 	friend struct Z_Construct_UClass_AFood_Statics; \
@@ -25,7 +25,7 @@ public: \
 	DECLARE_SERIALIZER(AFood)
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_INCLASS \
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_INCLASS \
 private: \
 	static void StaticRegisterNativesAFood(); \
 	friend struct Z_Construct_UClass_AFood_Statics; \
@@ -34,7 +34,7 @@ public: \
 	DECLARE_SERIALIZER(AFood)
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_STANDARD_CONSTRUCTORS \
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API AFood(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AFood) \
@@ -47,7 +47,7 @@ private: \
 public:
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_ENHANCED_CONSTRUCTORS \
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	NO_API AFood(AFood&&); \
@@ -58,31 +58,31 @@ public: \
 	DEFINE_DEFAULT_CONSTRUCTOR_CALL(AFood)
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_PRIVATE_PROPERTY_OFFSET \
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_PRIVATE_PROPERTY_OFFSET \
 	FORCEINLINE static uint32 __PPO__StaticMesh() { return STRUCT_OFFSET(AFood, StaticMesh); }
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_9_PROLOG
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_GENERATED_BODY_LEGACY \
+#define UEC_AET_Source_GC_UE4CPP_Food_h_9_PROLOG
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_PRIVATE_PROPERTY_OFFSET \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_SPARSE_DATA \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_INCLASS \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_STANDARD_CONSTRUCTORS \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_PRIVATE_PROPERTY_OFFSET \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_SPARSE_DATA \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_INCLASS \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_GENERATED_BODY \
+#define UEC_AET_Source_GC_UE4CPP_Food_h_12_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_PRIVATE_PROPERTY_OFFSET \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_SPARSE_DATA \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_INCLASS_NO_PURE_DECLS \
-	GC_UE4CPP_Source_GC_UE4CPP_Food_h_12_ENHANCED_CONSTRUCTORS \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_PRIVATE_PROPERTY_OFFSET \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_SPARSE_DATA \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_RPC_WRAPPERS_NO_PURE_DECLS \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_INCLASS_NO_PURE_DECLS \
+	UEC_AET_Source_GC_UE4CPP_Food_h_12_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -90,7 +90,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> GC_UE4CPP_API UClass* StaticClass<class AFood>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID GC_UE4CPP_Source_GC_UE4CPP_Food_h
+#define CURRENT_FILE_ID UEC_AET_Source_GC_UE4CPP_Food_h
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

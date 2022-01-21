@@ -2,6 +2,8 @@
 
 
 #include "Goblin.h"
+
+#include "Spot.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -17,9 +19,11 @@ void AGoblin::BeginPlay()
 {
 	Super::BeginPlay();
 
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
+	/*TSubclassOf<ASpot> SpotClass;
+	UGameplayStatics::GetAllActorsOfClass(this, SpotClass, Spots);
+	*/
 
-	
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, Spots[0]->GetName());
 }
 
 // Called every frame
