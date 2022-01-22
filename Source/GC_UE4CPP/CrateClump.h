@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMesh5;
 
-	UFUNCTION()
-	void DestroyHitActor(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
-	                            FVector NormalImpulse, const FHitResult& Hit);
+	// UFUNCTION()
+	// void DestroyHitActor(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	//                             FVector NormalImpulse, const FHitResult& Hit);
 };

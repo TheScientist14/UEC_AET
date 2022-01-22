@@ -49,6 +49,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|CrateClump")
 	TSubclassOf<AActor> CrateClump;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|CrateClump")
+    TSubclassOf<AActor> CrateClump2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|CrateClump")
 	int CrateClumpSize;
@@ -68,12 +71,14 @@ public:
 
 	void SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation);
 
-	void SpawnCrates(UClass* CrateToSpawn, int ActorSize, int SpawnChance, float SpawnHeight);
+	void SpawnCrates(UClass* CrateToSpawn, int ActorSize, int SpawnChance, float SpawnHeight, int Rotation);
 
 	void SpawnBarrels(UClass* BarrelClass);
 private:
 
 	UPROPERTY()
 	int FloorHalfSize;
+
+	FActorSpawnParameters SpawnInfo;
 	
 };
