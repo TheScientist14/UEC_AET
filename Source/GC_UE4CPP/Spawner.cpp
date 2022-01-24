@@ -3,12 +3,16 @@
 
 #include "Spawner.h"
 
+#include "Goblin.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 // Sets default values
 ASpawner::ASpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
 // Called when the game starts or when spawned
@@ -17,8 +21,6 @@ void ASpawner::BeginPlay()
 	Super::BeginPlay();
 	Spawn(AI);
 	Spawn(AI);
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlay Spawner"))
-	//UE_LOG(LogTemp, Warning, TEXT("Last barrel name : %s"), Barrels.Last()->GetName())
 }
 
 // Called every frame
@@ -35,6 +37,18 @@ void ASpawner::AddBarrelToArray(ASpot* PrmSpot)
 
 void ASpawner::Spawn(UClass* PrmAI)
 {
-	GetWorld()->SpawnActor<AActor>(PrmAI, GetActorLocation(), GetActorRotation());
+	AGoblin* Goblin = Cast<AGoblin>(GetWorld()->SpawnActor<AGoblin>(PrmAI, GetActorLocation(), GetActorRotation(), SpawnInfo));
+	
+	if(Goblin)
+	{
+		Goblin->Spot = GetRandomSpot();
+		Goblin->Spawn = GetActorLocation();
+		Goblin->Spawner = this;
+	}
+}
+
+ASpot* ASpawner::GetRandomSpot()
+{
+	return Barrels[FMath::RandRange(0, Barrels.Num() - 1)];
 }
 

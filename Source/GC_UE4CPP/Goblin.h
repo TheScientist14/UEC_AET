@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Spawner.h"
+#include "Spot.h"
 #include "GameFramework/Character.h"
 #include "Goblin.generated.h"
 
@@ -16,10 +18,13 @@ public:
 	AGoblin();
 	
 	UPROPERTY(EditAnywhere)
-	TArray<AActor*> Spots;
+	ASpot* Spot;
 	
 	UPROPERTY(EditAnywhere)
-	AActor* Spawn;
+	FVector Spawn;
+	
+	UPROPERTY(EditAnywhere)
+	ASpawner* Spawner;
 
 protected:
 
@@ -37,4 +42,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	void CallSpawner();
 };

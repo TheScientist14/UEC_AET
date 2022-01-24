@@ -19,16 +19,12 @@ void AGoblin::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Error, TEXT("GetAllActorOfClass"));
-	
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, Spots[0]->GetName());
 }
 
 // Called every frame
 void AGoblin::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -36,5 +32,10 @@ void AGoblin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AGoblin::CallSpawner()
+{
+	Spawner->Spawn(GetClass());
 }
 
