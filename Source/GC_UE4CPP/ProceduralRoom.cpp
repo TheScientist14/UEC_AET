@@ -22,7 +22,6 @@ AProceduralRoom::AProceduralRoom()
 void AProceduralRoom::BeginPlay()
 {
 	Super::BeginPlay();
-	//SpawnCrate(CrateClass);
 	FloorHalfSize = (FloorSize % 2 == 0) ? FloorSize / 2 : FloorSize / 2 + 1;
 	HalfTile = TileableFloorSize/2;
 	SpawnFloor(FloorClass);
@@ -32,7 +31,7 @@ void AProceduralRoom::BeginPlay()
 	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight, 0);
 
 
-	//UE_LOG(LogTemp, Warning, TEXT("testing"));
+	
 }
 
 // Called every frame
@@ -94,12 +93,6 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 					}
 				}
 			}
-
-			// make this in an other for to scale the room size to le box size to have nife fiting, ratio 140:200
-			// change the Max of the range to change the spawn rate
-
-			//spawn : air, 2 high, 1 high, barrel spawn all at random and then spawn the 10 barrels if collision
-			//with actors then destroy actor and place the barrel
 
 			GetWorld()->SpawnActor<AActor>(Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
 			                               FRotator(0, angle, 0));
