@@ -30,13 +30,6 @@ ACrateClump::ACrateClump()
 void ACrateClump::BeginPlay()
 {
 	Super::BeginPlay();
-	// StaticMesh->OnComponentHit.AddDynamic(this, &ACrateClump::DestroyHitActor);
-	// StaticMesh1->OnComponentHit.AddDynamic(this, &ACrateClump::DestroyHitActor);
-	// StaticMesh2->OnComponentHit.AddDynamic(this, &ACrateClump::DestroyHitActor);
-	// StaticMesh3->OnComponentHit.AddDynamic(this, &ACrateClump::DestroyHitActor);
-	// StaticMesh4->OnComponentHit.AddDynamic(this, &ACrateClump::DestroyHitActor);
-	// StaticMesh5->OnComponentHit.AddDynamic(this, &ACrateClump::DestroyHitActor);
-	UE_LOG(LogTemp, Warning, TEXT("testlol"));
 }
 
 // Called every frame
@@ -44,12 +37,5 @@ void ACrateClump::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-
-// void ACrateClump::DestroyHitActor(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-//                                          UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-// {
-// 	HitComponent->DestroyComponent();
-// 	UE_LOG(LogTemp, Warning, TEXT("test"));
-// }
 
 
