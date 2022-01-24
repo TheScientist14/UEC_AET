@@ -19,10 +19,8 @@ void AGoblin::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*TSubclassOf<ASpot> SpotClass;
-	UGameplayStatics::GetAllActorsOfClass(this, SpotClass, Spots);
-	*/
-
+	UE_LOG(LogTemp, Error, TEXT("GetAllActorOfClass"));
+	
 	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, Spots[0]->GetName());
 }
 

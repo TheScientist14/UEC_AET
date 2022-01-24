@@ -80,3 +80,4 @@ Binaries/Win64/GC_UE4CPPEditor.target
 *.pdb
 .idea/.idea.GC_UE4CPP.dir/.idea/.name
 .idea/.idea.GC_UE4CPP.dir/.idea/projectSettingsUpdater.xml
+Config/DefaultEngine.ini
