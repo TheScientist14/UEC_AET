@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+//class USphereComponent;
 
 UCLASS()
 class GC_UE4CPP_API APlayerCharacter : public ACharacter
@@ -19,6 +20,9 @@ public:
 	APlayerCharacter();
 
 	APlayerController* PlayerController;
+
+	//UPROPERTY(VisibleAnywhere)
+	//USphereComponent* InteractRange;
 
 	UPROPERTY(EditAnywhere)
 	float Speed = 300;
@@ -43,10 +47,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
-	FVector MovementDir = FVector::ZeroVector;
+	AActor* PickedUpActor = 0;
 
-	//UFUNCTION()
-	//void Move(FVector dir);
+	UFUNCTION()
+	AActor* GetPickedUpActor();
 
 	UFUNCTION()
 	void Interact();
@@ -67,8 +71,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };

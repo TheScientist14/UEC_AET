@@ -6,7 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
-class APlayerCharacter;
 
 UCLASS()
 class GC_UE4CPP_API AMyPlayerController : public APlayerController
@@ -17,12 +16,10 @@ public:
 
 	AMyPlayerController();
 
-	APlayerCharacter* PlayerCharacter;
+	class APlayerCharacter* PlayerCharacter;
 
 	virtual void BeginPlay() override;
 	
-	virtual void SetupInputComponent() override;
-
-
+	virtual void OnPossess(APawn* aPawn) override;
 
 };

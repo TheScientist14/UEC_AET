@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GC_UE4CPP/PlayerCharacterAnimInstance.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -16,10 +17,6 @@ APlayerCharacter::APlayerCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-
-	AutoPossessAI = EAutoPossessAI::Disabled;
-	AutoPossessPlayer = EAutoReceiveInput::Player0;
-	AutoReceiveInput = EAutoReceiveInput::Player0;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
@@ -32,29 +29,31 @@ APlayerCharacter::APlayerCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
+
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
-	EnableInput(PlayerController);
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Character input enabled");
 }
 
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Red, "Character input enabled");
+}
+
+AActor* APlayerCharacter::GetPickedUpActor()
+{
+	return PickedUpActor;
 }
 
 // Inputs
 
 void APlayerCharacter::Interact() {
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Interacted");
+
 }
 
 void APlayerCharacter::ZoomIn(float DeltaZoom) {
@@ -76,15 +75,15 @@ void APlayerCharacter::MoveRight(float DeltaY) {
 }
 
 // Called to bind functionality to input
-void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
-	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
-	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("Zoom", this, &APlayerCharacter::ZoomIn);
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Inputs set up");
-}
+//void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+//{
+//	Super::SetupPlayerInputComponent(PlayerInputComponent);
+//
+//	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
+//	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
+//	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+//	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+//	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+//	PlayerInputComponent->BindAxis("Zoom", this, &APlayerCharacter::ZoomIn);
+//	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Inputs set up");
+//}
