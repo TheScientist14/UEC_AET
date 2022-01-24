@@ -3,6 +3,7 @@
 #include "ProceduralRoom.h"
 
 #include "AITypes.h"
+#include "Spawner.h"
 
 // Sets default values
 AProceduralRoom::AProceduralRoom()
@@ -21,8 +22,8 @@ AProceduralRoom::AProceduralRoom()
 void AProceduralRoom::BeginPlay()
 {
 	Super::BeginPlay();
-	//SpawnCrate(CrateClass);
 	FloorHalfSize = (FloorSize % 2 == 0) ? FloorSize / 2 : FloorSize / 2 + 1;
+	HalfTile = TileableFloorSize/2;
 	SpawnFloor(FloorClass);
 	SpawnBarrels(Barrel);
 	SpawnCrates(CrateClump2, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 90);
@@ -30,7 +31,7 @@ void AProceduralRoom::BeginPlay()
 	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight, 0);
 
 
-	//UE_LOG(LogTemp, Warning, TEXT("testing"));
+	
 }
 
 // Called every frame
@@ -39,14 +40,8 @@ void AProceduralRoom::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AProceduralRoom::SpawnCrate(UClass* CrateToSpawn)
-{
-	GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(0, 0, 50), FRotator(0.f));
-}
-
 void AProceduralRoom::SpawnFloor(UClass* Floor)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("testing 1 : %d"), FloorHalfSize);
 
 	for (int i = -FloorHalfSize; i <= FloorHalfSize; i++)
 	{
@@ -63,24 +58,23 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 				angle = 180;
 				break;
 			case 3:
-				angle = 360;
+				angle = 270;
 				break;
 			default:
 				break;
 			}
-
-
+			
 			if (i == -FloorHalfSize || i == FloorHalfSize)
 			{
 				if (i == -FloorHalfSize)
 				{
-					SpawnWall(i, j, -100, 0, 100, 90);
-					SpawnWall(i, j, -100, 0, 300, 90);
+					SpawnWall(i, j, -HalfTile, 0, HalfTile, 90);
+					SpawnWall(i, j, -HalfTile, 0, HalfTile*3, 90);
 				}
 				else
 				{
-					SpawnWall(i, j, +100, 0, 100, 90);
-					SpawnWall(i, j, +100, 0, 300, 90);
+					SpawnWall(i, j, +HalfTile, 0, HalfTile, 90);
+					SpawnWall(i, j, +HalfTile, 0, HalfTile*3, 90);
 				}
 			}
 			if (j == -FloorHalfSize || j == FloorHalfSize)
@@ -89,22 +83,16 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 				{
 					if (j == -FloorHalfSize)
 					{
-						SpawnWall(i, j, 0, -100, 100, 0);
-						SpawnWall(i, j, 0, -100, 300, 0);
+						SpawnWall(i, j, 0, -HalfTile, HalfTile, 0);
+						SpawnWall(i, j, 0, -HalfTile, HalfTile*3, 0);
 					}
 					else
 					{
-						SpawnWall(i, j, 0, +100, 100, 0);
-						SpawnWall(i, j, 0, +100, 300, 0);
+						SpawnWall(i, j, 0, +HalfTile, HalfTile, 0);
+						SpawnWall(i, j, 0, +HalfTile, HalfTile*3, 0);
 					}
 				}
 			}
-
-			// make this in an other for to scale the room size to le box size to have nife fiting, ratio 140:200
-			// change the Max of the range to change the spawn rate
-
-			//spawn : air, 2 high, 1 high, barrel spawn all at random and then spawn the 10 barrels if collision
-			//with actors then destroy actor and place the barrel
 
 			GetWorld()->SpawnActor<AActor>(Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
 			                               FRotator(0, angle, 0));
@@ -143,20 +131,19 @@ void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int Spawn
 	}
 }
 
-void AProceduralRoom::SpawnBarrels(UClass* BarrelClass)
-{
-	UE_LOG(LogTemp, Warning, TEXT("testing 1 : %d"), FloorHalfSize);
-
-	for (int i = 0; i < 10; ++i)
+void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel)
+{	
+	for (int i = 0; i < NumberOfBarrels; ++i)
 	{
 		int Rotation = FMath::RandRange(0, 360);
 		int XSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
 		int YSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
-		UE_LOG(LogTemp, Warning, TEXT("X : %d"), XSpawn);
-		UE_LOG(LogTemp, Warning, TEXT("Y : %d"), YSpawn);
+		
+		
+		ASpot* ABarrel = GetWorld()->SpawnActor<ASpot>(
+                         		PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
+                         		FRotator(0, Rotation, 0));
 
-		GetWorld()->SpawnActor<AActor>(
-			Barrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
-			FRotator(0, Rotation, 0));
+		Spawner->AddBarrelToArray(ABarrel);
 	}
 }

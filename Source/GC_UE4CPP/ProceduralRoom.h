@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Spawner.h"
 #include "GameFramework/Actor.h"
 #include "ProceduralRoom.generated.h"
 
@@ -44,6 +45,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Floor")
 	float TileableFloorSize;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Floor")
+	int HalfTile;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|SmallCrate")
 	float ChanceOfSmallCrate;
 
@@ -62,18 +66,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room")
 	float SpawnHeight;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room")
-	TSubclassOf<AActor> Barrel;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Barrels")
+	TSubclassOf<ASpot> Barrel;
 
-	void SpawnCrate(UClass* CrateToSpawn);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Barrels")
+	int NumberOfBarrels;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room")
+	ASpawner* Spawner; 
+ 
 	void SpawnFloor(UClass* Floor);
 
 	void SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation);
 
 	void SpawnCrates(UClass* CrateToSpawn, int ActorSize, int SpawnChance, float SpawnHeight, int Rotation);
 
-	void SpawnBarrels(UClass* BarrelClass);
+	void SpawnBarrels(UClass* PrmBarrel);
+	
 private:
 
 	UPROPERTY()
