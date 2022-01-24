@@ -3,7 +3,7 @@
 
 #include "BTT_MoveToRandomSpot.h"
 
-#include "AI_Enemie.h"
+#include "AI_Enemy.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Vector.h"
 #include "blackboard_keys.h"
@@ -18,14 +18,16 @@ EBTNodeResult::Type UBTT_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent& O
 	//Move to init 
 	auto const cont = Cast<AGoblin>(OwnerComp.GetAIOwner()->GetPawn());
 
-	AAI_Enemie* EnemyAI = Cast<AAI_Enemie>(OwnerComp.GetAIOwner());
+	AAI_Enemy* EnemyAI = Cast<AAI_Enemy>(OwnerComp.GetAIOwner());
 
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("Before if "));
 	if(EnemyAI)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("GoToRandomSpot"));
-		cont->Spots.EmplaceAt()
-		EnemyAI->get_blackboard()->SetValueAsVector("Spot", cont->Spots[FMath::RandRange(0, cont->Spots.Max())]->GetActorLocation());
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, cont->GetName());
+		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot->GetActorLocation());
+	} else
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("cast failed"));
 	}
 
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

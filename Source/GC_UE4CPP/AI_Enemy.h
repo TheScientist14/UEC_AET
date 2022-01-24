@@ -6,18 +6,18 @@
 #include "AIController.h"
 #include "Spot.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
-#include "AI_Enemie.generated.h"
+#include "AI_Enemy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API AAI_Enemie : public AAIController
+class GC_UE4CPP_API AAI_Enemy : public AAIController
 {
 	GENERATED_BODY()
 
 public:
-	AAI_Enemie(FObjectInitializer const& object_initializer = FObjectInitializer::Get());
+	AAI_Enemy(FObjectInitializer const& object_initializer = FObjectInitializer::Get());
 
 	class UBlackboardComponent* get_blackboard() const;
 	
@@ -25,20 +25,9 @@ public:
 	virtual void OnPossess(APawn* InPawn) override;
 
 private:
-
-	class AGoblin* Goblin;
-
 	class UNavigationSystemV1* NavArea;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="AI", meta= (AllowPrivateAccess = "true"))
-	class UBehaviorTree* BehaviourTree;
-	
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="AI", meta= (AllowPrivateAccess = "true"))
-	class UBehaviorTreeComponent* BehaviourTreeComp;
-	
-	UPROPERTY(EditAnywhere)
-	class UBlackboardComponent* BlackboardComponent;
-	
-
+	UBehaviorTree* BehaviourTree;
 	
 };
