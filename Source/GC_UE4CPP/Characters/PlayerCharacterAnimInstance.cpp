@@ -2,7 +2,7 @@
 
 
 #include "PlayerCharacterAnimInstance.h"
-#include "Characters/PlayerCharacter.h"
+#include "PlayerCharacter.h"
 
 UPlayerCharacterAnimInstance::UPlayerCharacterAnimInstance(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
