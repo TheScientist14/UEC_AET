@@ -4,7 +4,7 @@
 #include "BTT_MoveToSpawn.h"
 
 #include "AIController.h"
-#include "AI_Enemy.h"
+#include "AIC_Enemy.h"
 #include "Goblin.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -17,7 +17,7 @@ EBTNodeResult::Type UBTT_MoveToSpawn::ExecuteTask(UBehaviorTreeComponent& OwnerC
 {
 	auto const cont = Cast<AGoblin>(OwnerComp.GetAIOwner()->GetPawn());
 
-	AAI_Enemy* EnemyAI = Cast<AAI_Enemy>(OwnerComp.GetAIOwner());
+	AAIC_Enemy* EnemyAI = Cast<AAIC_Enemy>(OwnerComp.GetAIOwner());
 
 	if(EnemyAI)
 	{

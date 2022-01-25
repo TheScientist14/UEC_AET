@@ -146,4 +146,6 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel)
 
 		Spawner->AddBarrelToArray(ABarrel);
 	}
+
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, TEXT("Spawn Barrels"));
 }

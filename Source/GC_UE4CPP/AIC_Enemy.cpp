@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI_Enemy.h"
+#include "AIC_Enemy.h"
 
 #include "Goblin.h"
 #include "Kismet/GameplayStatics.h"
@@ -10,7 +10,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 
-AAI_Enemy::AAI_Enemy(FObjectInitializer const& object_initializer)
+AAIC_Enemy::AAIC_Enemy(FObjectInitializer const& object_initializer)
 {
 	static ConstructorHelpers::FObjectFinder<UBehaviorTree> obj(TEXT("BehaviorTree'/Game/Blueprints/Characters/AI/BT_Goblin.BT_Goblin'"));
 
@@ -20,14 +20,14 @@ AAI_Enemy::AAI_Enemy(FObjectInitializer const& object_initializer)
 	}
 }
 
-void AAI_Enemy::BeginPlay()
+void AAIC_Enemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	RunBehaviorTree(BehaviourTree);
 }
 
-void AAI_Enemy::OnPossess(APawn* InPawn)
+void AAIC_Enemy::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 

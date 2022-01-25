@@ -6,18 +6,18 @@
 #include "AIController.h"
 #include "Spot.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
-#include "AI_Enemy.generated.h"
+#include "AIC_Enemy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API AAI_Enemy : public AAIController
+class GC_UE4CPP_API AAIC_Enemy : public AAIController
 {
 	GENERATED_BODY()
 
 public:
-	AAI_Enemy(FObjectInitializer const& object_initializer = FObjectInitializer::Get());
+	AAIC_Enemy(FObjectInitializer const& object_initializer = FObjectInitializer::Get());
 
 	class UBlackboardComponent* get_blackboard() const;
 	
