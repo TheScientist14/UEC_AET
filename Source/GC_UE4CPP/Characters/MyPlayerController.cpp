@@ -3,7 +3,7 @@
 
 #include "MyPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-#include "Characters/PlayerCharacter.h"
+#include "PlayerCharacter.h"
 
 // Sets default values
 AMyPlayerController::AMyPlayerController()

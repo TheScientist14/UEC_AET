@@ -8,7 +8,6 @@
 
 class USpringArmComponent;
 class UCameraComponent;
-//class USphereComponent;
 
 UCLASS()
 class GC_UE4CPP_API APlayerCharacter : public ACharacter
@@ -21,23 +20,25 @@ public:
 
 	APlayerController* PlayerController;
 
-	//UPROPERTY(VisibleAnywhere)
-	//USphereComponent* InteractRange;
+	UPROPERTY(VisibleAnywhere)
+	class USphereComponent* InteractSphere;
 
-	UPROPERTY(EditAnywhere)
-	float Speed = 300;
-
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float MinArmLength = 100;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float MaxArmLength = 500;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float ArmLengthStep = 100;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float ZoomThresholdLimit = 1;
+
+	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Interaction")
+	float InteractRange = 100;
+
+	TArray<class IInteractable*> InteractableInRange;
 
 	float ZoomThreshold = 0;
 
@@ -47,10 +48,14 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
-	AActor* PickedUpActor = 0;
+	class APickableItem* PickedUpActor = 0;
 
 	UFUNCTION()
-	AActor* GetPickedUpActor();
+	APickableItem* GetPickedUpActor();
+
+	// returns success
+	UFUNCTION()
+	bool PickUpActor(APickableItem* ActorToPickUp);
 
 	UFUNCTION()
 	void Interact();
@@ -64,9 +69,17 @@ public:
 	UFUNCTION()
 	void MoveRight(float DeltaY);
 
+	UFUNCTION()
+	void RegisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void UnregisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void PutDownPickedUpActor();
 
 public:	
 	// Called every frame
