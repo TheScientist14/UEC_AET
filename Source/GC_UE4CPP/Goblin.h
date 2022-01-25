@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Spawner.h"
-#include "Spot.h"
+#include "GC_UE4CPPGameState.h"
 #include "GameFramework/Character.h"
 #include "Goblin.generated.h"
 
@@ -18,19 +17,23 @@ public:
 	AGoblin();
 	
 	UPROPERTY(EditAnywhere)
-	ASpot* Spot;
+	FVector Spot;
 	
 	UPROPERTY(EditAnywhere)
 	FVector Spawn;
 	
 	UPROPERTY(EditAnywhere)
-	ASpawner* Spawner;
+	class ASpawner* Spawner;
+	
+	UPROPERTY(EditAnywhere)
+	bool Wait;
 
 protected:
 
 	UPROPERTY(EditAnywhere)
 	AActor* Food;
-	
+
+	AGC_UE4CPPGameState* GameState;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -42,5 +45,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void CallSpawner();
+	void GetNextSpot();
 };

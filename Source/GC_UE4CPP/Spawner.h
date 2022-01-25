@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Goblin.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Spot.h"
 #include "GameFramework/Actor.h"
@@ -31,14 +32,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=AI)
 	TArray<ASpot*> Barrels;
 	
-	UPROPERTY(EditAnywhere, Category=AI)
-	UBlackboardData* BlackboardGoblin;
-	
 	FActorSpawnParameters SpawnInfo;
-
-	void AddBarrelToArray(ASpot* PrmSpot);
-	
-	void Spawn(UClass* PrmAI);
-
-	ASpot* GetRandomSpot();
 };

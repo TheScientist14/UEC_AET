@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTT_DestroyActor.generated.h"
+#include "BTT_Wait.generated.h"
 
 /**
  * 
  */
 UCLASS(Blueprintable)
-class GC_UE4CPP_API UBTT_DestroyActor : public UBTTask_BlackboardBase
+class GC_UE4CPP_API UBTT_Wait : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
 public:
-	UBTT_DestroyActor(FObjectInitializer const& object_initialize);
+	UBTT_Wait(FObjectInitializer const& object_initialize);
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 };

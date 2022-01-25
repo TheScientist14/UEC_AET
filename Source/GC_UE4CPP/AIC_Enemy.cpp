@@ -23,6 +23,7 @@ AAIC_Enemy::AAIC_Enemy(FObjectInitializer const& object_initializer)
 void AAIC_Enemy::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Error, TEXT("BeginPlay AIC"));
 	
 	RunBehaviorTree(BehaviourTree);
 }
@@ -33,8 +34,12 @@ void AAIC_Enemy::OnPossess(APawn* InPawn)
 
 	AGoblin* Goblin = Cast<AGoblin>(InPawn);
 
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Spawn init blackboard before if");
+	UE_LOG(LogTemp, Error, TEXT("Spawn init blackboard before if"));
 	if (Blackboard)
 	{
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Spawn init blackboard");
+		UE_LOG(LogTemp, Error, TEXT("Spawn init blackboard"));
 		Blackboard->SetValueAsVector("Spawn", Goblin->Spawn);
 	}
 }

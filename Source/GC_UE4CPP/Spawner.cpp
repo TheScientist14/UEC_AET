@@ -19,8 +19,8 @@ ASpawner::ASpawner()
 void ASpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	Spawn(AI);
-	Spawn(AI);
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("BeginPlay Spawner"));
+	Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState())->SpawnEnemy = GetActorLocation();
 }
 
 // Called every frame
@@ -29,26 +29,3 @@ void ASpawner::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
-void ASpawner::AddBarrelToArray(ASpot* PrmSpot)
-{
-	Barrels.Add(PrmSpot);
-}
-
-void ASpawner::Spawn(UClass* PrmAI)
-{
-	AGoblin* Goblin = Cast<AGoblin>(GetWorld()->SpawnActor<AGoblin>(PrmAI, GetActorLocation(), GetActorRotation(), SpawnInfo));
-	
-	if(Goblin)
-	{
-		Goblin->Spot = GetRandomSpot();
-		Goblin->Spawn = GetActorLocation();
-		Goblin->Spawner = this;
-	}
-}
-
-ASpot* ASpawner::GetRandomSpot()
-{
-	return Barrels[FMath::RandRange(0, Barrels.Num() - 1)];
-}
-

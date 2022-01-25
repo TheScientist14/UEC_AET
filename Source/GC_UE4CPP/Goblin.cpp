@@ -3,6 +3,9 @@
 
 #include "Goblin.h"
 
+#include "GC_UE4CPPGameModeBase.h"
+#include "Spawner.h"
+#include "GC_UE4CPP/GC_UE4CPPGameState.h"
 #include "Spot.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -18,7 +21,10 @@ AGoblin::AGoblin()
 void AGoblin::BeginPlay()
 {
 	Super::BeginPlay();
-
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("BeginPlay Goblin"));
+	GameState = Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState());
+	Spot = GameState->Spots[FMath::RandRange(0, GameState->Spots.Num() - 1)]->GetActorLocation();
+	Spawn = GameState->SpawnEnemy;
 }
 
 // Called every frame
@@ -31,11 +37,9 @@ void AGoblin::Tick(float DeltaTime)
 void AGoblin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
-void AGoblin::CallSpawner()
+void AGoblin::GetNextSpot()
 {
-	Spawner->Spawn(GetClass());
+	Spot = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode())->GetRandomSpot();
 }
-
