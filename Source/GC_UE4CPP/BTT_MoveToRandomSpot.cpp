@@ -23,6 +23,7 @@ EBTNodeResult::Type UBTT_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent& O
 	if(EnemyAI)
 	{
 		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot);
+		cont->GetNextSpot();
 	}
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

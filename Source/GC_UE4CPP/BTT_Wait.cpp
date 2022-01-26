@@ -17,6 +17,7 @@ EBTNodeResult::Type UBTT_Wait::ExecuteTask(UBehaviorTreeComponent& OwnerComp, ui
 {
 	AAIC_Enemy* EnemyAI = Cast<AAIC_Enemy>(OwnerComp.GetAIOwner());
 	
-	EnemyAI->GetBlackboardComponent()->SetValueAsBool("Wait", false);
+	EnemyAI->GetBlackboardComponent()->SetValueAsBool("Wait", true);
+	Cast<AGoblin>(EnemyAI->GetPawn())->Wait = true;
 	return Super::ExecuteTask(OwnerComp, NodeMemory);
 }

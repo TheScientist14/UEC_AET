@@ -3,6 +3,7 @@
 
 #include "Goblin.h"
 
+#include "AIC_Enemy.h"
 #include "GC_UE4CPPGameModeBase.h"
 #include "Spawner.h"
 #include "GC_UE4CPP/GC_UE4CPPGameState.h"
@@ -23,8 +24,9 @@ void AGoblin::BeginPlay()
 	Super::BeginPlay();
 	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("BeginPlay Goblin"));
 	GameState = Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState());
-	Spot = GameState->Spots[FMath::RandRange(0, GameState->Spots.Num() - 1)]->GetActorLocation();
-	Spawn = GameState->SpawnEnemy;
+	GetNextSpot();
+	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
+	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
 }
 
 // Called every frame

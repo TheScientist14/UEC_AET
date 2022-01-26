@@ -16,6 +16,7 @@ class GC_UE4CPP_API AGC_UE4CPPGameState : public AGameStateBase
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere)
 	TArray<ASpot*> Spots;
 	

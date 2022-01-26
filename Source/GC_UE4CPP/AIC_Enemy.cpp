@@ -13,7 +13,6 @@
 AAIC_Enemy::AAIC_Enemy(FObjectInitializer const& object_initializer)
 {
 	static ConstructorHelpers::FObjectFinder<UBehaviorTree> obj(TEXT("BehaviorTree'/Game/Blueprints/Characters/AI/BT_Goblin.BT_Goblin'"));
-
 	if (obj.Succeeded())
 	{
 		BehaviourTree = obj.Object;	
