@@ -4,10 +4,12 @@
 #include "Goblin.h"
 
 #include "AIC_Enemy.h"
+#include "Food.h"
 #include "GC_UE4CPPGameModeBase.h"
 #include "Spawner.h"
 #include "GC_UE4CPP/GC_UE4CPPGameState.h"
 #include "Spot.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -27,6 +29,8 @@ void AGoblin::BeginPlay()
 	GetNextSpot();
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
+		
+	SpawnFood(Food);
 }
 
 // Called every frame
@@ -44,4 +48,11 @@ void AGoblin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AGoblin::GetNextSpot()
 {
 	Spot = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode())->GetRandomSpot();
+}
+
+void AGoblin::SpawnFood(UClass* PrmFood)
+{
+	AFood* FoodOnHand = Cast<AFood>(GetWorld()->SpawnActor<AActor>(PrmFood, FVector(0.f), FRotator(0.f)));
+
+	//FoodOnHand->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, "Fist_R_endSocket");
 }

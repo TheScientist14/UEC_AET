@@ -9,6 +9,7 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = false;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
+	SetRootComponent(StaticMesh);
 }
 
 void AFood::OnInteract()
