@@ -36,10 +36,9 @@ protected:
 	TSubclassOf<AActor> Food;
 
 	UPROPERTY(EditAnywhere)
-	USkeletalMeshSocket const* Hand;
+	USkeletalMeshSocket* Hand;
 
 	AGC_UE4CPPGameState* GameState;
-	FAttachmentTransformRules* Rules;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

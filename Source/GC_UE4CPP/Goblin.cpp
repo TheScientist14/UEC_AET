@@ -29,7 +29,7 @@ void AGoblin::BeginPlay()
 	GetNextSpot();
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
-		
+
 	SpawnFood(Food);
 }
 
@@ -52,7 +52,11 @@ void AGoblin::GetNextSpot()
 
 void AGoblin::SpawnFood(UClass* PrmFood)
 {
-	AFood* FoodOnHand = Cast<AFood>(GetWorld()->SpawnActor<AActor>(PrmFood, FVector(0.f), FRotator(0.f)));
-
-	//FoodOnHand->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform, "Fist_R_endSocket");
+	FVector HandLocation;
+	FRotator HandRotator;
+	
+	GetMesh()->GetSocketWorldLocationAndRotation("Fist_R_endSocket", HandLocation, HandRotator);
+	
+	AActor* FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, HandLocation, HandRotator);
+	FoodOnHand->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Fist_R_endSocket");
 }

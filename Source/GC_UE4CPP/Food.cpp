@@ -10,6 +10,7 @@ AFood::AFood()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	SetRootComponent(StaticMesh);
+	StaticMesh->SetSimulatePhysics(false);
 }
 
 void AFood::OnInteract()
