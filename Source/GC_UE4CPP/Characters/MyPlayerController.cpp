@@ -3,6 +3,7 @@
 
 #include "MyPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 #include "PlayerCharacter.h"
 
 // Sets default values
@@ -13,6 +14,10 @@ AMyPlayerController::AMyPlayerController()
 
 void AMyPlayerController::BeginPlay() {
     Super::BeginPlay();
+
+	ProgressionBarWidget = CreateWidget(this, ProgressionBarClass);
+	ProgressionBarWidget->AddToViewport();
+	ProgressionBarWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void AMyPlayerController::OnPossess(APawn* aPawn) {

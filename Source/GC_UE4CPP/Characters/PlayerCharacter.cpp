@@ -46,6 +46,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame
@@ -123,6 +124,6 @@ bool APlayerCharacter::PickUpActor(APickableItem* ActorToPickUp) {
 
 void APlayerCharacter::PutDownPickedUpActor() {
 	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, "Dettached");
-	PickedUpActor->DetachRootComponentFromParent();
+	PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	PickedUpActor = nullptr;
 }
