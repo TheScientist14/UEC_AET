@@ -54,24 +54,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-APickableItem* APlayerCharacter::GetPickedUpActor()
-{
-	return PickedUpActor;
-}
-
+//
 // Inputs
-
-void APlayerCharacter::Interact() {
-	if (PickedUpActor == nullptr) {
-		if (InteractableInRange.Num() > 0) {
-			InteractableInRange[0]->OnInteract();
-			InteractableInRange.RemoveAt(0);
-		}
-	}
-	else {
-		PutDownPickedUpActor();
-	}
-}
+//
 
 void APlayerCharacter::ZoomIn(float DeltaZoom) {
 	ZoomThreshold += DeltaZoom;
@@ -91,6 +76,20 @@ void APlayerCharacter::MoveRight(float DeltaY) {
 	AddMovementInput(Camera->GetRightVector(), DeltaY);
 }
 
+void APlayerCharacter::Interact() {
+	if (PickedUpActor == nullptr && TempPickedActor == nullptr) {
+		if (InteractableInRange.Num() > 0) {
+			InteractableInRange[0]->OnInteract(this);
+			InteractableInRange.RemoveAt(0);
+		}
+	}
+	else {
+		PutDownPickedUpActor();
+	}
+}
+
+// Tracking interactables
+
 void APlayerCharacter::RegisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	IInteractable* InteractableActor = Cast<IInteractable>(OtherActor);
 	if (InteractableActor) {
@@ -105,15 +104,28 @@ void APlayerCharacter::UnregisterInteractable(UPrimitiveComponent* OverlappedCom
 	}
 }
 
+//
+// Picking up / Putting down
+//
+
+APickableItem* APlayerCharacter::GetPickedUpActor()
+{
+	return PickedUpActor;
+}
+
+bool APlayerCharacter::IsPickingUpOrPuttingDown() {
+	return bIsPickingUpOrPuttingDown;
+}
+
 bool APlayerCharacter::PickUpActor(APickableItem* ActorToPickUp) {
 	if (ActorToPickUp == nullptr) {
 		UE_LOG(LogTemp, Error, TEXT("Can’t pick up null"))
-		return false;
+			return false;
 	}
-	if (!PickedUpActor) {
-		PickedUpActor = ActorToPickUp;
-		PickedUpActor->AttachToActor(this, FAttachmentTransformRules::KeepWorldTransform);
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, "Attached");
+	if (!PickedUpActor && !TempPickedActor) {
+		bIsPickingUpOrPuttingDown = true;
+		TempPickedActor = ActorToPickUp;
+		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 		return true;
 	}
 	else {
@@ -121,8 +133,42 @@ bool APlayerCharacter::PickUpActor(APickableItem* ActorToPickUp) {
 	}
 }
 
+void APlayerCharacter::BindPickedUpActor() {
+	if (TempPickedActor) {
+		PickedUpActor = TempPickedActor;
+		TempPickedActor = nullptr;
+		PickedUpActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "RightHandSocket");
+		/*PickedUpActor->SetActorRelativeLocation(this->GetMesh()->GetSocketLocation("Right_Hand"));*/
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Attached");
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, "Should have been dettached");
+	}
+}
+
+void APlayerCharacter::OnHasPickedUp() {
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	bIsPickingUpOrPuttingDown = false;
+}
+
 void APlayerCharacter::PutDownPickedUpActor() {
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, "Dettached");
-	PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	PickedUpActor = nullptr;
+	bIsPickingUpOrPuttingDown = true;
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+	// TODO : IK to wanted location
+}
+
+void APlayerCharacter::UnbindPickedUpActor() {
+	if (PickedUpActor)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettached");
+		PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		PickedUpActor->SetActorTransform(PickedUpActor->GetPutDownTransform());
+		PickedUpActor->OnPutDown();
+		PickedUpActor = nullptr;
+	}
+}
+
+void APlayerCharacter::OnHasPutDown() {
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	bIsPickingUpOrPuttingDown = false;
 }

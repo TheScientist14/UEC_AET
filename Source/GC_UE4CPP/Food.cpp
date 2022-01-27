@@ -13,7 +13,7 @@ AFood::AFood()
 	StaticMesh->SetSimulatePhysics(false);
 }
 
-void AFood::OnInteract()
+void AFood::OnInteract(AActor* Caller)
 {
 
 	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, "Picked up");
