@@ -37,19 +37,19 @@ public:
 	TSubclassOf<AActor> WallClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|Floor")
-	int FloorSize;
+	int FloorSize = 12;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|SmallCrate")
-	int CrateSize;
+	int CrateSize = 150;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Floor")
-	float TileableFloorSize;
+	float TileableFloorSize = 200;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Floor")
+	UPROPERTY()
 	int HalfTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|SmallCrate")
-	float ChanceOfSmallCrate;
+	float ChanceOfSmallCrate = 20;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|CrateClump")
 	TSubclassOf<AActor> CrateClump;
@@ -58,19 +58,19 @@ public:
     TSubclassOf<AActor> CrateClump2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|CrateClump")
-	int CrateClumpSize;
+	int CrateClumpSize = 420;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|CrateClump")
-	float ChanceOfCrateClump;
+	float ChanceOfCrateClump = 30;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room")
-	float SpawnHeight;
+	float SpawnHeight = 13;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Barrels")
 	TSubclassOf<ASpot> Barrel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Barrels")
-	int NumberOfBarrels;
+	int NumberOfBarrels = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room")
 	ASpawner* Spawner; 
