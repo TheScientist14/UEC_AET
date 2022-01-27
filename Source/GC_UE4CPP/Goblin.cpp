@@ -9,6 +9,7 @@
 #include "Spawner.h"
 #include "GC_UE4CPP/GC_UE4CPPGameState.h"
 #include "Spot.h"
+#include "Chaos/GeometryParticlesfwd.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -22,6 +23,8 @@ AGoblin::AGoblin()
 	InteractSphere->SetSphereRadius(InteractRange);
 	InteractSphere->SetCollisionProfileName(TEXT("OverlapAll"));
 
+	InteractSphere->OnComponentBeginOverlap.AddDynamic(this, &AGoblin::OnComponentEnter);
+
 }
 
 // Called when the game starts or when spawned
@@ -29,9 +32,7 @@ void AGoblin::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	
 	GameState = Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState());
-	GetNextSpot();
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
 
@@ -71,5 +72,16 @@ void AGoblin::DestroyFood()
 	if(FoodOnHand)
 	{
 		FoodOnHand->Destroy();
+	}
+}
+
+void AGoblin::OnComponentEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	ASpot* SpotInRange = Cast<ASpot>(OtherActor);
+	
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("SpawnFood Goblin code"));
+
+	if (SpotInRange)
+	{
+		SpotInRange->SpawnFood(Food);		
 	}
 }

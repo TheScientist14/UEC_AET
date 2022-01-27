@@ -20,7 +20,7 @@ public:
 	AGoblin();
 	
 	UPROPERTY(EditAnywhere)
-	FVector Spot;
+	ASpot* Spot;
 	
 	UPROPERTY(EditAnywhere)
 	FVector Spawn;
@@ -31,15 +31,16 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool Wait;
 	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> Food;
+	
 	AActor* FoodOnHand;
 
 	void DestroyFood();
+	void OnComponentEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                      int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AActor> Food;
-
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshSocket* Hand;
 	

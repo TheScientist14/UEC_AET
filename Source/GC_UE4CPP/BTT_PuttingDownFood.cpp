@@ -17,6 +17,7 @@ EBTNodeResult::Type UBTT_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent& Ow
 {
 	//Move to init 
 	auto const cont = Cast<AGoblin>(OwnerComp.GetAIOwner()->GetPawn());
+	cont->Spot->SpawnFood(cont->Food);
 	cont->DestroyFood();
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
