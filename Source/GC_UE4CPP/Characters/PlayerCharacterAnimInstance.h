@@ -6,8 +6,6 @@
 #include "Animation/AnimInstance.h"
 #include "PlayerCharacterAnimInstance.generated.h"
 
-class APlayerCharacter;
-
 UCLASS(transient, Blueprintable, hideCategories=AnimInstance, BlueprintType)
 class /*GC_UE4CPP_API*/ UPlayerCharacterAnimInstance : public UAnimInstance
 {
@@ -16,22 +14,33 @@ class /*GC_UE4CPP_API*/ UPlayerCharacterAnimInstance : public UAnimInstance
 public:
 	UPlayerCharacterAnimInstance(const FObjectInitializer& ObjectInitializer);
 
-	APlayerCharacter* Player;
+	UPROPERTY()
+	class APlayerCharacter* Player;
+
+	class IPicker* PlayerPicker;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsPickingUpPuttingDown;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool IsCarrying;
+	class APickableItem* PickedItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed;
 
-	UFUNCTION(BlueprintCallable)
-	void PickUpOrPutDown();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTransform LeftHandTarget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool HasWon = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool HasLost = false;
 
 public:
 	virtual void NativeInitializeAnimation() override;
 
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	virtual void NativeUninitializeAnimation() override;
 };

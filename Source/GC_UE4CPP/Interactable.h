@@ -23,6 +23,6 @@ class GC_UE4CPP_API IInteractable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION()
-	virtual void OnInteract() = 0;
+	virtual void OnInteract(class AActor* Caller) = 0;
 
 };

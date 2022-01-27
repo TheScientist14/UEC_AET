@@ -16,13 +16,34 @@ public:
 	// Sets default values for this actor's properties
 	APickableItem();
 
+	// returns where the right hand should carry the item
+	FTransform GetRightHandAnchor();
+
+	// returns where the left hand should carry the item
+	FTransform GetLeftHandAnchor();
+
+	// returns where the item would like to be put down
+	FTransform GetPutDownTransform();
+
+	// called by Picker when Item has been put down
+	void OnPutDown();
+
 protected:
 
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* StaticMesh;
+	class UStaticMeshComponent* StaticMesh;
+
+	UPROPERTY(EditAnywhere)
+	class USceneComponent* RightHandAnchor;
+
+	UPROPERTY(EditAnywhere)
+	USceneComponent* LeftHandAnchor;
+
+	UPROPERTY(VisibleAnywhere)
+	bool IsCurrentlyPickable = true;
 
 public:
 
-	virtual void OnInteract() override;
+	virtual void OnInteract(AActor* Caller) override;
 
 };

@@ -3,6 +3,7 @@
 
 #include "PlayerCharacterAnimInstance.h"
 #include "PlayerCharacter.h"
+#include "../Picker.h"
 
 UPlayerCharacterAnimInstance::UPlayerCharacterAnimInstance(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -15,7 +16,8 @@ UPlayerCharacterAnimInstance::UPlayerCharacterAnimInstance(const FObjectInitiali
 void UPlayerCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	Player = (APlayerCharacter*)GetOwningActor();
+	Player = Cast<APlayerCharacter>(GetOwningActor());
+	PlayerPicker = Cast<IPicker>(Player);
 }
 
 void UPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -23,10 +25,12 @@ void UPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Super::NativeUpdateAnimation(DeltaSeconds);
 	if (Player) {
 		Speed = Player->GetVelocity().Size();
-		IsCarrying = (bool)(Player->GetPickedUpActor());
+		PickedItem = PlayerPicker->GetPickedUpActor();
+		IsPickingUpPuttingDown = PlayerPicker->IsPickingUpOrPuttingDown();
 	}
 }
 
-void UPlayerCharacterAnimInstance::PickUpOrPutDown() {
-
+void UPlayerCharacterAnimInstance::NativeUninitializeAnimation() {
+	Super::NativeUninitializeAnimation();
+	Player = nullptr;
 }

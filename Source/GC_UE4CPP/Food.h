@@ -23,6 +23,6 @@ protected:
 
 public:
 
-	virtual void OnInteract() override;
+	virtual void OnInteract(AActor* Caller) override;
 
 };

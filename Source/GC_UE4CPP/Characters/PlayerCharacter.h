@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "../Picker.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS()
-class GC_UE4CPP_API APlayerCharacter : public ACharacter
+class GC_UE4CPP_API APlayerCharacter : public ACharacter, public IPicker
 {
 	GENERATED_BODY()
 
@@ -48,14 +49,36 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
-	class APickableItem* PickedUpActor = 0;
+	class APickableItem* PickedUpActor = nullptr;
+
+	class APickableItem* TempPickedActor = nullptr;
+
+	bool bIsPickingUpOrPuttingDown = false;
+
+	UFUNCTION()
+	virtual bool IsPickingUpOrPuttingDown() override;
 
 	UFUNCTION()
 	APickableItem* GetPickedUpActor();
 
 	// returns success
 	UFUNCTION()
-	bool PickUpActor(APickableItem* ActorToPickUp);
+	virtual bool PickUpActor(APickableItem* ActorToPickUp) override;
+
+	UFUNCTION()
+	virtual void BindPickedUpActor() override;
+
+	UFUNCTION()
+	virtual void OnHasPickedUp() override;
+
+	UFUNCTION()
+	virtual void PutDownPickedUpActor() override;
+
+	UFUNCTION()
+	virtual void UnbindPickedUpActor() override;
+
+	UFUNCTION()
+	virtual void OnHasPutDown() override;
 
 	UFUNCTION()
 	void Interact();
@@ -78,8 +101,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	void PutDownPickedUpActor();
 
 public:	
 	// Called every frame
