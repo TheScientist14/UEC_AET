@@ -5,16 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interactable.h"
-#include "Food.generated.h"
+#include "PickableItem.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AFood: public AActor, public IInteractable
+class GC_UE4CPP_API APickableItem: public AActor, public IInteractable
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
-	AFood();
+	APickableItem();
 
 protected:
 

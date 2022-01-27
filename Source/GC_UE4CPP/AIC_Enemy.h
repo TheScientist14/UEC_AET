@@ -18,8 +18,6 @@ class GC_UE4CPP_API AAIC_Enemy : public AAIController
 
 public:
 	AAIC_Enemy(FObjectInitializer const& object_initializer = FObjectInitializer::Get());
-
-	class UBlackboardComponent* get_blackboard() const;
 	
 	void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;

@@ -144,7 +144,7 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel)
                          		PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
                          		FRotator(0, Rotation, 0));
 
-		Spawner->AddBarrelToArray(ABarrel);
+		Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState())->AddSpotToArray(ABarrel);
 	}
 
 	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, TEXT("Spawn Barrels"));

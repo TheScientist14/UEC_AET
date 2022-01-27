@@ -22,14 +22,10 @@ EBTNodeResult::Type UBTT_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent& O
 
 	if(EnemyAI)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("GoToRandomSpot"));
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, cont->GetName());
+		cont->GetNextSpot();
 		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot->GetActorLocation());
-	} else
-	{
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("cast failed"));
 	}
-
+	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return EBTNodeResult::Succeeded;
 }
