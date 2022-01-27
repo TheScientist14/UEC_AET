@@ -18,12 +18,6 @@ AGoblin::AGoblin()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	InteractSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractSphere"));
-	InteractSphere->SetupAttachment(RootComponent);
-	InteractSphere->SetSphereRadius(InteractRange);
-	InteractSphere->SetCollisionProfileName(TEXT("OverlapAll"));
-
-	InteractSphere->OnComponentBeginOverlap.AddDynamic(this, &AGoblin::OnComponentEnter);
 
 }
 
@@ -35,8 +29,8 @@ void AGoblin::BeginPlay()
 	GameState = Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState());
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
+	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
 
-	SpawnFood(Food);
 }
 
 // Called every frame
@@ -72,16 +66,5 @@ void AGoblin::DestroyFood()
 	if(FoodOnHand)
 	{
 		FoodOnHand->Destroy();
-	}
-}
-
-void AGoblin::OnComponentEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	ASpot* SpotInRange = Cast<ASpot>(OtherActor);
-	
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("SpawnFood Goblin code"));
-
-	if (SpotInRange)
-	{
-		SpotInRange->SpawnFood(Food);		
 	}
 }

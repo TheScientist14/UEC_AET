@@ -18,6 +18,10 @@ class GC_UE4CPP_API AGC_UE4CPPGameModeBase : public AGameModeBase
 public:
 	virtual void BeginPlay() override;
 	ASpot* GetRandomSpot();
+	int GetFoodOnLevel();
+	int GetMaxFoodOnLevel();
+	void AddFood();
+	void RemoveFood();
 
 private:
 	AGC_UE4CPPGameState* GameState;

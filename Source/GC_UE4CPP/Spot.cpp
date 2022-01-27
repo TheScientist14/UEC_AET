@@ -29,6 +29,21 @@ void ASpot::Tick(float DeltaTime)
 
 }
 
+bool ASpot::HasFood()
+{
+	return Occupied;
+}
+
+void ASpot::SetSpotOccupied()
+{
+	Occupied = true;
+}
+
+void ASpot::SetSpotFree()
+{
+	Occupied = false;
+}
+
 
 void ASpot::SpawnFood(UClass* PrmFood)
 {
