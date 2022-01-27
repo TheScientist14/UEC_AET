@@ -6,6 +6,7 @@
 #include "Food.h"
 #include "GC_UE4CPPGameState.h"
 #include "PickableItem.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Character.h"
 #include "Goblin.generated.h"
 
@@ -19,7 +20,7 @@ public:
 	AGoblin();
 	
 	UPROPERTY(EditAnywhere)
-	FVector Spot;
+	ASpot* Spot;
 	
 	UPROPERTY(EditAnywhere)
 	FVector Spawn;
@@ -29,14 +30,25 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	bool Wait;
-
-protected:
-
+	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> Food;
+	
+	AActor* FoodOnHand;
 
+	void DestroyFood();
+	void OnComponentEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                      int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+protected:
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshSocket* Hand;
+	
+	UPROPERTY(EditAnywhere)
+	USphereComponent* InteractSphere;
+
+	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Interaction")
+	float InteractRange = 100;;
 
 	AGC_UE4CPPGameState* GameState;
 	

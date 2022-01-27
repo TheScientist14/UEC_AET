@@ -17,7 +17,7 @@ class GC_UE4CPP_API AGC_UE4CPPGameModeBase : public AGameModeBase
 
 public:
 	virtual void BeginPlay() override;
-	FVector GetRandomSpot();
+	ASpot* GetRandomSpot();
 
 private:
 	AGC_UE4CPPGameState* GameState;

@@ -9,6 +9,7 @@
 #include "Spawner.h"
 #include "GC_UE4CPP/GC_UE4CPPGameState.h"
 #include "Spot.h"
+#include "Chaos/GeometryParticlesfwd.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -17,6 +18,12 @@ AGoblin::AGoblin()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	InteractSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractSphere"));
+	InteractSphere->SetupAttachment(RootComponent);
+	InteractSphere->SetSphereRadius(InteractRange);
+	InteractSphere->SetCollisionProfileName(TEXT("OverlapAll"));
+
+	InteractSphere->OnComponentBeginOverlap.AddDynamic(this, &AGoblin::OnComponentEnter);
 
 }
 
@@ -24,9 +31,8 @@ AGoblin::AGoblin()
 void AGoblin::BeginPlay()
 {
 	Super::BeginPlay();
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("BeginPlay Goblin"));
+	
 	GameState = Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState());
-	GetNextSpot();
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
 
@@ -57,6 +63,25 @@ void AGoblin::SpawnFood(UClass* PrmFood)
 	
 	GetMesh()->GetSocketWorldLocationAndRotation("Fist_R_endSocket", HandLocation, HandRotator);
 	
-	AActor* FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, HandLocation, HandRotator);
+	FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, HandLocation, HandRotator);
 	FoodOnHand->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Fist_R_endSocket");
+}
+
+void AGoblin::DestroyFood()
+{
+	if(FoodOnHand)
+	{
+		FoodOnHand->Destroy();
+	}
+}
+
+void AGoblin::OnComponentEnter(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	ASpot* SpotInRange = Cast<ASpot>(OtherActor);
+	
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("SpawnFood Goblin code"));
+
+	if (SpotInRange)
+	{
+		SpotInRange->SpawnFood(Food);		
+	}
 }
