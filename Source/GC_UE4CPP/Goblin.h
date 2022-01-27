@@ -6,6 +6,7 @@
 #include "Food.h"
 #include "GC_UE4CPPGameState.h"
 #include "PickableItem.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Character.h"
 #include "Goblin.generated.h"
 
@@ -29,6 +30,10 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	bool Wait;
+	
+	AActor* FoodOnHand;
+
+	void DestroyFood();
 
 protected:
 
@@ -37,6 +42,12 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshSocket* Hand;
+	
+	UPROPERTY(EditAnywhere)
+	USphereComponent* InteractSphere;
+
+	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Interaction")
+	float InteractRange = 100;;
 
 	AGC_UE4CPPGameState* GameState;
 	

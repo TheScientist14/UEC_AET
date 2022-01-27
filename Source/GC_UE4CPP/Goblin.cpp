@@ -17,6 +17,10 @@ AGoblin::AGoblin()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	InteractSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractSphere"));
+	InteractSphere->SetupAttachment(RootComponent);
+	InteractSphere->SetSphereRadius(InteractRange);
+	InteractSphere->SetCollisionProfileName(TEXT("OverlapAll"));
 
 }
 
@@ -24,7 +28,8 @@ AGoblin::AGoblin()
 void AGoblin::BeginPlay()
 {
 	Super::BeginPlay();
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Black, TEXT("BeginPlay Goblin"));
+	
+	
 	GameState = Cast<AGC_UE4CPPGameState>(GetWorld()->GetGameState());
 	GetNextSpot();
 	Cast<AAIC_Enemy>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
@@ -57,6 +62,14 @@ void AGoblin::SpawnFood(UClass* PrmFood)
 	
 	GetMesh()->GetSocketWorldLocationAndRotation("Fist_R_endSocket", HandLocation, HandRotator);
 	
-	AActor* FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, HandLocation, HandRotator);
+	FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, HandLocation, HandRotator);
 	FoodOnHand->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Fist_R_endSocket");
+}
+
+void AGoblin::DestroyFood()
+{
+	if(FoodOnHand)
+	{
+		FoodOnHand->Destroy();
+	}
 }

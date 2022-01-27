@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PickableItem.h"
 #include "GameFramework/Actor.h"
 #include "Spot.generated.h"
 
@@ -15,10 +16,21 @@ public:
 	// Sets default values for this actor's properties
 	ASpot();
 
+	void SpawnFood(UClass* PrmFood);
+
 protected:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
+	
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* FoodSpot;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> FoodClass;
+	
+	UPROPERTY(VisibleAnywhere)
+	AActor* FoodOnSpot;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

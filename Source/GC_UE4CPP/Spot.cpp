@@ -11,6 +11,8 @@ ASpot::ASpot()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	SetRootComponent(StaticMesh);
+	FoodSpot = CreateDefaultSubobject<UStaticMeshComponent>(FName("FoodSpot"));
+	FoodSpot->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -27,3 +29,10 @@ void ASpot::Tick(float DeltaTime)
 
 }
 
+
+void ASpot::SpawnFood(UClass* PrmFood)
+{
+	FoodOnSpot = GetWorld()->SpawnActor<AActor>(PrmFood, FoodSpot->GetRelativeLocation(), FoodSpot->GetRelativeRotation());
+	FoodOnSpot->AttachToComponent(FoodSpot, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "");
+
+}
