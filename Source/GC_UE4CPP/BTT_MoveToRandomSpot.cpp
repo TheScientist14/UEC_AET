@@ -7,6 +7,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Vector.h"
 #include "blackboard_keys.h"
+#include "GC_UE4CPPGameModeBase.h"
 
 UBTT_MoveToRandomSpot::UBTT_MoveToRandomSpot(FObjectInitializer const& object_initialize)
 {
@@ -22,8 +23,15 @@ EBTNodeResult::Type UBTT_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent& O
 
 	if(EnemyAI)
 	{
-		cont->GetNextSpot();
-		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot->GetActorLocation());
+		if (Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode())->GetFoodOnLevel() < Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode())->GetMaxFoodOnLevel())
+		{
+			cont->GetNextSpot();
+			cont->SpawnFood(cont->Food);
+			EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot->GetActorLocation());
+		} else
+		{
+			EnemyAI->GetBlackboardComponent()->SetValueAsBool("Wait", true);
+		}
 	}
 	
 	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);

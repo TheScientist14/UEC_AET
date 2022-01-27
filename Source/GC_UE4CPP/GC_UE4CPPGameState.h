@@ -22,6 +22,11 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	FVector SpawnEnemy;
+
+	UPROPERTY(VisibleAnywhere)
+	int FoodOnLevel = 0;
+	int MaxFoodOnLevel = 10;
 	
 	void AddSpotToArray(ASpot* PrmSpot);
+
 };
