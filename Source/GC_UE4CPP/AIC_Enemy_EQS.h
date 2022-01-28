@@ -17,7 +17,7 @@ class GC_UE4CPP_API AAIC_Enemy_EQS : public AAIController
 public:
 	AAIC_Enemy_EQS(FObjectInitializer const& object_initializer = FObjectInitializer::Get());
 
-	class UBlackboardComponent* get_blackboard() const;
+	
 	
 	void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
@@ -25,8 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	UEnvQuery *FindHidingSpotEQS;
 
-	void RunQuery();
-	void HandleQueryResult(TSharedPtr<FEnvQueryResult> result);
+	
 
 private:
 	class UNavigationSystemV1* NavArea;

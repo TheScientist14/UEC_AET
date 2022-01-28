@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AIC_Enemy.h"
 #include "Goblin.h"
 #include "AIC_Enemy_EQS.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
@@ -33,6 +34,6 @@ public:
 private:
 	float Score;
 	FVector MoveLocation;
-	AAIC_Enemy_EQS* EnemyAI;
+	AAIC_Enemy* EnemyAI;
 	
 };
