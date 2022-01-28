@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "../Picker.h"
+#include "GC_UE4CPP/Interfaces/Lifter.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS()
-class GC_UE4CPP_API APlayerCharacter : public ACharacter, public IPicker
+class GC_UE4CPP_API APlayerCharacter : public ACharacter, public ILifter
 {
 	GENERATED_BODY()
 

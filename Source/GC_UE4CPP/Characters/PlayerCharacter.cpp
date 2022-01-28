@@ -7,8 +7,8 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "../PickableItem.h"
-#include "../Interactable.h"
+#include "GC_UE4CPP/Interfaces/Interactable.h"
+#include "GC_UE4CPP/MapItems/PickableItem.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -119,7 +119,7 @@ bool APlayerCharacter::IsPickingUpOrPuttingDown() {
 
 bool APlayerCharacter::PickUpActor(APickableItem* ActorToPickUp) {
 	if (ActorToPickUp == nullptr) {
-		UE_LOG(LogTemp, Error, TEXT("Can’t pick up null"))
+		UE_LOG(LogTemp, Error, TEXT("Canï¿½t pick up null"))
 			return false;
 	}
 	if (!PickedUpActor && !TempPickedActor) {

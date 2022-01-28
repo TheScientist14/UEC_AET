@@ -2,11 +2,11 @@
 
 
 #include "HasPickedUpAnimNotify.h"
-#include "../Picker.h"
+#include "GC_UE4CPP/Interfaces/Lifter.h"
 
 void UHasPickedUpAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) {
 	if (MeshComp && MeshComp->GetOwner()) {
-		IPicker* Picker = Cast<IPicker>(MeshComp->GetOwner());
+		ILifter* Picker = Cast<ILifter>(MeshComp->GetOwner());
 		if (Picker) {
 			Picker->OnHasPickedUp();
 		}

@@ -17,7 +17,7 @@ public:
 	UPROPERTY()
 	class APlayerCharacter* Player;
 
-	class IPicker* PlayerPicker;
+	class ILifter* PlayerPicker;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsPickingUpPuttingDown;

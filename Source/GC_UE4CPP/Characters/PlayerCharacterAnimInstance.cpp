@@ -3,7 +3,7 @@
 
 #include "PlayerCharacterAnimInstance.h"
 #include "PlayerCharacter.h"
-#include "../Picker.h"
+#include "GC_UE4CPP/Interfaces/Lifter.h"
 
 UPlayerCharacterAnimInstance::UPlayerCharacterAnimInstance(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -17,7 +17,7 @@ void UPlayerCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 	Player = Cast<APlayerCharacter>(GetOwningActor());
-	PlayerPicker = Cast<IPicker>(Player);
+	PlayerPicker = Cast<ILifter>(Player);
 }
 
 void UPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
