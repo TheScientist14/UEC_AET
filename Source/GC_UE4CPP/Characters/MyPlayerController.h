@@ -18,6 +18,12 @@ public:
 
 	class APlayerCharacter* PlayerCharacter;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> ProgressionBarClass;
+
+	UPROPERTY()
+	UUserWidget* ProgressionBarWidget;
+
 	virtual void BeginPlay() override;
 	
 	virtual void OnPossess(APawn* aPawn) override;
