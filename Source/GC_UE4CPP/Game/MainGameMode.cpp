@@ -32,16 +32,12 @@ int AMainGameMode::GetFoodOnLevel()
 
 int AMainGameMode::GetMaxFoodOnLevel()
 {
-	return GameState->Spots.Num();
+	return GameState->Spots.Num()/2;
 }
 
 void AMainGameMode::AddFood()
 {
 	GameState->FoodOnLevel++;
-	if (GameState->FoodOnLevel==11)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("FoodNb = 11"));
-	}
 }
 
 void AMainGameMode::RemoveFood()
