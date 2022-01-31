@@ -13,7 +13,6 @@ AGoblinCharacter::AGoblinCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -47,13 +46,11 @@ void AGoblinCharacter::GetNextSpot()
 
 void AGoblinCharacter::SpawnFood(UClass* PrmFood)
 {
-	FVector HandLocation;
-	FRotator HandRotator;
-	
-	GetMesh()->GetSocketWorldLocationAndRotation("Fist_R_endSocket", HandLocation, HandRotator);
-	
-	FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, HandLocation, HandRotator);
-	FoodOnHand->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Fist_R_endSocket");
+	if (FoodOnHand == nullptr)
+	{
+		FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, FVector(0), FRotator(0));
+		FoodOnHand->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Fist_R_endSocket");
+	}
 }
 
 void AGoblinCharacter::DestroyFood()
@@ -61,5 +58,6 @@ void AGoblinCharacter::DestroyFood()
 	if(FoodOnHand)
 	{
 		FoodOnHand->Destroy();
-	}
+		FoodOnHand = nullptr;
+	} 
 }

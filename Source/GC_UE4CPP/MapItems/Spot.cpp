@@ -47,7 +47,6 @@ void ASpot::SetSpotFree()
 
 void ASpot::SpawnFood(UClass* PrmFood)
 {
-	SetSpotOccupied();
 	FoodOnSpot = GetWorld()->SpawnActor<AActor>(PrmFood, FoodSpot->GetRelativeLocation(), FoodSpot->GetRelativeRotation());
 	FoodOnSpot->AttachToComponent(FoodSpot, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "");
 
