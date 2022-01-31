@@ -13,13 +13,14 @@ void AMainGameMode::BeginPlay()
 
 ASpot* AMainGameMode::GetRandomSpot()
 {
-	if(GameState->FoodOnLevel < GetMaxFoodOnLevel())
-	{		
+	if (GameState->FoodOnLevel < GetMaxFoodOnLevel())
+	{
 		ASpot* SpotReturn = GameState->Spots[FMath::RandRange(0, GameState->Spots.Num() - 1)];
 		while (SpotReturn->HasFood())
 		{
 			SpotReturn = GameState->Spots[FMath::RandRange(0, GameState->Spots.Num() - 1)];
 		}
+		SpotReturn->SetSpotOccupied();
 		return SpotReturn;
 	}
 	return nullptr;
@@ -32,15 +33,15 @@ int AMainGameMode::GetFoodOnLevel()
 
 int AMainGameMode::GetMaxFoodOnLevel()
 {
-	return GameState->Spots.Num();
+	return GameState->Spots.Num() / 2;
 }
 
 void AMainGameMode::AddFood()
 {
 	GameState->FoodOnLevel++;
-	if (GameState->FoodOnLevel==11)
+	if (GameState->FoodOnLevel == 5)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FoodNb = 11"));
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Green, TEXT("FoodNb = 5"));
 	}
 }
 
@@ -48,4 +49,3 @@ void AMainGameMode::RemoveFood()
 {
 	GameState->FoodOnLevel--;
 }
-

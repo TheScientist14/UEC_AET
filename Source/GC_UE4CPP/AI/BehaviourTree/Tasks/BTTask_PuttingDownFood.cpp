@@ -25,7 +25,6 @@ EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent&
 	cont->Spot->SpawnFood(cont->Food);
 	cont->DestroyFood();
 	Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->AddFood();
-	cont->Spot->SetSpotOccupied();
 	if(Cast<AMainGameState>(GetWorld()->GetGameState())->FoodOnLevel == Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetMaxFoodOnLevel())
 	{
 		Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsBool("NeedFood", false);
