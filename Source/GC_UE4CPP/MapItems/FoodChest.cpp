@@ -2,7 +2,7 @@
 
 
 #include "FoodChest.h"
-
+#include "PickableItem.h"
 #include "GC_UE4CPP/Characters/PlayerCharacter.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
 
@@ -36,11 +36,23 @@ void AFoodChest::Tick(float DeltaTime)
 
 void AFoodChest::OnInteract(AActor* Caller)
 {
-	GameMode->AddStashedFood();
-	APlayerCharacter* Player = Cast<APlayerCharacter>(Caller);
+	
+	Player = Cast<APlayerCharacter>(Caller);
 
-	if (Player)
+	if (Player && Player->GetPickedUpActor())
 	{
+		APickableItem* Item = Player->GetPickedUpActor();
 		Player->PutDownPickedUpActor();
+
+		DelegateHandle = Player->OnPutDown.AddUObject(this, &AFoodChest::DestroyFood);
+		
+		GameMode->AddStashedFood();
+		UE_LOG(LogTemp, Warning, TEXT("Interacted with chest"));
 	}
+}
+
+void AFoodChest::DestroyFood(APickableItem* PrmItem)
+{
+	PrmItem->Destroy();
+	Player->OnPutDown.Remove(DelegateHandle);
 }

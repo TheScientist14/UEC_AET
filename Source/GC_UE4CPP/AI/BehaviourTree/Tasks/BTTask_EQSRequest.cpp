@@ -36,7 +36,7 @@ EBTNodeResult::Type UBTT_GetEQSPointScore::ExecuteTask(UBehaviorTreeComponent& O
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Cast failed"))
+		UE_LOG(LogTemp, Error, TEXT("Cast failed"))
 	}
 
 

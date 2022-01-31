@@ -13,7 +13,7 @@
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationPitch = false;
@@ -22,7 +22,7 @@ APlayerCharacter::APlayerCharacter()
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-	
+
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArmComp->SetupAttachment(RootComponent);
 	SpringArmComp->TargetArmLength = 300.0f;
@@ -58,48 +58,61 @@ void APlayerCharacter::Tick(float DeltaTime)
 // Inputs
 //
 
-void APlayerCharacter::ZoomIn(float DeltaZoom) {
+void APlayerCharacter::ZoomIn(float DeltaZoom)
+{
 	ZoomThreshold += DeltaZoom;
-	if (abs(ZoomThreshold) >= ZoomThresholdLimit) {
-		SpringArmComp->TargetArmLength = FMath::Clamp(ArmLengthStep * -FMath::Sign(ZoomThreshold) + SpringArmComp->TargetArmLength, MinArmLength, MaxArmLength);
+	if (abs(ZoomThreshold) >= ZoomThresholdLimit)
+	{
+		SpringArmComp->TargetArmLength = FMath::Clamp(
+			ArmLengthStep * -FMath::Sign(ZoomThreshold) + SpringArmComp->TargetArmLength, MinArmLength, MaxArmLength);
 		ZoomThreshold = 0;
 	}
 }
 
-void APlayerCharacter::MoveForward(float DeltaX) {
+void APlayerCharacter::MoveForward(float DeltaX)
+{
 	FVector forward = Camera->GetForwardVector();
 	forward.Z = 0;
 	AddMovementInput(forward.GetSafeNormal(), DeltaX);
 }
 
-void APlayerCharacter::MoveRight(float DeltaY) {
+void APlayerCharacter::MoveRight(float DeltaY)
+{
 	AddMovementInput(Camera->GetRightVector(), DeltaY);
 }
 
-void APlayerCharacter::Interact() {
-	if (PickedUpActor == nullptr && TempPickedActor == nullptr) {
-		if (InteractableInRange.Num() > 0) {
-			InteractableInRange[0]->OnInteract(this);
-			InteractableInRange.RemoveAt(0);
-		}
+void APlayerCharacter::Interact()
+{
+	if (InteractableInRange.Num() > 0)
+	{
+		InteractableInRange[0]->OnInteract(this);
+		InteractableInRange.RemoveAt(0);
 	}
-	else {
+	else if (PickedUpActor != nullptr || TempPickedActor != nullptr)
+	{
 		PutDownPickedUpActor();
 	}
 }
 
 // Tracking interactables
 
-void APlayerCharacter::RegisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+void APlayerCharacter::RegisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                            const FHitResult& SweepResult)
+{
 	IInteractable* InteractableActor = Cast<IInteractable>(OtherActor);
-	if (InteractableActor) {
+	if (InteractableActor)
+	{
 		InteractableInRange.Add(InteractableActor);
 	}
 }
 
-void APlayerCharacter::UnregisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
+void APlayerCharacter::UnregisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
 	IInteractable* InteractableActor = Cast<IInteractable>(OtherActor);
-	if (InteractableActor) {
+	if (InteractableActor)
+	{
 		InteractableInRange.Remove(InteractableActor);
 	}
 }
@@ -113,62 +126,77 @@ APickableItem* APlayerCharacter::GetPickedUpActor()
 	return PickedUpActor;
 }
 
-bool APlayerCharacter::IsPickingUpOrPuttingDown() {
+bool APlayerCharacter::IsPickingUpOrPuttingDown()
+{
 	return bIsPickingUpOrPuttingDown;
 }
 
-bool APlayerCharacter::PickUpActor(APickableItem* ActorToPickUp) {
-	if (ActorToPickUp == nullptr) {
+bool APlayerCharacter::PickUpActor(APickableItem* ActorToPickUp)
+{
+	if (ActorToPickUp == nullptr)
+	{
 		UE_LOG(LogTemp, Error, TEXT("Can�t pick up null"))
-			return false;
+		return false;
 	}
-	if (!PickedUpActor && !TempPickedActor) {
+	if (!PickedUpActor && !TempPickedActor)
+	{
 		bIsPickingUpOrPuttingDown = true;
 		TempPickedActor = ActorToPickUp;
 		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 		return true;
 	}
-	else {
+	else
+	{
 		return false;
 	}
 }
 
-void APlayerCharacter::BindPickedUpActor() {
-	if (TempPickedActor) {
+void APlayerCharacter::BindPickedUpActor()
+{
+	if (TempPickedActor)
+	{
 		PickedUpActor = TempPickedActor;
 		TempPickedActor = nullptr;
-		PickedUpActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "RightHandSocket");
+		PickedUpActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+		                                 "RightHandSocket");
 		/*PickedUpActor->SetActorRelativeLocation(this->GetMesh()->GetSocketLocation("Right_Hand"));*/
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Attached");
 	}
-	else {
+	else
+	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, "Should have been dettached");
 	}
 }
 
-void APlayerCharacter::OnHasPickedUp() {
+void APlayerCharacter::OnHasPickedUp()
+{
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	bIsPickingUpOrPuttingDown = false;
 }
 
-void APlayerCharacter::PutDownPickedUpActor() {
+void APlayerCharacter::PutDownPickedUpActor()
+{
 	bIsPickingUpOrPuttingDown = true;
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	// TODO : IK to wanted location
 }
 
-void APlayerCharacter::UnbindPickedUpActor() {
+void APlayerCharacter::UnbindPickedUpActor()
+{
 	if (PickedUpActor)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettached");
 		PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		PickedUpActor->SetActorTransform(PickedUpActor->GetPutDownTransform());
 		PickedUpActor->OnPutDown();
+		OnPutDown.Broadcast(PickedUpActor);
 		PickedUpActor = nullptr;
+		
 	}
 }
 
-void APlayerCharacter::OnHasPutDown() {
+void APlayerCharacter::OnHasPutDown()
+{
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	bIsPickingUpOrPuttingDown = false;
 }

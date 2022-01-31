@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GC_UE4CPP/Characters/PlayerCharacter.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "FoodChest.generated.h"
 
@@ -24,6 +25,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
 	UStaticMeshComponent* MeshLid;
 
+private:
+
+	UPROPERTY()
+	APlayerCharacter* Player;
+	
+	FDelegateHandle DelegateHandle;	
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,4 +41,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void OnInteract(AActor* Caller) override;
 
+	UFUNCTION()
+	void DestroyFood(class APickableItem* PrmItem);
 };

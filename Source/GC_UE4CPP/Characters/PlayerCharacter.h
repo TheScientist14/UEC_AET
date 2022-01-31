@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GC_UE4CPP/Interfaces/Lifter.h"
+#include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -79,6 +80,9 @@ public:
 
 	UFUNCTION()
 	virtual void OnHasPutDown() override;
+
+	DECLARE_MULTICAST_DELEGATE_OneParam(FActorPutDownSignature, APickableItem*);
+	FActorPutDownSignature OnPutDown;
 
 	UFUNCTION()
 	void Interact();
