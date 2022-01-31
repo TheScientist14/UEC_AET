@@ -27,7 +27,7 @@ EBTNodeResult::Type UBTT_GetEQSPointScore::ExecuteTask(UBehaviorTreeComponent& O
 		if (Score >= ScoreThreshold)
 		{
 			EnemyAI->GetBlackboardComponent()->SetValueAsBool("SeesPlayer", true);
-			EnemyAI->MoveToLocation(MoveLocation, 50, true, true, true, true, nullptr, false);
+			EnemyAI->GetBlackboardComponent()->SetValueAsVector("EQS_Score", MoveLocation);
 		}
 		else
 		{

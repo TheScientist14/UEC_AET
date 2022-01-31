@@ -144,14 +144,15 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel)
 		ASpot* ABarrel = GetWorld()->SpawnActor<ASpot>(
                          		PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
                          		FRotator(0, Rotation, 0), SpawnInfo);
-		// if(!ABarrel)
-		// {
-		// 	
-		// }
-		// else
-		// {
-		// 	Cast<AMainGameState>(GetWorld()->GetGameState())->AddSpotToArray(ABarrel);
-		// }
+		
+		if(!ABarrel)
+		{
+			i--;
+		}
+		else
+		{
+			Cast<AMainGameState>(GetWorld()->GetGameState())->AddSpotToArray(ABarrel);
+		}
 
 		
 	}
