@@ -14,7 +14,25 @@ class GC_UE4CPP_API ACrateClump : public AActor
 public:
 	// Sets default values for this actor's properties
 	ACrateClump();
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMesh1;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMesh2;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMesh3;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMesh4;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMesh5;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -23,16 +41,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMesh;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMesh1;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMesh2;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMesh3;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMesh4;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* StaticMesh5;
+	
 };

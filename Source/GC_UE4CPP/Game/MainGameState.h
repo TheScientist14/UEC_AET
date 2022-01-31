@@ -24,7 +24,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	int FoodOnLevel = 0;
-	int MaxFoodOnLevel = 5;
+	int MaxFoodOnLevel = 10;
+
+	int StashedFood = 0;
+	int MaxStashedFood = 5;
 	
 	void AddSpotToArray(ASpot* PrmSpot);
 
