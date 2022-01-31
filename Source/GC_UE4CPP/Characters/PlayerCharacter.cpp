@@ -4,11 +4,12 @@
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
-#include "Components/SphereComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
+#include "PickUpAbilityComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -32,14 +33,8 @@ APlayerCharacter::APlayerCharacter()
 	Camera->SetupAttachment(SpringArmComp, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
 
-	InteractSphere = CreateDefaultSubobject<USphereComponent>(TEXT("InteractSphere"));
-	InteractSphere->SetupAttachment(RootComponent);
-	InteractSphere->SetSphereRadius(InteractRange);
-	InteractSphere->SetCollisionProfileName(TEXT("OverlapAll"));
-	InteractSphere->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::RegisterInteractable);
-	InteractSphere->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::UnregisterInteractable);
-
-	InteractableInRange.Reserve(10); // pretty unlikely to have more than 10 interactable actors in range
+	PickUpAbilityComponent = CreateDefaultSubobject<UPickUpAbilityComponent>(TEXT("PickUpBehaviour"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -83,120 +78,22 @@ void APlayerCharacter::MoveRight(float DeltaY)
 
 void APlayerCharacter::Interact()
 {
-	if (InteractableInRange.Num() > 0)
-	{
-		InteractableInRange[0]->OnInteract(this);
-		InteractableInRange.RemoveAt(0);
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
+	ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
+	TArray<AActor*> IgnoreActors;
+	IgnoreActors.Init(this, 1);
+	TArray<AActor*> OverlappedActors;
+	UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), InteractRange, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
+	bool HasInteracted = false;
+	int i = 0;
+	while(i < OverlappedActors.Num() && !HasInteracted) {
+		IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
+		if (Interactable) {
+			Interactable->OnInteract(this);
+			HasInteracted = true;
+		}
+		else {
+			i++;
+		}
 	}
-	else if (PickedUpActor != nullptr || TempPickedActor != nullptr)
-	{
-		PutDownPickedUpActor();
-	}
-}
-
-// Tracking interactables
-
-void APlayerCharacter::RegisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-                                            const FHitResult& SweepResult)
-{
-	IInteractable* InteractableActor = Cast<IInteractable>(OtherActor);
-	if (InteractableActor)
-	{
-		InteractableInRange.Add(InteractableActor);
-	}
-}
-
-void APlayerCharacter::UnregisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	IInteractable* InteractableActor = Cast<IInteractable>(OtherActor);
-	if (InteractableActor)
-	{
-		InteractableInRange.Remove(InteractableActor);
-	}
-}
-
-//
-// Picking up / Putting down
-//
-
-APickableItem* APlayerCharacter::GetPickedUpActor()
-{
-	return PickedUpActor;
-}
-
-bool APlayerCharacter::IsPickingUpOrPuttingDown()
-{
-	return bIsPickingUpOrPuttingDown;
-}
-
-bool APlayerCharacter::PickUpActor(APickableItem* ActorToPickUp)
-{
-	if (ActorToPickUp == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Can�t pick up null"))
-		return false;
-	}
-	if (!PickedUpActor && !TempPickedActor)
-	{
-		bIsPickingUpOrPuttingDown = true;
-		TempPickedActor = ActorToPickUp;
-		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-void APlayerCharacter::BindPickedUpActor()
-{
-	if (TempPickedActor)
-	{
-		PickedUpActor = TempPickedActor;
-		TempPickedActor = nullptr;
-		PickedUpActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
-		                                 "RightHandSocket");
-		/*PickedUpActor->SetActorRelativeLocation(this->GetMesh()->GetSocketLocation("Right_Hand"));*/
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Attached");
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, "Should have been dettached");
-	}
-}
-
-void APlayerCharacter::OnHasPickedUp()
-{
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-	bIsPickingUpOrPuttingDown = false;
-}
-
-void APlayerCharacter::PutDownPickedUpActor()
-{
-	bIsPickingUpOrPuttingDown = true;
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
-	// TODO : IK to wanted location
-}
-
-void APlayerCharacter::UnbindPickedUpActor()
-{
-	if (PickedUpActor)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettached");
-		PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		PickedUpActor->SetActorTransform(PickedUpActor->GetPutDownTransform());
-		PickedUpActor->OnPutDown();
-		OnPutDown.Broadcast(PickedUpActor);
-		PickedUpActor = nullptr;
-		
-	}
-}
-
-void APlayerCharacter::OnHasPutDown()
-{
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-	bIsPickingUpOrPuttingDown = false;
 }

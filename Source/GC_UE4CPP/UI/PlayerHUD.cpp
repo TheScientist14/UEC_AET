@@ -12,5 +12,5 @@ void UPlayerHUD::NativeOnInitialized() {
 }
 
 void UPlayerHUD::UpdateProgressBar(int UpdatedStashedFoodCount, int MaxStashedFoodCount) {
-	ProgressBarWidget->SetPercent((float)UpdatedStashedFoodCount / (float)MaxStashedFoodCount);
+	ProgressBarWidget->SetPercent(FMath::Clamp<float>((float)UpdatedStashedFoodCount / (float)MaxStashedFoodCount, 0, 1));
 }

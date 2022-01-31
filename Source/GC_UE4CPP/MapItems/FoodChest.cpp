@@ -4,6 +4,7 @@
 #include "FoodChest.h"
 #include "PickableItem.h"
 #include "GC_UE4CPP/Characters/PlayerCharacter.h"
+#include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
 
 // Sets default values
@@ -39,12 +40,12 @@ void AFoodChest::OnInteract(AActor* Caller)
 	
 	Player = Cast<APlayerCharacter>(Caller);
 
-	if (Player && Player->GetPickedUpActor())
+	if (Player && Player->PickUpAbilityComponent->GetPickedUpActor())
 	{
-		APickableItem* Item = Player->GetPickedUpActor();
-		Player->PutDownPickedUpActor();
+		APickableItem* Item = Player->PickUpAbilityComponent->GetPickedUpActor();
+		Player->PickUpAbilityComponent->PutDownPickedUpActor();
 
-		DelegateHandle = Player->OnPutDown.AddUObject(this, &AFoodChest::DestroyFood);
+		DelegateHandle = Player->PickUpAbilityComponent->OnPutDown.AddUObject(this, &AFoodChest::DestroyFood);
 		
 		GameMode->AddStashedFood();
 		UE_LOG(LogTemp, Warning, TEXT("Interacted with chest"));
@@ -54,5 +55,5 @@ void AFoodChest::OnInteract(AActor* Caller)
 void AFoodChest::DestroyFood(APickableItem* PrmItem)
 {
 	PrmItem->Destroy();
-	Player->OnPutDown.Remove(DelegateHandle);
+	Player->PickUpAbilityComponent->OnPutDown.Remove(DelegateHandle);
 }

@@ -2,13 +2,13 @@
 
 
 #include "HasPutDownAnimNotify.h"
-#include "GC_UE4CPP/Interfaces/Lifter.h"
+#include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 
 void UHasPutDownAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) {
 	if (MeshComp && MeshComp->GetOwner()) {
-		ILifter* Picker = Cast<ILifter>(MeshComp->GetOwner());
-		if (Picker) {
-			Picker->OnHasPutDown();
+		UPickUpAbilityComponent* LifterPickUpAbility = MeshComp->GetOwner()->FindComponentByClass<UPickUpAbilityComponent>();
+		if (LifterPickUpAbility) {
+			LifterPickUpAbility->OnHasPutDown();
 		}
 	}
 }

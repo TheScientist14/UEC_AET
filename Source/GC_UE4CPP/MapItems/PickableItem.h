@@ -7,6 +7,8 @@
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "PickableItem.generated.h"
 
+class UPickUpAbilityComponent;
+
 UCLASS()
 class GC_UE4CPP_API APickableItem: public AActor, public IInteractable
 {
@@ -38,6 +40,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	USceneComponent* LeftHandAnchor;
+
+	UPROPERTY(EditAnywhere)
+	UPickUpAbilityComponent* LifterPickUpAbility;
 
 	UPROPERTY(VisibleAnywhere)
 	bool IsCurrentlyPickable = true;

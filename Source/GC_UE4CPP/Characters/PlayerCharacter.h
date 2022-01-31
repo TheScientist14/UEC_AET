@@ -4,15 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "GC_UE4CPP/Interfaces/Lifter.h"
-#include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
+class UPickUpAbilityComponent;
 
 UCLASS()
-class GC_UE4CPP_API APlayerCharacter : public ACharacter, public ILifter
+class GC_UE4CPP_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -22,8 +21,8 @@ public:
 
 	APlayerController* PlayerController;
 
-	UPROPERTY(VisibleAnywhere)
-	class USphereComponent* InteractSphere;
+	UPROPERTY(EditAnywhere, Category = "PlayerCharacter|Interaction")
+	float InteractRange = 100;
 
 	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float MinArmLength = 100;
@@ -37,10 +36,8 @@ public:
 	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float ZoomThresholdLimit = 1;
 
-	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Interaction")
-	float InteractRange = 100;
-
-	TArray<class IInteractable*> InteractableInRange;
+	UPROPERTY(EditAnywhere)
+	UPickUpAbilityComponent* PickUpAbilityComponent;
 
 	float ZoomThreshold = 0;
 
@@ -49,40 +46,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
-
-	class APickableItem* PickedUpActor = nullptr;
-
-	class APickableItem* TempPickedActor = nullptr;
-
-	bool bIsPickingUpOrPuttingDown = false;
-
-	UFUNCTION()
-	virtual bool IsPickingUpOrPuttingDown() override;
-
-	UFUNCTION()
-	APickableItem* GetPickedUpActor();
-
-	// returns success
-	UFUNCTION()
-	virtual bool PickUpActor(APickableItem* ActorToPickUp) override;
-
-	UFUNCTION()
-	virtual void BindPickedUpActor() override;
-
-	UFUNCTION()
-	virtual void OnHasPickedUp() override;
-
-	UFUNCTION()
-	virtual void PutDownPickedUpActor() override;
-
-	UFUNCTION()
-	virtual void UnbindPickedUpActor() override;
-
-	UFUNCTION()
-	virtual void OnHasPutDown() override;
-
-	DECLARE_MULTICAST_DELEGATE_OneParam(FActorPutDownSignature, APickableItem*);
-	FActorPutDownSignature OnPutDown;
 
 	UFUNCTION()
 	void Interact();
@@ -95,12 +58,6 @@ public:
 
 	UFUNCTION()
 	void MoveRight(float DeltaY);
-
-	UFUNCTION()
-	void RegisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	void UnregisterInteractable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 protected:
 	// Called when the game starts or when spawned

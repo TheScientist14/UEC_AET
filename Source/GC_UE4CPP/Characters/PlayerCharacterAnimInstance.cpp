@@ -3,7 +3,7 @@
 
 #include "PlayerCharacterAnimInstance.h"
 #include "PlayerCharacter.h"
-#include "GC_UE4CPP/Interfaces/Lifter.h"
+#include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 
 UPlayerCharacterAnimInstance::UPlayerCharacterAnimInstance(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -16,21 +16,22 @@ UPlayerCharacterAnimInstance::UPlayerCharacterAnimInstance(const FObjectInitiali
 void UPlayerCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	Player = Cast<APlayerCharacter>(GetOwningActor());
-	PlayerPicker = Cast<ILifter>(Player);
+	Player = Cast<ACharacter>(GetOwningActor());
+	PickUpAbilityComponent = GetOwningActor()->FindComponentByClass<UPickUpAbilityComponent>();
 }
 
 void UPlayerCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	if (Player) {
+	if (PickUpAbilityComponent) {
 		Speed = Player->GetVelocity().Size();
-		PickedItem = PlayerPicker->GetPickedUpActor();
-		IsPickingUpPuttingDown = PlayerPicker->IsPickingUpOrPuttingDown();
+		PickedItem = PickUpAbilityComponent->GetPickedUpActor();
+		IsPickingUpPuttingDown = PickUpAbilityComponent->IsPickingUpOrPuttingDown();
 	}
 }
 
 void UPlayerCharacterAnimInstance::NativeUninitializeAnimation() {
 	Super::NativeUninitializeAnimation();
 	Player = nullptr;
+	PickUpAbilityComponent = nullptr;
 }

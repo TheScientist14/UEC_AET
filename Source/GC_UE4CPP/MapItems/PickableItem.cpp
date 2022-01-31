@@ -2,7 +2,7 @@
 
 #include "PickableItem.h"
 #include "Kismet/GameplayStatics.h"
-#include "GC_UE4CPP/Interfaces/Lifter.h"
+#include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 
 // Sets default values
 APickableItem::APickableItem()
@@ -23,11 +23,15 @@ APickableItem::APickableItem()
 void APickableItem::OnInteract(AActor* Caller)
 {
 	if (IsCurrentlyPickable) {
-		ILifter* Picker = Cast<ILifter>(Caller);
-		if (Picker) {
+		UPickUpAbilityComponent* PickUpAbilityComponent = Caller->FindComponentByClass<UPickUpAbilityComponent>();
+		if (PickUpAbilityComponent) {
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Picked up");
-			IsCurrentlyPickable = !Picker->PickUpActor(this);;
+			LifterPickUpAbility = PickUpAbilityComponent;
+			IsCurrentlyPickable = !LifterPickUpAbility->PickUpActor(this);;
 		}
+	}
+	else if(Caller == (AActor*)(LifterPickUpAbility->GetOwner())) {
+		LifterPickUpAbility->PutDownPickedUpActor();
 	}
 }
 

@@ -6,6 +6,10 @@
 #include "Animation/AnimInstance.h"
 #include "PlayerCharacterAnimInstance.generated.h"
 
+class UPickUpAbilityComponent;
+class APickableItem;
+class ACharacter;
+
 UCLASS(transient, Blueprintable, hideCategories=AnimInstance, BlueprintType)
 class /*GC_UE4CPP_API*/ UPlayerCharacterAnimInstance : public UAnimInstance
 {
@@ -15,15 +19,16 @@ public:
 	UPlayerCharacterAnimInstance(const FObjectInitializer& ObjectInitializer);
 
 	UPROPERTY()
-	class APlayerCharacter* Player;
+	ACharacter* Player;
 
-	class ILifter* PlayerPicker;
+	UPROPERTY()
+	UPickUpAbilityComponent* PickUpAbilityComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsPickingUpPuttingDown;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class APickableItem* PickedItem;
+	APickableItem* PickedItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed;
