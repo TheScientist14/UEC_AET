@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "NavigationSystem.h"
 #include "GC_UE4CPP/MapItems/Food.h"
 #include "GameFramework/Character.h"
 #include "GoblinCharacter.generated.h"

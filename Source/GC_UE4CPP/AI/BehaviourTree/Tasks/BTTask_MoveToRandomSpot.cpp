@@ -31,6 +31,7 @@ EBTNodeResult::Type UBTTask_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent
 		{
 			cont->GetNextSpot();
 			cont->SpawnFood(cont->Food);
+			cont->Spot->SetSpotOccupied();
 			EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot->GetActorLocation());
 		} else
 		{
