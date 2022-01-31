@@ -49,3 +49,9 @@ void AMainGameMode::RemoveFood()
 	GameState->FoodOnLevel--;
 }
 
+void AMainGameMode::AddStashedFood()
+{
+	GameState->StashedFood++;
+	OnStashedFoodUpdate.Broadcast(GameState->StashedFood, GameState->MaxStashedFood);
+}
+

@@ -22,6 +22,9 @@ public:
 	int GetMaxFoodOnLevel();
 	void AddFood();
 	void RemoveFood();
+	void AddStashedFood();
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FStashedFoodUpdateSignature, int, int)
+	FStashedFoodUpdateSignature OnStashedFoodUpdate;
 
 private:
 	AMainGameState* GameState;
