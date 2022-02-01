@@ -28,6 +28,9 @@ public:
 
 	int StashedFood = 0;
 	int MaxStashedFood = 5;
+
+	bool IsGameEnded = false;
+	bool IsWon = false;
 	
 	void AddSpotToArray(ASpot* PrmSpot);
 
