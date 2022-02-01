@@ -95,17 +95,20 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 				}
 			}
 
-			GetWorld()->SpawnActor<AActor>(Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
+			AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
 			                               FRotator(0, angle, 0));
+
+			SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 		}
 	}
 }
 
 void AProceduralRoom::SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation)
 {
-	GetWorld()->SpawnActor<AActor>(
+	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(
 		WallClass, FVector(I * TileableFloorSize + IOffset, J * TileableFloorSize + JOffset, height),
 		FRotator(0, Rotation, 0));
+	SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int SpawnChance, float Height, int Rotation)
@@ -125,8 +128,12 @@ void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int Spawn
 
 			if (ChanceOfSpawn <= SpawnChance)
 			{
-				GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(i * ActorSize, j * ActorSize, Height),
+				AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(i * ActorSize, j * ActorSize, Height),
 				                               FRotator(0, Rotation, 0), SpawnInfo);
+				if(SpawnedActor)
+				{
+					SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform );
+				}
 			}
 		}
 	}
