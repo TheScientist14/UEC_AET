@@ -43,7 +43,7 @@ public:
 private:
 	
 	UPROPERTY()
-	AMainGameState* GameState;
+	AMainGameState* MainGameState;
 	
 	UPROPERTY()
 	APlayerController* Player;
