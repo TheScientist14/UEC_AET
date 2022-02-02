@@ -10,18 +10,18 @@
 void AMainGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	GameState = Cast<AMainGameState>(GetWorld()->GetGameState());
+	MainGameState = Cast<AMainGameState>(GetWorld()->GetGameState());
 	Player = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 ASpot* AMainGameMode::GetRandomSpot()
 {
-	if (GameState->FoodOnLevel < GetMaxFoodOnLevel())
+	if (MainGameState->FoodOnLevel < GetMaxFoodOnLevel())
 	{
-		ASpot* SpotReturn = GameState->Spots[FMath::RandRange(0, GameState->Spots.Num() - 1)];
+		ASpot* SpotReturn = MainGameState->Spots[FMath::RandRange(0, MainGameState->Spots.Num() - 1)];
 		while (SpotReturn->HasFood())
 		{
-			SpotReturn = GameState->Spots[FMath::RandRange(0, GameState->Spots.Num() - 1)];
+			SpotReturn = MainGameState->Spots[FMath::RandRange(0, MainGameState->Spots.Num() - 1)];
 		}
 		return SpotReturn;
 	}
@@ -30,30 +30,30 @@ ASpot* AMainGameMode::GetRandomSpot()
 
 int AMainGameMode::GetFoodOnLevel()
 {
-	return GameState->FoodOnLevel;
+	return MainGameState->FoodOnLevel;
 }
 
 int AMainGameMode::GetMaxFoodOnLevel()
 {
-	return GameState->Spots.Num() / 2;
+	return MainGameState->Spots.Num() / 2;
 }
 
 void AMainGameMode::AddFood()
 {
-	GameState->FoodOnLevel++;
+	MainGameState->FoodOnLevel++;
 }
 
 void AMainGameMode::RemoveFood()
 {
-	GameState->FoodOnLevel--;
+	MainGameState->FoodOnLevel--;
 }
 
 void AMainGameMode::AddStashedFood()
 {
-	GameState->StashedFood++;
-	OnStashedFoodUpdate.Broadcast(GameState->StashedFood, GameState->MaxStashedFood);
+	MainGameState->StashedFood++;
+	OnStashedFoodUpdate.Broadcast(MainGameState->StashedFood, MainGameState->MaxStashedFood);
 
-	if (GameState->StashedFood == GameState->MaxStashedFood)
+	if (MainGameState->StashedFood == MainGameState->MaxStashedFood)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Testing for win condition"));
 		EndGameVictory();
@@ -62,14 +62,14 @@ void AMainGameMode::AddStashedFood()
 
 void AMainGameMode::EndGameDefeat()
 {
-	GameState->IsGameEnded = true;
+	MainGameState->IsGameEnded = true;
 	EndUI();
 }
 
 void AMainGameMode::EndGameVictory()
 {
-	GameState->IsWon = false;
-	GameState->IsGameEnded = true;
+	MainGameState->IsWon = false;
+	MainGameState->IsGameEnded = true;
 	EndUI();
 }
 
@@ -82,7 +82,7 @@ void AMainGameMode::EndUI()
 		if (Widget)
 		{
 			Widget->AddToViewport();
-			OnGameFinished.Broadcast(GameState->IsGameEnded, GameState->IsWon);
+			OnGameFinished.Broadcast(MainGameState->IsGameEnded, MainGameState->IsWon);
 			Widget->SetVisibility(ESlateVisibility::Visible);
 			Player->SetInputMode(FInputModeUIOnly());
 			Player->bShowMouseCursor = true;
