@@ -68,7 +68,7 @@ void AMainGameMode::EndGameDefeat()
 
 void AMainGameMode::EndGameVictory()
 {
-	MainGameState->IsWon = false;
+	MainGameState->IsWon = true;
 	MainGameState->IsGameEnded = true;
 	EndUI();
 }
