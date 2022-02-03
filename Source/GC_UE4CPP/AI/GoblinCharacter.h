@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "NavigationSystem.h"
-#include "GC_UE4CPP/MapItems/Food.h"
+#include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "GameFramework/Character.h"
+#include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 #include "GoblinCharacter.generated.h"
 
 UCLASS()
@@ -27,11 +28,12 @@ public:
 	bool Wait;
 	
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<AActor> Food;
+	TSubclassOf<APickableItem> Food;
 	
-	AActor* FoodOnHand;
-
-	void DestroyFood();
+	UPROPERTY(EditAnywhere)
+	UPickUpAbilityComponent* PickUpAbilityComponent;
+	
+	APickableItem* FoodOnHand;
 
 protected:
 	UPROPERTY(EditAnywhere)
@@ -51,5 +53,7 @@ public:
 
 	void GetNextSpot();
 
-	void SpawnFood(UClass* PrmFood);
+	void PickUpFood(UClass* PrmFood);
+
+	void PutDownFood();
 };

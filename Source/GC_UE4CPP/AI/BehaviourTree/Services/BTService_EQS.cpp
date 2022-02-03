@@ -10,6 +10,7 @@
 UBTService_EQS::UBTService_EQS(const FObjectInitializer& ObjectInitializer)
 {
 	NodeName = TEXT("Custom EQS Query");
+	bCreateNodeInstance = true;
 }
 
 void UBTService_EQS::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)

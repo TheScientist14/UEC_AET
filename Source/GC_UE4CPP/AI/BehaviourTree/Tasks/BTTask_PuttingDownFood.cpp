@@ -22,8 +22,7 @@ EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent&
 {
 	//Move to init 
 	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	cont->Spot->SpawnFood(cont->Food);
-	cont->DestroyFood();
+	cont->PutDownFood();
 	Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->AddFood();
 	if(Cast<AMainGameState>(GetWorld()->GetGameState())->FoodOnLevel == Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetMaxFoodOnLevel())
 	{
