@@ -24,11 +24,9 @@ public:
 	// returns where the left hand should carry the item
 	FTransform GetLeftHandAnchor();
 
-	// returns where the item would like to be put down
-	FTransform GetPutDownTransform();
-
 	// called by Picker when Item has been put down
-	void OnPutDown();
+	// returns where the item would like to be put down
+	FTransform OnPutDown();
 
 protected:
 
@@ -44,11 +42,19 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UPickUpAbilityComponent* LifterPickUpAbility;
 
+	UPROPERTY(EditAnywhere)
+	float AcceptableRadius;
+
 	UPROPERTY(VisibleAnywhere)
 	bool IsCurrentlyPickable = true;
 
 public:
 
+	virtual void Tick(float DeltaTime) override;
+
 	virtual void OnInteract(AActor* Caller) override;
 
+private:
+
+	void SetOnGroundPhysics(bool IsMovable);
 };

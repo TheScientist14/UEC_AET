@@ -51,3 +51,7 @@ void ASpot::SpawnFood(UClass* PrmFood)
 	FoodOnSpot->AttachToComponent(FoodSpot, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "");
 
 }
+
+FTransform ASpot::GetFoodSpotTransform() {
+	return FoodSpot->GetComponentTransform();
+}

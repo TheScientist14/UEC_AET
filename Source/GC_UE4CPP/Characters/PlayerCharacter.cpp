@@ -96,4 +96,7 @@ void APlayerCharacter::Interact()
 			i++;
 		}
 	}
+	if (!HasInteracted && PickUpAbilityComponent->GetPickedUpActor()) {
+		PickUpAbilityComponent->GetPickedUpActor()->OnInteract(this);
+	}
 }

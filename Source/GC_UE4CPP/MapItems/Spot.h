@@ -42,6 +42,8 @@ public:
 
 	bool HasFood();
 
+	FTransform GetFoodSpotTransform();
+
 	void SetSpotOccupied();
 	void SetSpotFree();
 

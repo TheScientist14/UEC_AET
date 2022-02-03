@@ -64,7 +64,7 @@ void UPickUpAbilityComponent::BindPickedUpActor()
 		PickedUpActor->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale,
 			"RightHandSocket");
 		/*PickedUpActor->SetActorRelativeLocation(this->GetMesh()->GetSocketLocation("Right_Hand"));*/
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Attached");
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Attached");
 	}
 	else
 	{
@@ -89,10 +89,9 @@ void UPickUpAbilityComponent::UnbindPickedUpActor()
 {
 	if (PickedUpActor)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettached");
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettached");
 		PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		PickedUpActor->SetActorTransform(PickedUpActor->GetPutDownTransform());
-		PickedUpActor->OnPutDown();
+		PickedUpActor->SetActorTransform(PickedUpActor->OnPutDown());
 		OnPutDown.Broadcast(PickedUpActor);
 		PickedUpActor = nullptr;
 	}

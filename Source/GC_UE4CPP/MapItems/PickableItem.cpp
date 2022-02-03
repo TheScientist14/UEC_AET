@@ -3,6 +3,8 @@
 #include "PickableItem.h"
 #include "Kismet/GameplayStatics.h"
 #include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
+#include "GC_UE4CPP/MapItems/FoodChest.h"
+#include "GC_UE4CPP/MapItems/Spot.h"
 
 // Sets default values
 APickableItem::APickableItem()
@@ -10,8 +12,18 @@ APickableItem::APickableItem()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
+	AcceptableRadius = 100;
+
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	RootComponent = StaticMesh;
+	StaticMesh->SetEnableGravity(true);
+	StaticMesh->SetSimulatePhysics(false);
+	StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	StaticMesh->SetLinearDamping(100);
+	StaticMesh->BodyInstance.bLockXRotation = true;
+	StaticMesh->BodyInstance.bLockZRotation = true;
+	StaticMesh->BodyInstance.bLockXTranslation = true;
+	StaticMesh->BodyInstance.bLockYTranslation = true;
 
 	RightHandAnchor = CreateDefaultSubobject<USceneComponent>(FName("Right hand anchor"));
 	LeftHandAnchor = CreateDefaultSubobject<USceneComponent>(FName("Left hand anchor"));
@@ -20,17 +32,30 @@ APickableItem::APickableItem()
 	LeftHandAnchor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
+void APickableItem::Tick(float DeltaTime) {
+	GEngine->AddOnScreenDebugMessage(-1, 0, FColor::Orange, "Tick food");
+	if (StaticMesh->GetPhysicsLinearVelocity().SizeSquared() < 0.01f) {
+		PrimaryActorTick.bCanEverTick = false;
+		StaticMesh->SetPhysicsLinearVelocity(FVector::ZeroVector);
+		StaticMesh->SetSimulatePhysics(false);
+		StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "Stable position");
+	}
+}
+
 void APickableItem::OnInteract(AActor* Caller)
 {
 	if (IsCurrentlyPickable) {
 		UPickUpAbilityComponent* PickUpAbilityComponent = Caller->FindComponentByClass<UPickUpAbilityComponent>();
 		if (PickUpAbilityComponent) {
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Picked up");
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Picked up");
 			LifterPickUpAbility = PickUpAbilityComponent;
-			IsCurrentlyPickable = !LifterPickUpAbility->PickUpActor(this);;
+			SetOnGroundPhysics(false);
+			IsCurrentlyPickable = !LifterPickUpAbility->PickUpActor(this);
 		}
 	}
 	else if(Caller == (AActor*)(LifterPickUpAbility->GetOwner())) {
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "Pickable item has been interacted and ask lifter to be put down");
 		LifterPickUpAbility->PutDownPickedUpActor();
 	}
 }
@@ -47,11 +72,43 @@ FTransform APickableItem::GetLeftHandAnchor() {
 	return FTransform::FTransform(Rotator, -LeftHandAnchor->GetRelativeLocation());
 }
 
-void APickableItem::OnPutDown() {
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Put down");
+FTransform APickableItem::OnPutDown() {
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Put down");
 	IsCurrentlyPickable = true;
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
+	ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
+	TArray<AActor*> IgnoreActors;
+	IgnoreActors.Init(this, 1);
+	TArray<AActor*> OverlappedActors;
+	UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), AcceptableRadius, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
+	bool HasFoundLocation = false;
+	int i = 0;
+	while (i < OverlappedActors.Num() && !HasFoundLocation) {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, OverlappedActors[i]->GetName());
+		AFoodChest* Chest = Cast<AFoodChest>(OverlappedActors[i]);
+		if (Chest) {
+			FTransform TmpT = Chest->GetActorTransform();
+			return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
+		}
+		else {
+			ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
+			if (Spot) {
+				Spot->SetSpotOccupied();
+				FTransform TmpT = Spot->GetFoodSpotTransform();
+				return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
+			}
+			else {
+				i++;
+			}
+		}
+	}
+	SetOnGroundPhysics(true);
+	return FTransform::FTransform(FRotator::FRotator(0, GetActorRotation().Euler().Z, 0), GetActorLocation(), GetActorScale());
 }
 
-FTransform APickableItem::GetPutDownTransform() {
-	return GetActorTransform();
+void APickableItem::SetOnGroundPhysics(bool IsOnGround) {
+	PrimaryActorTick.bCanEverTick = IsOnGround;
+	StaticMesh->SetSimulatePhysics(IsOnGround);
+	StaticMesh->SetCollisionEnabled(IsOnGround ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, IsOnGround?"true":"false");
 }
