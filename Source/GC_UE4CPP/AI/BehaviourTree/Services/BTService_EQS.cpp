@@ -49,6 +49,4 @@ void UBTService_EQS::HandleQueryResult(TSharedPtr<FEnvQueryResult> result)
 {
 	Score = result->GetItemScore(0);
 	MoveLocation = result->GetItemAsLocation(0);
-
-	EnemyAI->GetBlackboardComponent()->SetValueAsFloat("EQS_Score", Score);
 }
