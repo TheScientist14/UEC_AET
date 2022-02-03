@@ -5,7 +5,9 @@
 #include "EnemyController.h"
 #include "GC_UE4CPP/Game/MainGameState.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
+#include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -13,6 +15,8 @@ AGoblinCharacter::AGoblinCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
+	PickUpAbilityComponent = CreateDefaultSubobject<UPickUpAbilityComponent>(TEXT("PickUpBehaviour"));
 }
 
 // Called when the game starts or when spawned
@@ -44,20 +48,21 @@ void AGoblinCharacter::GetNextSpot()
 	Spot = Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetRandomSpot();
 }
 
-void AGoblinCharacter::SpawnFood(UClass* PrmFood)
+void AGoblinCharacter::PickUpFood(UClass* PrmFood)
 {
 	if (FoodOnHand == nullptr)
 	{
-		FoodOnHand = GetWorld()->SpawnActor<AActor>(PrmFood, FVector(0), FRotator(0));
-		FoodOnHand->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Fist_R_endSocket");
+		FoodOnHand = GetWorld()->SpawnActor<APickableItem>(PrmFood, FVector(0), FRotator(0));
+		FoodOnHand->OnInteract(this);
+		/*FoodOnHand->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+			"RightHandSocket");*/
 	}
 }
 
-void AGoblinCharacter::DestroyFood()
+void AGoblinCharacter::PutDownFood()
 {
 	if(FoodOnHand)
 	{
-		FoodOnHand->Destroy();
-		FoodOnHand = nullptr;
+		FoodOnHand->OnInteract(this);
 	} 
 }

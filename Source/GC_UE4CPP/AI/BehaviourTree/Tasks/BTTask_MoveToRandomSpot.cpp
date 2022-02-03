@@ -30,7 +30,7 @@ EBTNodeResult::Type UBTTask_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent
 		if (Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetFoodOnLevel() < Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetMaxFoodOnLevel())
 		{
 			cont->GetNextSpot();
-			cont->SpawnFood(cont->Food);
+			cont->PickUpFood(cont->Food);
 			cont->Spot->SetSpotOccupied();
 			EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot->GetActorLocation());
 		} else
