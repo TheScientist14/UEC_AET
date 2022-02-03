@@ -34,13 +34,16 @@ public:
 	float Speed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool HasGameEnded;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool HasWon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FTransform LeftHandTarget;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool HasWon = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool HasLost = false;
+	UFUNCTION()
+	void PlayAfterGameAnimation(bool HasGameFinished, bool HasPlayerWon);
 
 public:
 	virtual void NativeInitializeAnimation() override;

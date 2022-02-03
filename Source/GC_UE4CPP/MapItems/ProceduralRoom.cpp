@@ -3,7 +3,7 @@
 #include "ProceduralRoom.h"
 
 #include "AITypes.h"
-#include "Spawner.h"
+#include "Spot.h"
 #include "GC_UE4CPP/Game/MainGameState.h"
 
 // Sets default values

@@ -70,9 +70,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Barrels")
 	int NumberOfBarrels = 10;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room")
-	class ASpawner* Spawner; 
  
 	void SpawnFloor(UClass* Floor);
 

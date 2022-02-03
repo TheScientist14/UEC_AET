@@ -22,10 +22,7 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	FVector Spawn;
-	
-	UPROPERTY(EditAnywhere)
-	class ASpawner* Spawner;
-	
+		
 	UPROPERTY(EditAnywhere)
 	bool Wait;
 	
