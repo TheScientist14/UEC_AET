@@ -78,6 +78,7 @@ void APlayerCharacter::MoveRight(float DeltaY)
 
 void APlayerCharacter::Interact()
 {
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying to interacted");
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
 	ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
 	TArray<AActor*> IgnoreActors;
@@ -87,6 +88,7 @@ void APlayerCharacter::Interact()
 	bool HasInteracted = false;
 	int i = 0;
 	while(i < OverlappedActors.Num() && !HasInteracted) {
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying with " + OverlappedActors[i]->GetName());
 		IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
 		if (Interactable) {
 			Interactable->OnInteract(this);

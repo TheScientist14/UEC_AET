@@ -41,11 +41,13 @@ int AMainGameMode::GetMaxFoodOnLevel()
 void AMainGameMode::AddFood()
 {
 	MainGameState->FoodOnLevel++;
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("%d"), GetFoodOnLevel()));
 }
 
 void AMainGameMode::RemoveFood()
 {
 	MainGameState->FoodOnLevel--;
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("%d"), GetFoodOnLevel()));
 }
 
 void AMainGameMode::AddStashedFood()

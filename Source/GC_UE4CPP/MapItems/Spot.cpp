@@ -2,6 +2,8 @@
 
 
 #include "Spot.h"
+#include "Kismet/GameplayStatics.h"
+#include "GC_UE4CPP/Game/MainGameMode.h"
 
 // Sets default values
 ASpot::ASpot()
@@ -19,14 +21,13 @@ ASpot::ASpot()
 void ASpot::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
 }
 
 // Called every frame
 void ASpot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 bool ASpot::HasFood()
@@ -36,12 +37,18 @@ bool ASpot::HasFood()
 
 void ASpot::SetSpotOccupied()
 {
-	Occupied = true;
+	if (!Occupied) {
+		Occupied = true;
+		GameMode->AddFood();
+	}
 }
 
 void ASpot::SetSpotFree()
 {
-	Occupied = false;
+	if (Occupied) {
+		Occupied = false;
+		GameMode->RemoveFood();
+	}
 }
 
 FTransform ASpot::GetFoodSpotTransform() {

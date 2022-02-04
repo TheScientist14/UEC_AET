@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Spot.generated.h"
 
+class AMainGameMode;
+
 UCLASS()
 class GC_UE4CPP_API ASpot : public AActor
 {
@@ -14,8 +16,6 @@ class GC_UE4CPP_API ASpot : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASpot();
-
-	void SpawnFood(UClass* PrmFood);
 
 protected:
 
@@ -30,6 +30,8 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	AActor* FoodOnSpot;
+
+	AMainGameMode* GameMode;
 
 	UPROPERTY(VisibleAnywhere)
 	bool Occupied=false;

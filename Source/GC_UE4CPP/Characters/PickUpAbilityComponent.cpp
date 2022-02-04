@@ -51,6 +51,7 @@ bool UPickUpAbilityComponent::PickUpActor(APickableItem* ActorToPickUp)
 	}
 	else
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Trying to pick up when you already lift something");
 		return false;
 	}
 }
@@ -76,6 +77,7 @@ void UPickUpAbilityComponent::OnHasPickedUp()
 {
 	CharacterMovement->SetMovementMode(EMovementMode::MOVE_Walking);
 	bIsPickingUpOrPuttingDown = false;
+	CharacterMovement->MaxWalkSpeed /= 2;
 }
 
 void UPickUpAbilityComponent::PutDownPickedUpActor()
@@ -101,5 +103,6 @@ void UPickUpAbilityComponent::OnHasPutDown()
 {
 	CharacterMovement->SetMovementMode(EMovementMode::MOVE_Walking);
 	bIsPickingUpOrPuttingDown = false;
+	CharacterMovement->MaxWalkSpeed *= 2;
 }
 
