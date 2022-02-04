@@ -14,7 +14,6 @@ UPickUpAbilityComponent::UPickUpAbilityComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-
 // Called when the game starts
 void UPickUpAbilityComponent::BeginPlay()
 {

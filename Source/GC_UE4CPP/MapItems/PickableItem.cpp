@@ -29,8 +29,8 @@ APickableItem::APickableItem()
 	RightHandAnchor = CreateDefaultSubobject<USceneComponent>(FName("Right hand anchor"));
 	LeftHandAnchor = CreateDefaultSubobject<USceneComponent>(FName("Left hand anchor"));
 
-	RightHandAnchor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	LeftHandAnchor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	RightHandAnchor->SetupAttachment(RootComponent);
+	LeftHandAnchor->SetupAttachment(RootComponent);
 }
 
 void APickableItem::OnInteract(AActor* Caller)

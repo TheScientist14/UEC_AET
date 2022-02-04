@@ -9,6 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UPickUpAbilityComponent;
+class USitDownAbilityComponent;
 
 UCLASS()
 class GC_UE4CPP_API APlayerCharacter : public ACharacter
@@ -36,15 +37,18 @@ public:
 	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float ZoomThresholdLimit = 1;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	UPickUpAbilityComponent* PickUpAbilityComponent;
+
+	UPROPERTY()
+	USitDownAbilityComponent* SitDownAbilityComponent;
 
 	float ZoomThreshold = 0;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	UCameraComponent* Camera;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
 	USpringArmComponent* SpringArmComp;
 
 	UFUNCTION()
@@ -58,13 +62,5 @@ public:
 
 	UFUNCTION()
 	void MoveRight(float DeltaY);
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 };
