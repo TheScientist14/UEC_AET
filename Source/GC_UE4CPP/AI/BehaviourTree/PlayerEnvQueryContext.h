@@ -14,6 +14,8 @@ class GC_UE4CPP_API UPlayerEnvQueryContext : public UEnvQueryContext
 {
 	GENERATED_BODY()
 
+	
+
 	virtual void ProvideContext(FEnvQueryInstance& QueryInstance, FEnvQueryContextData& ContextData) const override;
 	
 };

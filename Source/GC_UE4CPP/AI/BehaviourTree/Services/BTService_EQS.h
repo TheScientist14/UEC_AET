@@ -4,7 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Services/BTService_BlackboardBase.h"
+#include "EnvironmentQuery/EnvQueryManager.h"
 #include "BTService_EQS.generated.h"
+
+struct CustomFBTEQSServiceMemory
+{
+	/** Query request ID */
+	int32 RequestID;
+};
 
 /**
  * 
@@ -27,15 +34,23 @@ public:
 	
 	void HandleQueryResult(TSharedPtr<struct FEnvQueryResult> result);
 
-	void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+	virtual void OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	virtual uint16 GetInstanceMemorySize() const override { return sizeof(CustomFBTEQSServiceMemory); }
+	virtual void CleanupMemory(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, EBTMemoryClear::Type CleanupType) const override;
+	virtual void InitializeMemory(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, EBTMemoryInit::Type InitType) const override;
+	virtual void OnCeaseRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
-	void RunQuery();
+	void RunQuery(uint8* NodeMemory);
 
 private:
 	float Score;
 	FVector MoveLocation;
 	UPROPERTY()
 	class AEnemyController* EnemyAI;
+
 	
-	
+	FEnvQueryRequest QueryRequest;
 };
+
+

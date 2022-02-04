@@ -40,6 +40,9 @@ public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FGameFinishedSignature, bool, bool);
 	FGameFinishedSignature OnGameFinished;
 
+	DECLARE_MULTICAST_DELEGATE(FGameModeBeginPlayFinished);
+	FGameModeBeginPlayFinished GameModeBeginPlayFinished;
+	
 private:
 	
 	UPROPERTY()

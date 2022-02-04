@@ -12,6 +12,7 @@ void AMainGameMode::BeginPlay()
 	Super::BeginPlay();
 	MainGameState = Cast<AMainGameState>(GetWorld()->GetGameState());
 	Player = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	GameModeBeginPlayFinished.Broadcast();
 }
 
 ASpot* AMainGameMode::GetRandomSpot()

@@ -74,7 +74,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Barrels")
 	int NumberOfBarrels = 10;
- 
+
+	void Spawn();
+	
 	void SpawnFloor(UClass* Floor);
 
 	void SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation);

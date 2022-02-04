@@ -4,6 +4,7 @@
 
 #include "AITypes.h"
 #include "Spot.h"
+#include "GC_UE4CPP/Game/MainGameMode.h"
 #include "GC_UE4CPP/Game/MainGameState.h"
 
 // Sets default values
@@ -25,17 +26,22 @@ void AProceduralRoom::BeginPlay()
 	Super::BeginPlay();
 	FloorHalfSize = (FloorSize % 2 == 0) ? FloorSize / 2 : FloorSize / 2 + 1;
 	HalfTile = TileableFloorSize / 2;
-	SpawnFloor(FloorClass);
-	SpawnBarrels(Barrel, Food);
-	SpawnCrates(CrateClump2, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 90);
-	SpawnCrates(CrateClump, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 0);
-	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight, 0);
+	Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GameModeBeginPlayFinished.AddUObject(this, &AProceduralRoom::Spawn);
 }
 
 // Called every frame
 void AProceduralRoom::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AProceduralRoom::Spawn()
+{
+	SpawnFloor(FloorClass);
+	SpawnBarrels(Barrel, Food);
+	SpawnCrates(CrateClump2, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 90);
+	SpawnCrates(CrateClump, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 0);
+	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight, 0);
 }
 
 void AProceduralRoom::SpawnFloor(UClass* Floor)
@@ -148,8 +154,8 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel, UClass* PrmFood)
 		FRotator(0, Rotation, 0), SpawnInfo);
 	ABarrel->SetSpotOccupied();
 
-	APickableItem* AFood = GetWorld()->SpawnActor<APickableItem>(
-		PrmFood, ABarrel->GetFoodSpotTransform().GetLocation(),ABarrel->GetFoodSpotTransform().Rotator());
+	GetWorld()->SpawnActor<APickableItem>(
+		PrmFood, ABarrel->GetFoodSpotTransform().GetLocation(), ABarrel->GetFoodSpotTransform().Rotator());
 
 	Cast<AMainGameState>(GetWorld()->GetGameState())->AddSpotToArray(ABarrel);
 
