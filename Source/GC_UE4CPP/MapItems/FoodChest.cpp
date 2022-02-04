@@ -47,7 +47,6 @@ void AFoodChest::OnInteract(AActor* Caller)
 
 		DelegateHandle = Player->PickUpAbilityComponent->OnPutDown.AddUObject(this, &AFoodChest::DestroyFood);
 		
-		GameMode->AddStashedFood();
 		UE_LOG(LogTemp, Warning, TEXT("Interacted with chest"));
 	}
 }
@@ -55,5 +54,6 @@ void AFoodChest::OnInteract(AActor* Caller)
 void AFoodChest::DestroyFood(APickableItem* PrmItem)
 {
 	PrmItem->Destroy();
+	GameMode->AddStashedFood();
 	Player->PickUpAbilityComponent->OnPutDown.Remove(DelegateHandle);
 }

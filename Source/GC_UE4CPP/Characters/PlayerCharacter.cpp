@@ -2,14 +2,17 @@
 
 
 #include "PlayerCharacter.h"
+
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
+#include "PickUpAbilityComponent.h"
+#include "SitDownAbilityComponent.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
-#include "PickUpAbilityComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -34,19 +37,8 @@ APlayerCharacter::APlayerCharacter()
 	Camera->bUsePawnControlRotation = false;
 
 	PickUpAbilityComponent = CreateDefaultSubobject<UPickUpAbilityComponent>(TEXT("PickUpBehaviour"));
+	SitDownAbilityComponent = CreateDefaultSubobject<USitDownAbilityComponent>(TEXT("SitDownBehaviour"));
 	
-}
-
-// Called when the game starts or when spawned
-void APlayerCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-// Called every frame
-void APlayerCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 //
@@ -76,29 +68,37 @@ void APlayerCharacter::MoveRight(float DeltaY)
 	AddMovementInput(Camera->GetRightVector(), DeltaY);
 }
 
+// stands up if sit down
+// otherwise, try to interact with the first interactable found
+// interact with picked up item if nothing to interact with
 void APlayerCharacter::Interact()
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying to interacted");
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
-	ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
-	TArray<AActor*> IgnoreActors;
-	IgnoreActors.Init(this, 1);
-	TArray<AActor*> OverlappedActors;
-	UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), InteractRange, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
-	bool HasInteracted = false;
-	int i = 0;
-	while(i < OverlappedActors.Num() && !HasInteracted) {
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying with " + OverlappedActors[i]->GetName());
-		IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
-		if (Interactable) {
-			Interactable->OnInteract(this);
-			HasInteracted = true;
-		}
-		else {
-			i++;
-		}
+	if (SitDownAbilityComponent->IsSitDown) {
+		SitDownAbilityComponent->StandUp();
 	}
-	if (!HasInteracted && PickUpAbilityComponent->GetPickedUpActor()) {
-		PickUpAbilityComponent->GetPickedUpActor()->OnInteract(this);
+	else {
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying to interacted");
+		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
+		ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
+		TArray<AActor*> IgnoreActors;
+		IgnoreActors.Init(this, 1);
+		TArray<AActor*> OverlappedActors;
+		UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), InteractRange, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
+		bool HasInteracted = false;
+		int i = 0;
+		while(i < OverlappedActors.Num() && !HasInteracted) {
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying with " + OverlappedActors[i]->GetName());
+			IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
+			if (Interactable) {
+				Interactable->OnInteract(this);
+				HasInteracted = true;
+			}
+			else {
+				i++;
+			}
+		}
+		if (!HasInteracted && PickUpAbilityComponent->GetPickedUpActor()) {
+			PickUpAbilityComponent->GetPickedUpActor()->OnInteract(this);
+		}
 	}
 }

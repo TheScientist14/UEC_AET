@@ -4,25 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "PlayerCharacterAnimInstance.generated.h"
+#include "CharacterAnimInstance.generated.h"
 
 class UPickUpAbilityComponent;
+class USitDownAbilityComponent;
 class APickableItem;
 class ACharacter;
 
 UCLASS(transient, Blueprintable, hideCategories=AnimInstance, BlueprintType)
-class /*GC_UE4CPP_API*/ UPlayerCharacterAnimInstance : public UAnimInstance
+class GC_UE4CPP_API UCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
 public:
-	UPlayerCharacterAnimInstance(const FObjectInitializer& ObjectInitializer);
+	UCharacterAnimInstance(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY()
-	ACharacter* Player;
-
-	UPROPERTY()
+	ACharacter* Character;
 	UPickUpAbilityComponent* PickUpAbilityComponent;
+	USitDownAbilityComponent* SitDownAbilityComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsSitDown;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsPickingUpPuttingDown;
