@@ -19,7 +19,6 @@ UBTService_EQS::UBTService_EQS(const FObjectInitializer& ObjectInitializer)
 void UBTService_EQS::OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::OnBecomeRelevant(OwnerComp, NodeMemory);
-	UE_LOG(LogTemp, Warning, TEXT("Testing for Cast<AEnemyController>"))
 	EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	QueryRequest = FEnvQueryRequest(FindHidingSpotEQS, EnemyAI);
 }
@@ -31,21 +30,21 @@ void UBTService_EQS::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemo
 	if (EnemyAI)
 	{
 		RunQuery(NodeMemory);
-		UE_LOG(LogTemp, Warning, TEXT("Testing for if (EnemyAI)"))
+		
 		if(Score == 1)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Testing for player vision true"))
+			
 			EnemyAI->GetBlackboardComponent()->SetValueAsBool("SeesPlayer", true);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Testing for player vision false"))
+			
 			EnemyAI->GetBlackboardComponent()->SetValueAsBool("SeesPlayer", false);
 		}
 
 		if (EnemyAI->GetBlackboardComponent()->GetValueAsBool("SeesPlayer"))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Testing for Position update"))
+			
 			
 			EnemyAI->GetBlackboardComponent()->SetValueAsVector("PLayerPosition", MoveLocation);
 		}		

@@ -13,9 +13,19 @@ AProceduralRoom::AProceduralRoom()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	SetRootComponent(StaticMesh);
+	InstancedStaticMeshComponentFloor = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Instanced Floor Static Mesh"));
+	SetRootComponent(InstancedStaticMeshComponentFloor);
+	
+	InstancedStaticMeshComponentFloor->SetMobility(EComponentMobility::Static);
+	InstancedStaticMeshComponentFloor->SetCollisionProfileName("BlockAll");
 
+	
+	InstancedStaticMeshComponentWall = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Instanced Wall Static Mesh"));
+	
+	InstancedStaticMeshComponentWall->SetMobility(EComponentMobility::Static);
+	InstancedStaticMeshComponentWall->SetCollisionProfileName("BlockAll");
+
+	//InstancedStaticMeshComponentWall->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::DontSpawnIfColliding;
 }
@@ -25,7 +35,7 @@ void AProceduralRoom::BeginPlay()
 {
 	Super::BeginPlay();
 	FloorHalfSize = (FloorSize % 2 == 0) ? FloorSize / 2 : FloorSize / 2 + 1;
-	HalfTile = TileableFloorSize / 2;
+	HalfTile = TileableFloorAndWallSize / 2;
 	Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GameModeBeginPlayFinished.AddUObject(this, &AProceduralRoom::Spawn);
 }
 
@@ -37,14 +47,14 @@ void AProceduralRoom::Tick(float DeltaTime)
 
 void AProceduralRoom::Spawn()
 {
-	SpawnFloor(FloorClass);
+	SpawnFloor();
 	SpawnBarrels(Barrel, Food);
 	SpawnCrates(CrateClump2, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 90);
 	SpawnCrates(CrateClump, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 0);
 	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight, 0);
 }
 
-void AProceduralRoom::SpawnFloor(UClass* Floor)
+void AProceduralRoom::SpawnFloor()
 {
 	for (int i = -FloorHalfSize; i <= FloorHalfSize; i++)
 	{
@@ -96,27 +106,19 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 					}
 				}
 			}
-
-			AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(
-				Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
-				FRotator(0, angle, 0));
-
-			SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+			InstancedStaticMeshComponentFloor->AddInstance(FTransform(FRotator(0,angle,0),FVector(i * TileableFloorAndWallSize, j * TileableFloorAndWallSize, 0)));
 		}
 	}
 }
 
 void AProceduralRoom::SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation)
 {
-	AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(
-		WallClass, FVector(I * TileableFloorSize + IOffset, J * TileableFloorSize + JOffset, height),
-		FRotator(0, Rotation, 0));
-	SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	InstancedStaticMeshComponentWall->AddInstance(FTransform(FRotator(0,Rotation,0),FVector(I * TileableFloorAndWallSize + IOffset, J * TileableFloorAndWallSize + JOffset, height)));
 }
 
 void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int SpawnChance, float Height, int Rotation)
 {
-	float Ratio = TileableFloorSize / ActorSize;
+	float Ratio = TileableFloorAndWallSize / ActorSize;
 
 	int Size = FloorSize * Ratio;
 
@@ -150,7 +152,7 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel, UClass* PrmFood)
 	int Rotation = FMath::RandRange(0, 360);
 
 	ASpot* ABarrel = GetWorld()->SpawnActor<ASpot>(
-		PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
+		PrmBarrel, FVector(XSpawn * TileableFloorAndWallSize, YSpawn * TileableFloorAndWallSize, SpawnHeight),
 		FRotator(0, Rotation, 0), SpawnInfo);
 	ABarrel->SetSpotOccupied();
 
@@ -167,7 +169,7 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel, UClass* PrmFood)
 
 
 		ABarrel = GetWorld()->SpawnActor<ASpot>(
-			PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
+			PrmBarrel, FVector(XSpawn * TileableFloorAndWallSize, YSpawn * TileableFloorAndWallSize, SpawnHeight),
 			FRotator(0, Rotation, 0), SpawnInfo);
 
 		if (!ABarrel)

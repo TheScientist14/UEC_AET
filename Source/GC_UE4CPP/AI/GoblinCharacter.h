@@ -17,34 +17,34 @@ class GC_UE4CPP_API AGoblinCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AGoblinCharacter();
-	
+
 	UPROPERTY(EditAnywhere)
 	class ASpot* Spot;
-	
+
 	UPROPERTY(EditAnywhere)
 	FVector Spawn;
-		
+
 	UPROPERTY(EditAnywhere)
 	bool Wait;
-	
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<APickableItem> Food;
-	
+
 	UPROPERTY(EditAnywhere)
 	UPickUpAbilityComponent* PickUpAbilityComponent;
-	
+
 	APickableItem* FoodOnHand;
 
 protected:
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshSocket* Hand;
-	
+
 	class AMainGameState* GameState;
-	
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

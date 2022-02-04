@@ -23,18 +23,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Room)
-	UStaticMeshComponent* StaticMesh;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|SmallCrate")
 	TSubclassOf<AActor> CrateClass;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|Floor")
-	TSubclassOf<AActor> FloorClass;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Room)
-	TSubclassOf<AActor> WallClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|Floor")
 	int FloorSize = 12;
@@ -42,8 +33,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|SmallCrate")
 	int CrateSize = 150;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Floor")
-	float TileableFloorSize = 200;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room")
+	float TileableFloorAndWallSize = 200;
 
 	UPROPERTY()
 	int HalfTile;
@@ -75,9 +66,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Room|Barrels")
 	int NumberOfBarrels = 10;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|Floor")
+	UInstancedStaticMeshComponent* InstancedStaticMeshComponentFloor;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|Wall")
+	UInstancedStaticMeshComponent* InstancedStaticMeshComponentWall;
+
 	void Spawn();
 	
-	void SpawnFloor(UClass* Floor);
+	void SpawnFloor();
 
 	void SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation);
 
