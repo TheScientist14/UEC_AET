@@ -15,7 +15,6 @@ public:
 	// Sets default values for this actor's properties
 	ASpot();
 
-	void SpawnFood(UClass* PrmFood);
 
 protected:
 
