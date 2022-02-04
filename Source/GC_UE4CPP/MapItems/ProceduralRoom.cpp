@@ -24,15 +24,12 @@ void AProceduralRoom::BeginPlay()
 {
 	Super::BeginPlay();
 	FloorHalfSize = (FloorSize % 2 == 0) ? FloorSize / 2 : FloorSize / 2 + 1;
-	HalfTile = TileableFloorSize/2;
+	HalfTile = TileableFloorSize / 2;
 	SpawnFloor(FloorClass);
-	SpawnBarrels(Barrel);
+	SpawnBarrels(Barrel, Food);
 	SpawnCrates(CrateClump2, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 90);
 	SpawnCrates(CrateClump, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 0);
 	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight, 0);
-
-
-	
 }
 
 // Called every frame
@@ -43,7 +40,6 @@ void AProceduralRoom::Tick(float DeltaTime)
 
 void AProceduralRoom::SpawnFloor(UClass* Floor)
 {
-
 	for (int i = -FloorHalfSize; i <= FloorHalfSize; i++)
 	{
 		for (int j = -FloorHalfSize; j <= FloorHalfSize; j++)
@@ -64,18 +60,18 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 			default:
 				break;
 			}
-			
+
 			if (i == -FloorHalfSize || i == FloorHalfSize)
 			{
 				if (i == -FloorHalfSize)
 				{
 					SpawnWall(i, j, -HalfTile, 0, HalfTile, 90);
-					SpawnWall(i, j, -HalfTile, 0, HalfTile*3, 90);
+					SpawnWall(i, j, -HalfTile, 0, HalfTile * 3, 90);
 				}
 				else
 				{
 					SpawnWall(i, j, +HalfTile, 0, HalfTile, 90);
-					SpawnWall(i, j, +HalfTile, 0, HalfTile*3, 90);
+					SpawnWall(i, j, +HalfTile, 0, HalfTile * 3, 90);
 				}
 			}
 			if (j == -FloorHalfSize || j == FloorHalfSize)
@@ -85,18 +81,19 @@ void AProceduralRoom::SpawnFloor(UClass* Floor)
 					if (j == -FloorHalfSize)
 					{
 						SpawnWall(i, j, 0, -HalfTile, HalfTile, 0);
-						SpawnWall(i, j, 0, -HalfTile, HalfTile*3, 0);
+						SpawnWall(i, j, 0, -HalfTile, HalfTile * 3, 0);
 					}
 					else
 					{
 						SpawnWall(i, j, 0, +HalfTile, HalfTile, 0);
-						SpawnWall(i, j, 0, +HalfTile, HalfTile*3, 0);
+						SpawnWall(i, j, 0, +HalfTile, HalfTile * 3, 0);
 					}
 				}
 			}
 
-			AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
-			                               FRotator(0, angle, 0));
+			AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(
+				Floor, FVector(i * TileableFloorSize, j * TileableFloorSize, 0),
+				FRotator(0, angle, 0));
 
 			SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 		}
@@ -128,31 +125,46 @@ void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int Spawn
 
 			if (ChanceOfSpawn <= SpawnChance)
 			{
-				AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(CrateToSpawn, FVector(i * ActorSize, j * ActorSize, Height),
-				                               FRotator(0, Rotation, 0), SpawnInfo);
-				if(SpawnedActor)
+				AActor* SpawnedActor = GetWorld()->SpawnActor<AActor>(CrateToSpawn,
+				                                                      FVector(i * ActorSize, j * ActorSize, Height),
+				                                                      FRotator(0, Rotation, 0), SpawnInfo);
+				if (SpawnedActor)
 				{
-					SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform );
+					SpawnedActor->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
 				}
 			}
 		}
 	}
 }
 
-void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel)
-{	
-	for (int i = 0; i < NumberOfBarrels; ++i)
+void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel, UClass* PrmFood)
+{
+	int XSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+	int YSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+	int Rotation = FMath::RandRange(0, 360);
+
+	ASpot* ABarrel = GetWorld()->SpawnActor<ASpot>(
+		PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
+		FRotator(0, Rotation, 0), SpawnInfo);
+	ABarrel->SetSpotOccupied();
+
+	APickableItem* AFood = GetWorld()->SpawnActor<APickableItem>(
+		PrmFood, ABarrel->GetFoodSpotTransform().GetLocation(),ABarrel->GetFoodSpotTransform().Rotator());
+
+	Cast<AMainGameState>(GetWorld()->GetGameState())->AddSpotToArray(ABarrel);
+
+	for (int i = 0; i < NumberOfBarrels - 1; ++i)
 	{
-		int Rotation = FMath::RandRange(0, 360);
-		int XSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
-		int YSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
-		
-		
-		ASpot* ABarrel = GetWorld()->SpawnActor<ASpot>(
-                         		PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
-                         		FRotator(0, Rotation, 0), SpawnInfo);
-		
-		if(!ABarrel)
+		Rotation = FMath::RandRange(0, 360);
+		XSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+		YSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+
+
+		ABarrel = GetWorld()->SpawnActor<ASpot>(
+			PrmBarrel, FVector(XSpawn * TileableFloorSize, YSpawn * TileableFloorSize, SpawnHeight),
+			FRotator(0, Rotation, 0), SpawnInfo);
+
+		if (!ABarrel)
 		{
 			i--;
 		}
@@ -160,8 +172,6 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel)
 		{
 			Cast<AMainGameState>(GetWorld()->GetGameState())->AddSpotToArray(ABarrel);
 		}
-
-		
 	}
 
 	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, TEXT("Spawn Barrels"));
