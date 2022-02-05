@@ -20,6 +20,7 @@ UBTTask_MoveToRandomSpot::UBTTask_MoveToRandomSpot(FObjectInitializer const& obj
 
 EBTNodeResult::Type UBTTask_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
+	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("FindRandomSpot"));
 	//Move to init 
 	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 
@@ -33,12 +34,19 @@ EBTNodeResult::Type UBTTask_MoveToRandomSpot::ExecuteTask(UBehaviorTreeComponent
 			cont->PickUpFood(cont->Food);
 			cont->Spot->SetSpotOccupied();
 			EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", cont->Spot->GetActorLocation());
+			EnemyAI->GetBlackboardComponent()->SetValueAsBool("HasFood", true);
+			return EBTNodeResult::Succeeded;
 		} else
 		{
+			if (cont->FoodOnHand)
+			{
+				cont->FoodOnHand->Destroy();
+				cont->FoodOnHand = nullptr;
+			}
 			EnemyAI->GetBlackboardComponent()->SetValueAsBool("Wait", true);
+			return EBTNodeResult::Succeeded;
 		}
 	}
 	
-	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	return EBTNodeResult::Succeeded;
+	return EBTNodeResult::Failed;
 }

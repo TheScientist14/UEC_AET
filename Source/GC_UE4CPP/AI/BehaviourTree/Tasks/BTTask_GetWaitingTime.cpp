@@ -18,8 +18,7 @@ EBTNodeResult::Type UBTTask_GetWaitingTime::ExecuteTask(UBehaviorTreeComponent& 
 	if(EnemyAI)
 	{	
 		EnemyAI->GetBlackboardComponent()->SetValueAsFloat("WaitingTime", FMath::RandRange(0, 5));
+		return EBTNodeResult::Succeeded;
 	}
-	
-	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	return EBTNodeResult::Failed;
 }

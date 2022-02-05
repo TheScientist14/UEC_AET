@@ -29,8 +29,8 @@ EBTNodeResult::Type UBTTask_MoveToRandomPoint::ExecuteTask(UBehaviorTreeComponen
 	{
 		NavSystem->GetRandomPoint(RandomPoint);
 		EnemyAI->GetBlackboardComponent()->SetValueAsVector("RandomPoint", RandomPoint.Location);
+		return EBTNodeResult::Succeeded;
 	}
 	
-	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	return EBTNodeResult::Failed;
 }

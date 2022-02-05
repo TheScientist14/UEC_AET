@@ -64,5 +64,6 @@ void AGoblinCharacter::PutDownFood()
 	if(FoodOnHand)
 	{
 		FoodOnHand->OnInteract(this);
+		FoodOnHand = nullptr;
 	} 
 }

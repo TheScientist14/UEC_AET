@@ -17,5 +17,7 @@ class GC_UE4CPP_API UBTTask_PuttingDownFood : public UBTTask_BlackboardBase
 public:
 	UBTTask_PuttingDownFood(FObjectInitializer const& object_initialize);
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
-	
+
+	UPROPERTY(EditAnywhere)
+	bool OnSpot=true;
 };

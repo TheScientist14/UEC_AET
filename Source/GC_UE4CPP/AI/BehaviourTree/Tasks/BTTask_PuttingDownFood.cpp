@@ -23,11 +23,18 @@ EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent&
 	//Move to init 
 	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	cont->PutDownFood();
+	if (!OnSpot)
+	{
+		Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsVector("FoodPosition", cont->GetTransform().GetLocation());
+	} else
+	{
+		Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->ClearValue("FoodPosition");
+	}
+	Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsBool("HasFood", false);
 	//Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->AddFood();
 	if(Cast<AMainGameState>(GetWorld()->GetGameState())->FoodOnLevel == Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetMaxFoodOnLevel())
 	{
 		Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsBool("NeedFood", false);
 	}
-	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 	return EBTNodeResult::Succeeded;
 }

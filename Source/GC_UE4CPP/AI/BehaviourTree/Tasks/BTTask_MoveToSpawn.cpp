@@ -22,8 +22,8 @@ EBTNodeResult::Type UBTT_MoveToSpawn::ExecuteTask(UBehaviorTreeComponent& OwnerC
 	if(EnemyAI)
 	{
 		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spawn", cont->Spawn);
+		return EBTNodeResult::Succeeded;
 	}
 
-	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	return EBTNodeResult::Succeeded;
+	return EBTNodeResult::Failed;
 }

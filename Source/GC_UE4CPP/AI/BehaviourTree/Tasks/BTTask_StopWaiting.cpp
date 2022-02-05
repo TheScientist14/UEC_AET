@@ -21,8 +21,8 @@ EBTNodeResult::Type UBTTask_StopWaiting::ExecuteTask(UBehaviorTreeComponent& Own
 	{	
 		EnemyAI->GetBlackboardComponent()->SetValueAsBool("Wait", false);
 		cont->Wait = false;
+		return EBTNodeResult::Succeeded;
 	}
 	
-	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
-	return Super::ExecuteTask(OwnerComp, NodeMemory);
+	return EBTNodeResult::Failed;
 }
