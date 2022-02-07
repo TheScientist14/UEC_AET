@@ -27,6 +27,7 @@ public:
 	void EndGameDefeat();
 	void EndGameVictory();
 	void EndUI();
+	bool NeedsFood();
 
 	UPROPERTY(EditAnywhere, Category="Classes")
 	TSubclassOf<UVictoryDefeat_UserWidget> VD_UI;

@@ -51,8 +51,8 @@ protected:
 public:
 
 	virtual void OnInteract(AActor* Caller) override;
-
-private:
-
+	void SetIsCurrentlyPickable(bool Setter);
+	void SetLifterPickUpAbility(UPickUpAbilityComponent* Setter);
 	void SetOnGroundPhysics(bool IsMovable);
+
 };

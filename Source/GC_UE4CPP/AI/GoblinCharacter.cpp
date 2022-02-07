@@ -17,6 +17,7 @@ AGoblinCharacter::AGoblinCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	PickUpAbilityComponent = CreateDefaultSubobject<UPickUpAbilityComponent>(TEXT("PickUpBehaviour"));
+	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
 // Called when the game starts or when spawned
@@ -28,6 +29,8 @@ void AGoblinCharacter::BeginPlay()
 	Cast<AEnemyController>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
 	Cast<AEnemyController>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
 	Cast<AEnemyController>(GetController())->GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
+
+	FoodOnHand = nullptr;
 
 }
 
@@ -48,22 +51,30 @@ void AGoblinCharacter::GetNextSpot()
 	Spot = Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetRandomSpot();
 }
 
-void AGoblinCharacter::PickUpFood(UClass* PrmFood)
+void AGoblinCharacter::InteractFood()
 {
-	if (FoodOnHand == nullptr)
+	if (FoodOnHand != nullptr)
 	{
-		FoodOnHand = GetWorld()->SpawnActor<APickableItem>(PrmFood, FVector(0), FRotator(0));
+		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("InteractFood != nullptr"));
 		FoodOnHand->OnInteract(this);
-		/*FoodOnHand->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
-			"RightHandSocket");*/
 	}
+}
+
+void AGoblinCharacter::SpawnFood(UClass* PrmFood)
+{
+	FoodOnHand = GetWorld()->SpawnActor<APickableItem>(PrmFood, GetActorLocation(), GetActorRotation(), SpawnInfo);
+	FoodOnHand->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+		"RightHandSocket");
+	FoodOnHand->SetIsCurrentlyPickable(false);
+	FoodOnHand->SetOnGroundPhysics(false);
+	PickUpAbilityComponent->PickedUpActor = FoodOnHand;
+	FoodOnHand->SetLifterPickUpAbility(PickUpAbilityComponent);
 }
 
 void AGoblinCharacter::PutDownFood()
 {
-	if(FoodOnHand)
+	if(FoodOnHand != nullptr)
 	{
-		FoodOnHand->OnInteract(this);
-		FoodOnHand = nullptr;
+		FoodOnHand->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	} 
 }

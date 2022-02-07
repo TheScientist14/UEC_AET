@@ -73,6 +73,17 @@ void APickableItem::OnInteract(AActor* Caller)
 			LifterPickUpAbility->PutDownPickedUpActor();
 		}
 	}
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "OnInteract end");
+}
+
+void APickableItem::SetIsCurrentlyPickable(bool Setter)
+{
+	IsCurrentlyPickable = Setter;
+}
+
+void APickableItem::SetLifterPickUpAbility(UPickUpAbilityComponent* Setter)
+{
+	LifterPickUpAbility = Setter;
 }
 
 FTransform APickableItem::GetRightHandAnchor() {

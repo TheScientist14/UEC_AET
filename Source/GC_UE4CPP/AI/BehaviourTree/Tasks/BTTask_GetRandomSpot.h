@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_MoveTo.h"
-#include "BTTask_MoveToRandomSpot.generated.h"
+#include "BTTask_GetRandomSpot.generated.h"
 
 /**
  * 
  */
 UCLASS(Blueprintable)
-class GC_UE4CPP_API UBTTask_MoveToRandomSpot : public UBTTask_BlackboardBase
+class GC_UE4CPP_API UBTTask_GetRandomSpot : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
 public:
-	UBTTask_MoveToRandomSpot(FObjectInitializer const& object_initialize);
+	UBTTask_GetRandomSpot(FObjectInitializer const& object_initialize);
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
 	
 };
