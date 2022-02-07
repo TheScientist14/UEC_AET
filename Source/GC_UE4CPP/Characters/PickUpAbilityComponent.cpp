@@ -61,10 +61,17 @@ void UPickUpAbilityComponent::BindPickedUpActor()
 	{
 		PickedUpActor = TempPickedActor;
 		TempPickedActor = nullptr;
-		PickedUpActor->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale,
-			"RightHandSocket");
-		/*PickedUpActor->SetActorRelativeLocation(this->GetMesh()->GetSocketLocation("Right_Hand"));*/
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Attached");
+		FTransform OffsetTarget = PickedUpActor->GetRightHandAnchor();
+		FTransform HandSocketTransform = Mesh->GetSocketTransform("RightHandSocket");
+		/*PickedUpActor->SetActorLocationAndRotation(
+			HandSocketTransform.GetLocation() - OffsetTarget.GetLocation(),
+			FQuat::MakeFromEuler(HandSocketTransform.GetRotation().Euler() + OffsetTarget.GetRotation().Euler()));
+		PickedUpActor->AttachToComponent(Mesh, FAttachmentTransformRules::KeepWorldTransform, "RightHandSocket");*/
+		PickedUpActor->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "RightHandSocket");
+		PickedUpActor->SetActorRelativeLocation(-OffsetTarget.GetLocation());
+		PickedUpActor->SetActorRelativeRotation(OffsetTarget.GetRotation());
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *OffsetTarget.GetLocation().ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *OffsetTarget.GetRotation().Euler().ToString());
 	}
 	else
 	{
@@ -83,19 +90,14 @@ void UPickUpAbilityComponent::PutDownPickedUpActor()
 {
 	bIsPickingUpOrPuttingDown = true;
 	CharacterMovement->SetMovementMode(EMovementMode::MOVE_None);
-	// TODO : IK to wanted location
 }
 
 void UPickUpAbilityComponent::UnbindPickedUpActor()
 {
 	if (PickedUpActor)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettaching");
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, PickedUpActor->GetActorLocation().ToString());
 		PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, PickedUpActor->GetActorLocation().ToString());
 		PickedUpActor->SetActorTransform(PickedUpActor->OnPutDown(), false, nullptr, ETeleportType::ResetPhysics);
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, PickedUpActor->GetActorLocation().ToString());
 		OnPutDown.Broadcast(PickedUpActor);
 		PickedUpActor = nullptr;
 	}
