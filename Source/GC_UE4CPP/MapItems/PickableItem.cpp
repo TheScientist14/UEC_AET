@@ -87,15 +87,11 @@ void APickableItem::SetLifterPickUpAbility(UPickUpAbilityComponent* Setter)
 }
 
 FTransform APickableItem::GetRightHandAnchor() {
-	FVector Euler = RightHandAnchor->GetRelativeRotation().Euler();
-	FRotator Rotator = FRotator::MakeFromEuler(-Euler);
-	return FTransform::FTransform(Rotator, -RightHandAnchor->GetRelativeLocation() / GetActorRelativeScale3D());
+	return FTransform::FTransform(RightHandAnchor->GetRelativeRotation(), -RightHandAnchor->GetRelativeLocation());
 }
 
 FTransform APickableItem::GetLeftHandAnchor() {
-	FVector Euler = LeftHandAnchor->GetRelativeRotation().Euler();
-	FRotator Rotator = FRotator::MakeFromEuler(-Euler);
-	return FTransform::FTransform(Rotator, -LeftHandAnchor->GetRelativeLocation());
+	return FTransform::FTransform(LeftHandAnchor->GetRelativeRotation(), -LeftHandAnchor->GetRelativeLocation());
 }
 
 FTransform APickableItem::OnPutDown() {
