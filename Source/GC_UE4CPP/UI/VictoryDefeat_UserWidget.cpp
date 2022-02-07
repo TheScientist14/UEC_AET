@@ -17,8 +17,6 @@ void UVictoryDefeat_UserWidget::NativeConstruct()
 
 	if (ButtonRestart)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Testing for ButtonRestart"));
-
 		ButtonRestart->OnClicked.AddUniqueDynamic(this, &UVictoryDefeat_UserWidget::ReloadLevel);
 	}
 }
@@ -26,16 +24,13 @@ void UVictoryDefeat_UserWidget::NativeConstruct()
 void UVictoryDefeat_UserWidget::NativeOnInitialized()
 {
 	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
-	temp = GameMode->OnGameFinished.AddUObject(this, &UVictoryDefeat_UserWidget::SetUI);
+	GameMode->OnGameFinished.AddUObject(this, &UVictoryDefeat_UserWidget::SetUI);
 }
 
 void UVictoryDefeat_UserWidget::SetUI(bool PrmIsGameFinished, bool PrmIsGameWon)
 {	
 	if (PrmIsGameWon)
-	{
-
-		UE_LOG(LogTemp, Warning, TEXT("Testing for won game"));
-		
+	{		
 		Text->SetText(FText::FromString(TEXT("VICTORY !")));
 		Text->SetColorAndOpacity(FSlateColor(FLinearColor(0, 255, 0)));
 	}
@@ -48,7 +43,6 @@ void UVictoryDefeat_UserWidget::SetUI(bool PrmIsGameFinished, bool PrmIsGameWon)
 
 void UVictoryDefeat_UserWidget::ReloadLevel()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Testing for Reload Level"));
 	UGameplayStatics::OpenLevel(this, FName(GetWorld()->GetName()), false);
 	APlayerController* Player = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0));
 	Player->bShowMouseCursor = false;

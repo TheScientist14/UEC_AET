@@ -13,9 +13,9 @@
 // Sets default values
 AGoblinCharacter::AGoblinCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	PickUpAbilityComponent = CreateDefaultSubobject<UPickUpAbilityComponent>(TEXT("PickUpBehaviour"));
 }
 
@@ -24,11 +24,6 @@ void AGoblinCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GameState = Cast<AMainGameState>(GetWorld()->GetGameState());
-	Cast<AEnemyController>(GetController())->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
-	Cast<AEnemyController>(GetController())->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
-	Cast<AEnemyController>(GetController())->GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
-
 }
 
 // Called every frame
@@ -61,9 +56,9 @@ void AGoblinCharacter::PickUpFood(UClass* PrmFood)
 
 void AGoblinCharacter::PutDownFood()
 {
-	if(FoodOnHand)
+	if (FoodOnHand)
 	{
 		FoodOnHand->OnInteract(this);
 		FoodOnHand = nullptr;
-	} 
+	}
 }

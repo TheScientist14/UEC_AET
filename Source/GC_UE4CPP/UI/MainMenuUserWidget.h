@@ -4,30 +4,32 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "VictoryDefeat_UserWidget.generated.h"
+#include "MainMenuUserWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UVictoryDefeat_UserWidget : public UUserWidget
+class GC_UE4CPP_API UMainMenuUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* Text;
+	class UButton* ButtonPlay;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* ButtonRestart;
-
-	void SetUI(bool PrmIsGameFinished, bool PrmIsGameWon);
-
-	UFUNCTION()
-	void ReloadLevel();
-
+	UButton* ButtonQuit;
 
 protected:
 	virtual void NativeConstruct() override;
-	virtual void NativeOnInitialized() override;
+
+	UFUNCTION()
+	void Play();
+	UFUNCTION()
+	void Quit();
+
+private:
+	UPROPERTY()
+	APlayerController* Player;
 };

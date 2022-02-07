@@ -30,60 +30,75 @@ APickableItem::APickableItem()
 
 void APickableItem::OnInteract(AActor* Caller)
 {
-	if (IsCurrentlyPickable) {
+	if (IsCurrentlyPickable)
+	{
 		UPickUpAbilityComponent* PickUpAbilityComponent = Caller->FindComponentByClass<UPickUpAbilityComponent>();
-		if (PickUpAbilityComponent) {
+		if (PickUpAbilityComponent)
+		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Picked up");
 			LifterPickUpAbility = PickUpAbilityComponent;
 			SetOnGroundPhysics(false);
 			IsCurrentlyPickable = !LifterPickUpAbility->PickUpActor(this);
 			// on success
-			if (!IsCurrentlyPickable) {
+			if (!IsCurrentlyPickable)
+			{
 				TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
 				ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
 				TArray<AActor*> IgnoreActors;
 				IgnoreActors.Init(this, 1);
 				TArray<AActor*> OverlappedActors;
-				UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), AcceptableRadius, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
+				UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), AcceptableRadius, ObjectTypeFilter,
+				                                          nullptr, IgnoreActors, OverlappedActors);
 				bool ContinueSearching = true;
 				int i = 0;
-				while (i < OverlappedActors.Num() && ContinueSearching) {
+				while (i < OverlappedActors.Num() && ContinueSearching)
+				{
 					//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, OverlappedActors[i]->GetName());
 					ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
-					if (Spot) {
-						if ((GetActorLocation() - Spot->GetFoodSpotTransform().GetLocation()).SizeSquared() < 2500) { // getting squared size is faster
+					if (Spot)
+					{
+						if ((GetActorLocation() - Spot->GetFoodSpotTransform().GetLocation()).SizeSquared() < 2500)
+						{
+							// getting squared size is faster
 							//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "-1");
 							Spot->SetSpotFree();
 							ContinueSearching = false;
 						}
 					}
-					if (ContinueSearching) {
+					if (ContinueSearching)
+					{
 						i++;
 					}
 				}
 			}
-			else {
+			else
+			{
 				SetOnGroundPhysics(true);
 			}
 		}
 	}
-	else if (LifterPickUpAbility) {
-		if (Caller == (AActor*)(LifterPickUpAbility->GetOwner())) {
+	else if (LifterPickUpAbility)
+	{
+		if (Caller == (AActor*)(LifterPickUpAbility->GetOwner()))
+		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "Pickable item has been interacted and ask lifter to be put down");
 			LifterPickUpAbility->PutDownPickedUpActor();
 		}
 	}
 }
 
-FTransform APickableItem::GetRightHandAnchor() {
+FTransform APickableItem::GetRightHandAnchor()
+{
 	return FTransform::FTransform(RightHandAnchor->GetRelativeRotation(), -RightHandAnchor->GetRelativeLocation());
 }
 
-FTransform APickableItem::GetLeftHandAnchor() {
+FTransform APickableItem::GetLeftHandAnchor()
+{
 	return FTransform::FTransform(LeftHandAnchor->GetRelativeRotation(), -LeftHandAnchor->GetRelativeLocation());
 }
 
-FTransform APickableItem::OnPutDown() {
+FTransform APickableItem::OnPutDown()
+{
 	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Put down");
 	IsCurrentlyPickable = true;
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
@@ -91,36 +106,44 @@ FTransform APickableItem::OnPutDown() {
 	TArray<AActor*> IgnoreActors;
 	IgnoreActors.Init(this, 1);
 	TArray<AActor*> OverlappedActors;
-	UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), AcceptableRadius, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
+	UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), AcceptableRadius, ObjectTypeFilter, nullptr,
+	                                          IgnoreActors, OverlappedActors);
 	bool HasFoundLocation = false;
 	int i = 0;
 	SetOnGroundPhysics(true);
-	while (i < OverlappedActors.Num() && !HasFoundLocation) {
+	while (i < OverlappedActors.Num() && !HasFoundLocation)
+	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, OverlappedActors[i]->GetName());
 		AFoodChest* Chest = Cast<AFoodChest>(OverlappedActors[i]);
-		if (Chest) {
+		if (Chest)
+		{
 			FTransform TmpT = Chest->GetActorTransform();
 			return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
 		}
-		else {
+		else
+		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "Not a chest");
 			ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
-			if (Spot) {
+			if (Spot)
+			{
 				Spot->SetSpotOccupied();
 				FTransform TmpT = Spot->GetFoodSpotTransform();
 				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, "Transform" + TmpT.ToString());
 				return FTransform::FTransform(TmpT.GetRotation(), TmpT.GetLocation(), GetActorScale());
 			}
-			else {
+			else
+			{
 				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "neither a spot");
 				i++;
 			}
 		}
 	}
-	return FTransform::FTransform(FRotator::MakeFromEuler(FVector(0, 0, GetActorRotation().Euler().Z)), GetActorLocation(), GetActorScale());
+	return FTransform::FTransform(FRotator::MakeFromEuler(FVector(0, 0, GetActorRotation().Euler().Z)),
+	                              GetActorLocation(), GetActorScale());
 }
 
-void APickableItem::SetOnGroundPhysics(bool IsOnGround) {
+void APickableItem::SetOnGroundPhysics(bool IsOnGround)
+{
 	//SetActorTickEnabled(IsOnGround);
 	StaticMesh->SetSimulatePhysics(IsOnGround);
 	StaticMesh->SetCollisionEnabled(IsOnGround ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);

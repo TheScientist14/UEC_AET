@@ -19,10 +19,9 @@ public:
 	void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 
-private:
-	class UNavigationSystemV1* NavArea;
-
-	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="AI", meta= (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI")
 	UBehaviorTree* BehaviourTree;
 	
+private:
+	class UNavigationSystemV1* NavArea;
 };
