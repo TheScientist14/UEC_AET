@@ -39,9 +39,11 @@ protected:
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshSocket* Hand;
 
+	class AMainGameState* GameState;
+	FActorSpawnParameters SpawnInfo;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
 
 public:
 	// Called every frame
@@ -52,7 +54,8 @@ public:
 
 	void GetNextSpot();
 
-	void PickUpFood(UClass* PrmFood);
+	void InteractFood();
+	void SpawnFood(UClass* PrmFood);
 
 	void PutDownFood();
 };

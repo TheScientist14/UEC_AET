@@ -22,7 +22,7 @@ EBTNodeResult::Type UBTTask_PickUpFood::ExecuteTask(UBehaviorTreeComponent& Owne
 {
 	//Move to init 
 	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	cont->PickUpFood(cont->Food);
+	cont->InteractFood();
 	Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsBool("HasFood", true);
 	
 	return EBTNodeResult::Succeeded;

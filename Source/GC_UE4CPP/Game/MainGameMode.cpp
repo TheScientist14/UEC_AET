@@ -19,11 +19,14 @@ ASpot* AMainGameMode::GetRandomSpot()
 {
 	if (MainGameState->FoodOnLevel < GetMaxFoodOnLevel())
 	{
-		ASpot* SpotReturn = MainGameState->Spots[FMath::RandRange(0, MainGameState->Spots.Num() - 1)];
-		while (SpotReturn->HasFood())
+		ASpot* SpotReturn;
+		do
 		{
 			SpotReturn = MainGameState->Spots[FMath::RandRange(0, MainGameState->Spots.Num() - 1)];
-		}
+		}while (SpotReturn->HasFood());
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("SetSpotOccuped %s"), *SpotReturn->GetName()));
+		SpotReturn->SetSpotOccupied();
 		return SpotReturn;
 	}
 	return nullptr;
@@ -92,3 +95,13 @@ void AMainGameMode::EndUI()
 		}
 	}
 }
+
+bool AMainGameMode::NeedsFood()
+{
+	if(GetFoodOnLevel() < GetMaxFoodOnLevel())
+	{
+		return true;
+	}
+	return false;
+}
+

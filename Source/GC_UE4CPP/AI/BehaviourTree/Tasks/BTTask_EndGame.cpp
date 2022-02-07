@@ -17,9 +17,11 @@ UBTTask_EndGame::UBTTask_EndGame(FObjectInitializer const& object_initialize)
 EBTNodeResult::Type UBTTask_EndGame::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	if (cont->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(this, 0)) <= 150)
 	{
 		Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->EndGameDefeat();
+		cont->Controller = nullptr;
 	}
 
 	return EBTNodeResult::Succeeded;
