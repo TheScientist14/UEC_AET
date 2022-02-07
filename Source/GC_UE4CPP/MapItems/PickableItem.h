@@ -48,11 +48,20 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	bool IsCurrentlyPickable = true;
 
+	FTransform PutDownOverrideTarget;
+
+	bool IsPutDownTargetOverriden = false;
+
 public:
 
 	virtual void OnInteract(AActor* Caller) override;
+
 	void SetIsCurrentlyPickable(bool Setter);
+
 	void SetLifterPickUpAbility(UPickUpAbilityComponent* Setter);
+
 	void SetOnGroundPhysics(bool IsMovable);
+
+	void OverridePutDownTransform(FTransform Target);
 
 };

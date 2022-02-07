@@ -86,6 +86,11 @@ void APickableItem::SetLifterPickUpAbility(UPickUpAbilityComponent* Setter)
 	LifterPickUpAbility = Setter;
 }
 
+void APickableItem::OverridePutDownTransform(FTransform Target) {
+	IsPutDownTargetOverriden = true;
+	PutDownOverrideTarget = Target;
+}
+
 FTransform APickableItem::GetRightHandAnchor() {
 	return FTransform::FTransform(RightHandAnchor->GetRelativeRotation(), -RightHandAnchor->GetRelativeLocation());
 }
@@ -97,38 +102,44 @@ FTransform APickableItem::GetLeftHandAnchor() {
 FTransform APickableItem::OnPutDown() {
 	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Put down");
 	IsCurrentlyPickable = true;
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
-	ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
-	TArray<AActor*> IgnoreActors;
-	IgnoreActors.Init(this, 1);
-	TArray<AActor*> OverlappedActors;
-	UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), AcceptableRadius, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
-	bool HasFoundLocation = false;
-	int i = 0;
 	SetOnGroundPhysics(true);
-	while (i < OverlappedActors.Num() && !HasFoundLocation) {
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, OverlappedActors[i]->GetName());
-		AFoodChest* Chest = Cast<AFoodChest>(OverlappedActors[i]);
-		if (Chest) {
-			FTransform TmpT = Chest->GetActorTransform();
-			return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
-		}
-		else {
-			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "Not a chest");
-			ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
-			if (Spot) {
-				Spot->SetSpotOccupied();
-				FTransform TmpT = Spot->GetFoodSpotTransform();
-				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, "Transform" + TmpT.ToString());
-				return FTransform::FTransform(TmpT.GetRotation(), TmpT.GetLocation(), GetActorScale());
+	if (IsPutDownTargetOverriden) {
+		IsPutDownTargetOverriden = false;
+		return PutDownOverrideTarget;
+	}
+	else {
+		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
+		ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
+		TArray<AActor*> IgnoreActors;
+		IgnoreActors.Init(this, 1);
+		TArray<AActor*> OverlappedActors;
+		UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), AcceptableRadius, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
+		bool HasFoundLocation = false;
+		int i = 0;
+		while (i < OverlappedActors.Num() && !HasFoundLocation) {
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, OverlappedActors[i]->GetName());
+			AFoodChest* Chest = Cast<AFoodChest>(OverlappedActors[i]);
+			if (Chest) {
+				FTransform TmpT = Chest->GetActorTransform();
+				return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
 			}
 			else {
-				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "neither a spot");
-				i++;
+				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "Not a chest");
+				ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
+				if (Spot) {
+					Spot->SetSpotOccupied();
+					FTransform TmpT = Spot->GetFoodSpotTransform();
+					//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, "Transform" + TmpT.ToString());
+					return FTransform::FTransform(TmpT.GetRotation(), TmpT.GetLocation(), GetActorScale());
+				}
+				else {
+					//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "neither a spot");
+					i++;
+				}
 			}
 		}
+		return FTransform::FTransform(FRotator::MakeFromEuler(FVector(0, 0, GetActorRotation().Euler().Z)), GetActorLocation(), GetActorScale());
 	}
-	return FTransform::FTransform(FRotator::MakeFromEuler(FVector(0, 0, GetActorRotation().Euler().Z)), GetActorLocation(), GetActorScale());
 }
 
 void APickableItem::SetOnGroundPhysics(bool IsOnGround) {
