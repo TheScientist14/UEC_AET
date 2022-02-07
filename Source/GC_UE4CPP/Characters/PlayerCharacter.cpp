@@ -113,4 +113,5 @@ void APlayerCharacter::Interact()
 
 void APlayerCharacter::OnGameEnded(bool HasGameEnded, bool HasWon) {
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+	GetCharacterMovement()->Velocity = FVector::ZeroVector;
 }
