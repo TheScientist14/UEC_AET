@@ -13,8 +13,9 @@ ASpot::ASpot()
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	SetRootComponent(StaticMesh);
-	FoodSpot = CreateDefaultSubobject<UStaticMeshComponent>(FName("FoodSpot"));
-	FoodSpot->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
+	FoodEmplacement = CreateDefaultSubobject<USceneComponent>(FName("FoodEmplacement"));
+	FoodEmplacement->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -52,5 +53,5 @@ void ASpot::SetSpotFree()
 }
 
 FTransform ASpot::GetFoodSpotTransform() {
-	return FoodSpot->GetComponentTransform();
+	return FoodEmplacement->GetComponentTransform();
 }

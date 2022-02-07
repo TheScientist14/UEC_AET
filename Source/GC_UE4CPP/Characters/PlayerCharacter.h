@@ -37,18 +37,18 @@ public:
 	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float ZoomThresholdLimit = 1;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	UPickUpAbilityComponent* PickUpAbilityComponent;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	USitDownAbilityComponent* SitDownAbilityComponent;
 
 	float ZoomThreshold = 0;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 
 	UFUNCTION()
@@ -63,4 +63,10 @@ public:
 	UFUNCTION()
 	void MoveRight(float DeltaY);
 
+	UFUNCTION()
+	void OnGameEnded(bool HasGameEnded, bool HasWon);
+
+protected:
+
+	virtual void BeginPlay() override;
 };

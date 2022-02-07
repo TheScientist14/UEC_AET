@@ -26,6 +26,9 @@ public:
 	APickableItem* TempPickedActor = nullptr;
 	bool bIsPickingUpOrPuttingDown = false;
 
+	UPROPERTY(EditAnywhere)
+	UClass* Testing;
+
 	UFUNCTION()
 	bool IsPickingUpOrPuttingDown();
 

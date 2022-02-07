@@ -20,11 +20,6 @@ APickableItem::APickableItem()
 	StaticMesh->SetEnableGravity(true);
 	StaticMesh->SetSimulatePhysics(false);
 	StaticMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	StaticMesh->SetLinearDamping(100);
-	StaticMesh->BodyInstance.bLockXRotation = true;
-	StaticMesh->BodyInstance.bLockZRotation = true;
-	StaticMesh->BodyInstance.bLockXTranslation = true;
-	StaticMesh->BodyInstance.bLockYTranslation = true;
 
 	RightHandAnchor = CreateDefaultSubobject<USceneComponent>(FName("Right hand anchor"));
 	LeftHandAnchor = CreateDefaultSubobject<USceneComponent>(FName("Left hand anchor"));
@@ -74,7 +69,7 @@ void APickableItem::OnInteract(AActor* Caller)
 	}
 	else if (LifterPickUpAbility) {
 		if (Caller == (AActor*)(LifterPickUpAbility->GetOwner())) {
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "Pickable item has been interacted and ask lifter to be put down");
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "Pickable item has been interacted and ask lifter to be put down");
 			LifterPickUpAbility->PutDownPickedUpActor();
 		}
 	}
@@ -112,18 +107,21 @@ FTransform APickableItem::OnPutDown() {
 			return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
 		}
 		else {
+			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "Not a chest");
 			ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
 			if (Spot) {
 				Spot->SetSpotOccupied();
 				FTransform TmpT = Spot->GetFoodSpotTransform();
-				return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
+				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, "Transform" + TmpT.ToString());
+				return FTransform::FTransform(TmpT.GetRotation(), TmpT.GetLocation(), GetActorScale());
 			}
 			else {
+				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "neither a spot");
 				i++;
 			}
 		}
 	}
-	return FTransform::FTransform(FRotator::FRotator(0, GetActorRotation().Euler().Z, 0), GetActorLocation(), GetActorScale());
+	return FTransform::FTransform(FRotator::MakeFromEuler(FVector(0, 0, GetActorRotation().Euler().Z)), GetActorLocation(), GetActorScale());
 }
 
 void APickableItem::SetOnGroundPhysics(bool IsOnGround) {

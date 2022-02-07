@@ -13,6 +13,7 @@
 #include "SitDownAbilityComponent.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
+#include "GC_UE4CPP/Game/MainGameMode.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -39,6 +40,13 @@ APlayerCharacter::APlayerCharacter()
 	PickUpAbilityComponent = CreateDefaultSubobject<UPickUpAbilityComponent>(TEXT("PickUpBehaviour"));
 	SitDownAbilityComponent = CreateDefaultSubobject<USitDownAbilityComponent>(TEXT("SitDownBehaviour"));
 	
+}
+
+void APlayerCharacter::BeginPlay() {
+	Super::BeginPlay();
+
+	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
+	GameMode->OnGameFinished.AddUObject(this, &APlayerCharacter::OnGameEnded);
 }
 
 //
@@ -101,4 +109,8 @@ void APlayerCharacter::Interact()
 			PickUpAbilityComponent->GetPickedUpActor()->OnInteract(this);
 		}
 	}
+}
+
+void APlayerCharacter::OnGameEnded(bool HasGameEnded, bool HasWon) {
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 }

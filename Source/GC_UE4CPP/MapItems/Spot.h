@@ -23,7 +23,7 @@ protected:
 	UStaticMeshComponent* StaticMesh;
 	
 	UPROPERTY(EditAnywhere)
-	UStaticMeshComponent* FoodSpot;
+	USceneComponent* FoodEmplacement;
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> FoodClass;

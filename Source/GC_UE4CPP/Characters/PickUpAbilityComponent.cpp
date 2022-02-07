@@ -50,7 +50,7 @@ bool UPickUpAbilityComponent::PickUpActor(APickableItem* ActorToPickUp)
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Trying to pick up when you already lift something");
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Trying to pick up when you already are lifting something");
 		return false;
 	}
 }
@@ -68,7 +68,7 @@ void UPickUpAbilityComponent::BindPickedUpActor()
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, "Should have been dettached");
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, "No actor to bind");
 	}
 }
 
@@ -90,9 +90,12 @@ void UPickUpAbilityComponent::UnbindPickedUpActor()
 {
 	if (PickedUpActor)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettached");
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Dettaching");
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, PickedUpActor->GetActorLocation().ToString());
 		PickedUpActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		PickedUpActor->SetActorTransform(PickedUpActor->OnPutDown());
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, PickedUpActor->GetActorLocation().ToString());
+		PickedUpActor->SetActorTransform(PickedUpActor->OnPutDown(), false, nullptr, ETeleportType::ResetPhysics);
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, PickedUpActor->GetActorLocation().ToString());
 		OnPutDown.Broadcast(PickedUpActor);
 		PickedUpActor = nullptr;
 	}
