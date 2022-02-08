@@ -29,7 +29,7 @@ EBTNodeResult::Type UBTTask_GetRandomSpot::ExecuteTask(UBehaviorTreeComponent& O
 
 	if(EnemyAI)
 	{
-		if (GameMode->GetFoodOnLevel() < GameMode->GetMaxFoodOnLevel() && Goblin->Spot == nullptr)
+		if (GameMode->GetFoodOnLevel() < GameMode->GetMaxFoodOnLevel())
 		{
 			Goblin->GetNextSpot();
 			EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", Goblin->Spot->GetActorLocation());

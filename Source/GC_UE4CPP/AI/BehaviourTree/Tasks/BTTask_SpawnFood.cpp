@@ -26,7 +26,6 @@ EBTNodeResult::Type UBTTask_SpawnFood::ExecuteTask(UBehaviorTreeComponent& Owner
 	if(EnemyAI)
 	{
 		Goblin->SpawnFood(Goblin->Food);
-		EnemyAI->GetBlackboardComponent()->SetValueAsBool("HasFood", true);
 		return EBTNodeResult::Succeeded;
 	}
 	

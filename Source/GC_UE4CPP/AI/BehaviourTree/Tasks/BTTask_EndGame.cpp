@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTTask_EndGame::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	if (cont->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(this, 0)) <= 150)
 	{
 		Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->EndGameDefeat();
-		cont->Controller = nullptr;
+		EnemyAI->UnPossess();
 	}
 
 	return EBTNodeResult::Succeeded;
