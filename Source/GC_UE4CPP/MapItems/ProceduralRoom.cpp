@@ -2,6 +2,8 @@
 
 #include "ProceduralRoom.h"
 
+#include <ppltasks.h>
+
 #include "AITypes.h"
 #include "Spot.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
@@ -13,15 +15,17 @@ AProceduralRoom::AProceduralRoom()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	InstancedStaticMeshComponentFloor = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Instanced Floor Static Mesh"));
+	InstancedStaticMeshComponentFloor = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
+		TEXT("Instanced Floor Static Mesh"));
 	SetRootComponent(InstancedStaticMeshComponentFloor);
-	
+
 	InstancedStaticMeshComponentFloor->SetMobility(EComponentMobility::Static);
 	InstancedStaticMeshComponentFloor->SetCollisionProfileName("BlockAll");
 
-	
-	InstancedStaticMeshComponentWall = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Instanced Wall Static Mesh"));
-	
+
+	InstancedStaticMeshComponentWall = CreateDefaultSubobject<UInstancedStaticMeshComponent>(
+		TEXT("Instanced Wall Static Mesh"));
+
 	InstancedStaticMeshComponentWall->SetMobility(EComponentMobility::Static);
 	InstancedStaticMeshComponentWall->SetCollisionProfileName("BlockAll");
 
@@ -36,7 +40,8 @@ void AProceduralRoom::BeginPlay()
 	Super::BeginPlay();
 	FloorHalfSize = (FloorSize % 2 == 0) ? FloorSize / 2 : FloorSize / 2 + 1;
 	HalfTile = TileableFloorAndWallSize / 2;
-	Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GameModeBeginPlayFinished.AddUObject(this, &AProceduralRoom::Spawn);
+	Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GameModeBeginPlayFinished.AddUObject(
+		this, &AProceduralRoom::Spawn);
 }
 
 // Called every frame
@@ -106,14 +111,18 @@ void AProceduralRoom::SpawnFloor()
 					}
 				}
 			}
-			InstancedStaticMeshComponentFloor->AddInstance(FTransform(FRotator(0,angle,0),FVector(i * TileableFloorAndWallSize, j * TileableFloorAndWallSize, 0)));
+			InstancedStaticMeshComponentFloor->AddInstance(FTransform(FRotator(0, angle, 0),
+			                                                          FVector(i * TileableFloorAndWallSize,
+			                                                                  j * TileableFloorAndWallSize, 0)));
 		}
 	}
 }
 
 void AProceduralRoom::SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation)
 {
-	InstancedStaticMeshComponentWall->AddInstance(FTransform(FRotator(0,Rotation,0),FVector(I * TileableFloorAndWallSize + IOffset, J * TileableFloorAndWallSize + JOffset, height)));
+	InstancedStaticMeshComponentWall->AddInstance(FTransform(FRotator(0, Rotation, 0),
+	                                                         FVector(I * TileableFloorAndWallSize + IOffset,
+	                                                                 J * TileableFloorAndWallSize + JOffset, height)));
 }
 
 void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int SpawnChance, float Height, int Rotation)
@@ -147,17 +156,32 @@ void AProceduralRoom::SpawnCrates(UClass* CrateToSpawn, int ActorSize, int Spawn
 
 void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel, UClass* PrmFood)
 {
-	int XSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
-	int YSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
-	int Rotation = FMath::RandRange(0, 360);
+	int XSpawn;
+	int YSpawn;
+	int Rotation;
 
-	ASpot* ABarrel = GetWorld()->SpawnActor<ASpot>(
-		PrmBarrel, FVector(XSpawn * TileableFloorAndWallSize, YSpawn * TileableFloorAndWallSize, SpawnHeight),
-		FRotator(0, Rotation, 0), SpawnInfo);
-	ABarrel->SetSpotOccupied();
+	ASpot* ABarrel = nullptr;
+	while (!ABarrel)
+	{
+		XSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+		YSpawn = FMath::RandRange(-FloorHalfSize, FloorHalfSize);
+		
+		Rotation = FMath::RandRange(0, 360);
+		ABarrel = GetWorld()->SpawnActor<ASpot>(
+			PrmBarrel, FVector(XSpawn * TileableFloorAndWallSize, YSpawn * TileableFloorAndWallSize, SpawnHeight),
+			FRotator(0, Rotation, 0), SpawnInfo);
 
-	GetWorld()->SpawnActor<APickableItem>(
-		PrmFood, ABarrel->GetFoodSpotTransform().GetLocation(), ABarrel->GetFoodSpotTransform().Rotator());
+		UE_LOG(LogTemp, Error, TEXT("barrel with food try spawn"))
+	}
+
+	if (ABarrel)
+	{
+		UE_LOG(LogTemp, Error, TEXT("barrel with food spawned"))
+		ABarrel->SetSpotOccupied();
+		GetWorld()->SpawnActor<APickableItem>(
+			PrmFood, ABarrel->GetFoodSpotTransform().GetLocation(), ABarrel->GetFoodSpotTransform().Rotator());
+	}
+
 
 	Cast<AMainGameState>(GetWorld()->GetGameState())->AddSpotToArray(ABarrel);
 
