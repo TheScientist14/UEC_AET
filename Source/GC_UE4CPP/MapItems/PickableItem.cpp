@@ -28,17 +28,19 @@ APickableItem::APickableItem()
 	LeftHandAnchor->SetupAttachment(RootComponent);
 }
 
+// picks it up if caller is able to
+// if has already been picked up, puts it down
 void APickableItem::OnInteract(AActor* Caller)
 {
 	if (IsCurrentlyPickable) {
 		UPickUpAbilityComponent* PickUpAbilityComponent = Caller->FindComponentByClass<UPickUpAbilityComponent>();
 		if (PickUpAbilityComponent) {
-			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Picked up");
 			LifterPickUpAbility = PickUpAbilityComponent;
 			SetOnGroundPhysics(false);
 			IsCurrentlyPickable = !LifterPickUpAbility->PickUpActor(this);
 			// on success
 			if (!IsCurrentlyPickable) {
+				// searching for spot to update
 				TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
 				ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
 				TArray<AActor*> IgnoreActors;
@@ -48,11 +50,9 @@ void APickableItem::OnInteract(AActor* Caller)
 				bool ContinueSearching = true;
 				int i = 0;
 				while (i < OverlappedActors.Num() && ContinueSearching) {
-					//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, OverlappedActors[i]->GetName());
 					ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
 					if (Spot) {
 						if ((GetActorLocation() - Spot->GetFoodSpotTransform().GetLocation()).SizeSquared() < 2500) { // getting squared size is faster
-							//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "-1");
 							Spot->SetSpotFree();
 							ContinueSearching = false;
 						}
@@ -69,11 +69,9 @@ void APickableItem::OnInteract(AActor* Caller)
 	}
 	else if (LifterPickUpAbility) {
 		if (Caller == (AActor*)(LifterPickUpAbility->GetOwner())) {
-			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "Pickable item has been interacted and ask lifter to be put down");
 			LifterPickUpAbility->PutDownPickedUpActor();
 		}
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Yellow, "OnInteract end");
 }
 
 void APickableItem::SetIsCurrentlyPickable(bool Setter)
@@ -95,16 +93,12 @@ FTransform APickableItem::GetRightHandAnchor() {
 	return FTransform::FTransform(RightHandAnchor->GetRelativeRotation(), -RightHandAnchor->GetRelativeLocation());
 }
 
-FTransform APickableItem::GetLeftHandAnchor() {
-	return FTransform::FTransform(LeftHandAnchor->GetRelativeRotation(), -LeftHandAnchor->GetRelativeLocation());
-}
-
 FTransform APickableItem::OnPutDown() {
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Put down");
 	IsCurrentlyPickable = true;
 	SetOnGroundPhysics(true);
 	if (IsPutDownTargetOverriden) {
 		IsPutDownTargetOverriden = false;
+		PutDownOverrideTarget.SetScale3D(GetActorScale());
 		return PutDownOverrideTarget;
 	}
 	else {
@@ -117,23 +111,19 @@ FTransform APickableItem::OnPutDown() {
 		bool HasFoundLocation = false;
 		int i = 0;
 		while (i < OverlappedActors.Num() && !HasFoundLocation) {
-			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, OverlappedActors[i]->GetName());
 			AFoodChest* Chest = Cast<AFoodChest>(OverlappedActors[i]);
 			if (Chest) {
 				FTransform TmpT = Chest->GetActorTransform();
 				return FTransform::FTransform(TmpT.Rotator(), TmpT.GetLocation(), GetActorScale());
 			}
 			else {
-				//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "Not a chest");
 				ASpot* Spot = Cast<ASpot>(OverlappedActors[i]);
 				if (Spot) {
 					Spot->SetSpotOccupied();
 					FTransform TmpT = Spot->GetFoodSpotTransform();
-					//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Black, "Transform" + TmpT.ToString());
 					return FTransform::FTransform(TmpT.GetRotation(), TmpT.GetLocation(), GetActorScale());
 				}
 				else {
-					//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Orange, "neither a spot");
 					i++;
 				}
 			}
@@ -143,8 +133,6 @@ FTransform APickableItem::OnPutDown() {
 }
 
 void APickableItem::SetOnGroundPhysics(bool IsOnGround) {
-	//SetActorTickEnabled(IsOnGround);
 	StaticMesh->SetSimulatePhysics(IsOnGround);
 	StaticMesh->SetCollisionEnabled(IsOnGround ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
-	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, IsOnGround?"true":"false");
 }
