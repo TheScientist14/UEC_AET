@@ -178,8 +178,9 @@ void AProceduralRoom::SpawnBarrels(UClass* PrmBarrel, UClass* PrmFood)
 	{
 		UE_LOG(LogTemp, Error, TEXT("barrel with food spawned"))
 		ABarrel->SetSpotOccupied();
-		GetWorld()->SpawnActor<APickableItem>(
+		APickableItem* AFood = GetWorld()->SpawnActor<APickableItem>(
 			PrmFood, ABarrel->GetFoodSpotTransform().GetLocation(), ABarrel->GetFoodSpotTransform().Rotator());
+		AFood->SetOnGroundPhysics(true);
 	}
 
 
