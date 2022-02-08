@@ -5,6 +5,7 @@
 #include "EnemyController.h"
 #include "GC_UE4CPP/Game/MainGameState.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
@@ -62,6 +63,11 @@ void AGoblinCharacter::InteractFood()
 
 void AGoblinCharacter::SpawnFood(UClass* PrmFood)
 {
+	if (FoodOnHand)
+	{
+		FoodOnHand->Destroy();
+		FoodOnHand = nullptr;
+	}
 	FoodOnHand = GetWorld()->SpawnActor<APickableItem>(PrmFood, GetActorLocation(), GetActorRotation(), SpawnInfo);
 	FoodOnHand->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
 		"RightHandSocket");
@@ -69,6 +75,7 @@ void AGoblinCharacter::SpawnFood(UClass* PrmFood)
 	FoodOnHand->SetOnGroundPhysics(false);
 	PickUpAbilityComponent->PickedUpActor = FoodOnHand;
 	FoodOnHand->SetLifterPickUpAbility(PickUpAbilityComponent);
+	GetCharacterMovement()->MaxWalkSpeed /= 2; 
 }
 
 void AGoblinCharacter::PutDownFood()
@@ -76,5 +83,10 @@ void AGoblinCharacter::PutDownFood()
 	if(FoodOnHand != nullptr)
 	{
 		FoodOnHand->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		FoodOnHand->SetIsCurrentlyPickable(true);
+		FoodOnHand->SetOnGroundPhysics(true);
+		PickUpAbilityComponent->PickedUpActor = nullptr;
+		FoodOnHand->SetLifterPickUpAbility(nullptr);
+		GetCharacterMovement()->MaxWalkSpeed *= 2;
 	} 
 }

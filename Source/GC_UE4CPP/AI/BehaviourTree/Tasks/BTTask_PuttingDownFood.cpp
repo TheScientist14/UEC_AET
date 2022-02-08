@@ -27,20 +27,18 @@ EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent&
 	{
 		if (!OnSpot)
 		{
+			cont->PutDownFood();
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("PuttingDownFood !OnSpot"));
 			Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsVector("FoodPosition", cont->GetTransform().GetLocation());
 		} else
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("PuttingDownFood OnSpot"));
-			
+			cont->FoodOnHand->OverridePutDownTransform(cont->Spot->GetFoodSpotTransform());
+			EnemyAI->GetBlackboardComponent()->ClearValue("Spot");
 			cont->Spot = nullptr;
-			Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->ClearValue("FoodPosition");
+			cont->InteractFood();
 		}
-		cont->InteractFood();
 		Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsBool("HasFood", false);
-
-		EnemyAI->GetBlackboardComponent()->ClearValue("Spot");
-		cont->Spot = nullptr;
 	}
 	return EBTNodeResult::Succeeded;
 }
