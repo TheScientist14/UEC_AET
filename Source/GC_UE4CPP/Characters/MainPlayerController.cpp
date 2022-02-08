@@ -15,9 +15,9 @@ AMainPlayerController::AMainPlayerController()
 void AMainPlayerController::BeginPlay() {
     Super::BeginPlay();
 
-	ProgressionBarWidget = CreateWidget(this, ProgressionBarClass);
-	ProgressionBarWidget->AddToViewport();
-	ProgressionBarWidget->SetVisibility(ESlateVisibility::Visible);
+	HUDWidget = CreateWidget(this, ProgressionBarClass);
+	HUDWidget->AddToViewport();
+	HUDWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void AMainPlayerController::OnPossess(APawn* aPawn) {
