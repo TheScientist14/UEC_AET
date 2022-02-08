@@ -16,9 +16,11 @@ AFoodChest::AFoodChest()
 	MeshChest = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Chest Body"));
 	SetRootComponent(MeshChest);
 
-	MeshLid = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Chest Lid"));
+	Pivot = CreateDefaultSubobject<USceneComponent>(TEXT("Chest Lid Pivot"));
+	Pivot->SetupAttachment(RootComponent);
 
-	MeshLid->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	MeshLid = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Chest Lid"));
+	MeshLid->SetupAttachment(Pivot);
 }
 
 // Called when the game starts or when spawned
@@ -33,6 +35,21 @@ void AFoodChest::BeginPlay()
 void AFoodChest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (OpenTimer > 0) {
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * ((TimeToOpen - OpenTimer) / TimeToOpen)));
+		OpenTimer -= DeltaTime;
+		if (OpenTimer <= 0) {
+			PlayClosingAnimation();
+		}
+	}
+	if (CloseTimer > 0) {
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * (CloseTimer / TimeToOpen)));
+		CloseTimer -= DeltaTime;
+		if (CloseTimer <= 0) {
+			Pivot->SetRelativeRotation(FRotator::ZeroRotator);
+		}
+	}
 }
 
 void AFoodChest::OnInteract(AActor* Caller)
@@ -46,6 +63,8 @@ void AFoodChest::OnInteract(AActor* Caller)
 		Player->PickUpAbilityComponent->PutDownPickedUpActor();
 
 		DelegateHandle = Player->PickUpAbilityComponent->OnPutDown.AddUObject(this, &AFoodChest::DestroyFood);
+		WaitToClose = true;
+		PlayOpeningAnimation();
 		
 		UE_LOG(LogTemp, Warning, TEXT("Interacted with chest"));
 	}
@@ -56,4 +75,30 @@ void AFoodChest::DestroyFood(APickableItem* PrmItem)
 	PrmItem->Destroy();
 	GameMode->AddStashedFood();
 	Player->PickUpAbilityComponent->OnPutDown.Remove(DelegateHandle);
+	WaitToClose = false;
+	if (OpenTimer <= 0) {
+		PlayClosingAnimation();
+	}
+}
+
+void AFoodChest::PlayOpeningAnimation() {
+	if (OpenTimer <= 0) {
+		OpenTimer = TimeToOpen;
+		if (CloseTimer > 0) {
+			OpenTimer -= CloseTimer;
+		}
+		CloseTimer = 0;
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * ((TimeToOpen - OpenTimer) / TimeToOpen)));
+	}
+}
+
+void AFoodChest::PlayClosingAnimation() {
+	if (!WaitToClose && CloseTimer <= 0) {
+		CloseTimer = TimeToOpen;
+		if (OpenTimer > 0) {
+			CloseTimer -= OpenTimer;
+		}
+		OpenTimer = 0;
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * (CloseTimer / TimeToOpen)));
+	}
 }
