@@ -4,9 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GC_UE4CPP/Characters/PlayerCharacter.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "FoodChest.generated.h"
+
+class AMainGameMode;
+class UStaticMeshComponent;
+class USceneComponent;
+class APlayerCharacter;
+class APickableItem;
 
 UCLASS()
 class GC_UE4CPP_API AFoodChest : public AActor, public IInteractable
@@ -17,7 +22,7 @@ public:
 	// Sets default values for this actor's properties
 	AFoodChest();
 	UPROPERTY()
-	class AMainGameMode* GameMode;
+	AMainGameMode* GameMode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
 	UStaticMeshComponent* MeshChest;
@@ -25,12 +30,25 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
 	UStaticMeshComponent* MeshLid;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* Pivot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float TimeToOpen = 0.3f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float OpenedAngle = 100;
+
 private:
 
 	UPROPERTY()
 	APlayerCharacter* Player;
 	
 	FDelegateHandle DelegateHandle;	
+
+	float OpenTimer = 0;
+	float CloseTimer = 0;
+	bool WaitToClose = false;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -42,5 +60,11 @@ public:
 	virtual void OnInteract(AActor* Caller) override;
 
 	UFUNCTION()
-	void DestroyFood(class APickableItem* PrmItem);
+	void DestroyFood(APickableItem* PrmItem);
+
+	UFUNCTION()
+	void PlayOpeningAnimation();
+
+	UFUNCTION()
+	void PlayClosingAnimation();
 };
