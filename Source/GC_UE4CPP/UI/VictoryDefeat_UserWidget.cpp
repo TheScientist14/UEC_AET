@@ -14,7 +14,7 @@
 void UVictoryDefeat_UserWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
+	// Events for the button in the UI
 	if (ButtonRestart)
 	{
 		ButtonRestart->OnClicked.AddUniqueDynamic(this, &UVictoryDefeat_UserWidget::ReloadLevel);
@@ -23,12 +23,21 @@ void UVictoryDefeat_UserWidget::NativeConstruct()
 
 void UVictoryDefeat_UserWidget::NativeOnInitialized()
 {
+	// Add listener for OnGameFinished event
 	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
-	GameMode->OnGameFinished.AddUObject(this, &UVictoryDefeat_UserWidget::SetUI);
+	if(GameMode)
+	{
+		GameMode->OnGameFinished.AddUObject(this, &UVictoryDefeat_UserWidget::SetUI);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to cast GetGameMode() to AMainGameMode"))
+	}
 }
 
 void UVictoryDefeat_UserWidget::SetUI(bool PrmIsGameFinished, bool PrmIsGameWon)
-{	
+{
+	// Sets the appropriate text and color;
 	if (PrmIsGameWon)
 	{		
 		Text->SetText(FText::FromString(TEXT("VICTORY !")));
@@ -43,8 +52,16 @@ void UVictoryDefeat_UserWidget::SetUI(bool PrmIsGameFinished, bool PrmIsGameWon)
 
 void UVictoryDefeat_UserWidget::ReloadLevel()
 {
+	// Reloads the current level, sets the mouse for game use and hides the cursor
 	UGameplayStatics::OpenLevel(this, FName(GetWorld()->GetName()), false);
-	APlayerController* Player = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0));
-	Player->bShowMouseCursor = false;
-	Player->SetInputMode(FInputModeGameOnly());
+	APlayerController* Player = UGameplayStatics::GetPlayerController(GetWorld(),0);
+	if(Player)
+	{
+		Player->bShowMouseCursor = false;
+		Player->SetInputMode(FInputModeGameOnly());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to GetPlayerController()"))
+	}
 }

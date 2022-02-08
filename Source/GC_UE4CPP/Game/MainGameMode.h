@@ -3,9 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MainGameState.h"
 #include "GameFramework/GameModeBase.h"
-#include "GC_UE4CPP/UI/VictoryDefeat_UserWidget.h"
 #include "MainGameMode.generated.h"
 
 /**
@@ -18,7 +16,7 @@ class GC_UE4CPP_API AMainGameMode : public AGameModeBase
 
 public:
 	virtual void BeginPlay() override;
-	ASpot* GetRandomSpot();
+	class ASpot* GetRandomSpot();
 	int GetFoodOnLevel();
 	int GetMaxFoodOnLevel();
 	void AddFood();
@@ -30,7 +28,7 @@ public:
 	bool NeedsFood();
 
 	UPROPERTY(EditAnywhere, Category="Classes")
-	TSubclassOf<UVictoryDefeat_UserWidget> VD_UI;
+	TSubclassOf<class UVictoryDefeat_UserWidget> VD_UI; //VictoryDefeat_UI
 
 	UPROPERTY()
 	UUserWidget* Widget;
@@ -47,7 +45,7 @@ public:
 private:
 	
 	UPROPERTY()
-	AMainGameState* MainGameState;
+	class AMainGameState* MainGameState;
 	
 	UPROPERTY()
 	APlayerController* Player;

@@ -25,12 +25,6 @@ void ASpot::BeginPlay()
 	GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
 }
 
-// Called every frame
-void ASpot::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
 bool ASpot::HasFood()
 {
 	return Occupied;
@@ -41,7 +35,15 @@ void ASpot::SetSpotOccupied()
 	if (!Occupied)
 	{
 		Occupied = true;
-		GameMode->AddFood();
+		if(GameMode)
+		{
+			GameMode->AddFood();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to cast GetGameMode to AMainGameMode"))
+		}
+		
 	}
 }
 
@@ -50,7 +52,14 @@ void ASpot::SetSpotFree()
 	if (Occupied)
 	{
 		Occupied = false;
-		GameMode->RemoveFood();
+		if(GameMode)
+		{
+			GameMode->RemoveFood();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to cast GetGameMode to AMainGameMode"))
+		}
 	}
 }
 

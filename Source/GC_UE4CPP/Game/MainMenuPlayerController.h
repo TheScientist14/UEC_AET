@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "GC_UE4CPP/Characters/MainPlayerController.h"
 #include "MainMenuPlayerController.generated.h"
 
 /**

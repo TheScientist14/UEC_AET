@@ -14,17 +14,3 @@ ASimpleActor::ASimpleActor()
 
 }
 
-// Called when the game starts or when spawned
-void ASimpleActor::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void ASimpleActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-

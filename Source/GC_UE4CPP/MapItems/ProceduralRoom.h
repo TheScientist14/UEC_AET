@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PickableItem.h"
 #include "GameFramework/Actor.h"
 #include "ProceduralRoom.generated.h"
 
@@ -21,8 +20,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|SmallCrate")
 	TSubclassOf<AActor> CrateClass;
@@ -49,7 +46,7 @@ public:
     TSubclassOf<AActor> CrateClump2;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="Room")
-	TSubclassOf<APickableItem> Food;
+	TSubclassOf<class APickableItem> Food;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|CrateClump")
 	int CrateClumpSize = 420;
@@ -74,7 +71,7 @@ public:
 
 	void Spawn();
 	
-	void SpawnFloor();
+	void SpawnRoom();
 
 	void SpawnWall(int I, int J, int IOffset, int JOffset, int height, int Rotation);
 

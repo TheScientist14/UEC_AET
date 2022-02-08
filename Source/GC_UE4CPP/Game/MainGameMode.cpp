@@ -3,29 +3,42 @@
 
 #include "MainGameMode.h"
 
+#include "MainGameState.h"
 #include "Blueprint/UserWidget.h"
 #include "GC_UE4CPP/MapItems/Spot.h"
 #include "Kismet/GameplayStatics.h"
+#include "GC_UE4CPP/UI/VictoryDefeat_UserWidget.h"
 
 void AMainGameMode::BeginPlay()
 {
+	//casts and Broadcast the GameModeBeginPlayFinished event
 	Super::BeginPlay();
 	MainGameState = Cast<AMainGameState>(GetWorld()->GetGameState());
+	if (!MainGameState)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to cast GetGameState() to AMainGameState"))
+	}
 	Player = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
 	GameModeBeginPlayFinished.Broadcast();
 }
 
 ASpot* AMainGameMode::GetRandomSpot()
 {
+	//returns a random ASpot* that hasn't got any food on it 
 	if (MainGameState->FoodOnLevel < GetMaxFoodOnLevel())
 	{
 		ASpot* SpotReturn;
 		do
 		{
 			SpotReturn = MainGameState->Spots[FMath::RandRange(0, MainGameState->Spots.Num() - 1)];
-		}while (SpotReturn->HasFood());
+		}
+		while (SpotReturn->HasFood());
+#if WITH_EDITOR
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red,
+		                                 FString::Printf(TEXT("SetSpotOccuped %s"), *SpotReturn->GetName()));
+#endif
 
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("SetSpotOccuped %s"), *SpotReturn->GetName()));
 		SpotReturn->SetSpotOccupied();
 		return SpotReturn;
 	}
@@ -56,6 +69,7 @@ void AMainGameMode::RemoveFood()
 
 void AMainGameMode::AddStashedFood()
 {
+	//Adds food to the stached food counter and broadcasts OnStashedFoodUpdate event
 	MainGameState->StashedFood++;
 	OnStashedFoodUpdate.Broadcast(MainGameState->StashedFood, MainGameState->MaxStashedFood);
 
@@ -68,6 +82,7 @@ void AMainGameMode::AddStashedFood()
 
 void AMainGameMode::EndGameDefeat()
 {
+	//Ends the game and generates the end UI 
 	MainGameState->IsGameEnded = true;
 	EndUI();
 }
@@ -81,6 +96,7 @@ void AMainGameMode::EndGameVictory()
 
 void AMainGameMode::EndUI()
 {
+	//Generates the en UI 
 	if (VD_UI)
 	{
 		Widget = CreateWidget(Player, VD_UI);
@@ -90,18 +106,25 @@ void AMainGameMode::EndUI()
 			Widget->AddToViewport();
 			OnGameFinished.Broadcast(MainGameState->IsGameEnded, MainGameState->IsWon);
 			Widget->SetVisibility(ESlateVisibility::Visible);
-			Player->SetInputMode(FInputModeUIOnly());
-			Player->bShowMouseCursor = true;
+			if (Player)
+			{
+				Player->SetInputMode(FInputModeUIOnly());
+				Player->bShowMouseCursor = true;
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("Failed to cast GetPlayerController() to APlayerController"))
+			}
 		}
 	}
 }
 
 bool AMainGameMode::NeedsFood()
 {
-	if(GetFoodOnLevel() < GetMaxFoodOnLevel())
+	//returns if there is enough food on the level
+	if (GetFoodOnLevel() < GetMaxFoodOnLevel())
 	{
 		return true;
 	}
 	return false;
 }
-
