@@ -9,12 +9,12 @@
 #include "GC_UE4CPP/Game/MainGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
-inline UBTTask_EndGame::UBTTask_EndGame(FObjectInitializer const& object_initialize)
+UBTTask_EndGame::UBTTask_EndGame(FObjectInitializer const& object_initialize)
 {
 	NodeName = "EndGame";
 }
 
-inline EBTNodeResult::Type UBTTask_EndGame::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_EndGame::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());

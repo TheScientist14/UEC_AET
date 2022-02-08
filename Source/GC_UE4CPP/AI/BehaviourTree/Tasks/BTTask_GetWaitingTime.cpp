@@ -6,7 +6,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GC_UE4CPP/AI/EnemyController.h"
 
-inline UBTTask_GetWaitingTime::UBTTask_GetWaitingTime(FObjectInitializer const& object_initialize)
+UBTTask_GetWaitingTime::UBTTask_GetWaitingTime(FObjectInitializer const& object_initialize)
 {
 	NodeName = "GetWaitingTime";
 }

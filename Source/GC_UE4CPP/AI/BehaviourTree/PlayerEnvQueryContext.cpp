@@ -18,9 +18,5 @@ void UPlayerEnvQueryContext::ProvideContext(FEnvQueryInstance& QueryInstance, FE
 		// I don't understand why cast is needed ¯\_(ツ)_/¯
 		UEnvQueryItemType_Actor::SetContextHelper(ContextData, temp);
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Context failed"))
-	}
 	
 }

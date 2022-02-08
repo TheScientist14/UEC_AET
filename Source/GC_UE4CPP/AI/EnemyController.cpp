@@ -3,41 +3,46 @@
 
 #include "EnemyController.h"
 
+
 #include "GoblinCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+
 AEnemyController::AEnemyController(FObjectInitializer const& object_initializer)
 {
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> obj(TEXT("BehaviorTree'/Game/Blueprints/Characters/AI/BT_Goblin.BT_Goblin'"));
-	if (obj.Succeeded())
-	{
-		BehaviourTree = obj.Object;	
-	}
 }
 
 void AEnemyController::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Error, TEXT("BeginPlay AIC"));
-	
-	RunBehaviorTree(BehaviourTree);
 }
 
 void AEnemyController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	AGoblinCharacter* Goblin = Cast<AGoblinCharacter>(InPawn);
+	RunBehaviorTree(BehaviourTree);
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "If BehaviorTree");
+	UE_LOG(LogTemp, Error, TEXT("If BehaviorTree"));
 
-	GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Spawn init blackboard before if");
-	UE_LOG(LogTemp, Error, TEXT("Spawn init blackboard before if"));
-	if (Blackboard)
+	AGoblinCharacter* GoblinCharacter = Cast<AGoblinCharacter>(InPawn);
+
+	if (GoblinCharacter)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Blue, "Spawn init blackboard");
-		UE_LOG(LogTemp, Error, TEXT("Spawn init blackboard"));
-		Blackboard->SetValueAsVector("Spawn", Goblin->Spawn);
+		if (GetBlackboardComponent())
+		{
+			GetBlackboardComponent()->SetValueAsVector("Spawn", InPawn->GetActorLocation());
+			GetBlackboardComponent()->SetValueAsBool("Wait", GoblinCharacter->Wait);
+			GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "If BB");
+			UE_LOG(LogTemp, Error, TEXT("If BB"));
+		}
 	}
 }
