@@ -76,8 +76,9 @@ void APlayerCharacter::MoveRight(float DeltaY)
 	AddMovementInput(Camera->GetRightVector(), DeltaY);
 }
 
-// stands up if sit down
+// stands up if is sitting down
 // otherwise, try to interact with the first interactable found
+// with a sphere overlap
 // interact with picked up item if nothing to interact with
 void APlayerCharacter::Interact()
 {
@@ -85,7 +86,6 @@ void APlayerCharacter::Interact()
 		SitDownAbilityComponent->StandUp();
 	}
 	else {
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying to interacted");
 		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
 		ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
 		TArray<AActor*> IgnoreActors;
@@ -95,7 +95,6 @@ void APlayerCharacter::Interact()
 		bool HasInteracted = false;
 		int i = 0;
 		while(i < OverlappedActors.Num() && !HasInteracted) {
-			//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Purple, "Trying with " + OverlappedActors[i]->GetName());
 			IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
 			if (Interactable) {
 				Interactable->OnInteract(this);
@@ -111,6 +110,7 @@ void APlayerCharacter::Interact()
 	}
 }
 
+// Game ended event handler
 void APlayerCharacter::OnGameEnded(bool HasGameEnded, bool HasWon) {
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 	GetCharacterMovement()->Velocity = FVector::ZeroVector;

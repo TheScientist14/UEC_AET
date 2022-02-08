@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MainPlayerController.generated.h"
 
+class APlayerCharacter;
 
 UCLASS()
 class GC_UE4CPP_API AMainPlayerController : public APlayerController
@@ -16,13 +17,13 @@ public:
 
 	AMainPlayerController();
 
-	class APlayerCharacter* PlayerCharacter;
+	APlayerCharacter* PlayerCharacter;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> ProgressionBarClass;
 
 	UPROPERTY()
-	UUserWidget* ProgressionBarWidget;
+	UUserWidget* HUDWidget;
 
 	virtual void BeginPlay() override;
 	

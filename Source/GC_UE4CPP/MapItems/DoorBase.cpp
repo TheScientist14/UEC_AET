@@ -52,7 +52,6 @@ void ADoorBase::Open() {
 			OpenTimer -= CloseTimer;
 		}
 		CloseTimer = 0;
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, FString::Printf(TEXT("Opening timer : %d"), OpenTimer));
 		DoorPivot->SetRelativeRotation(FRotator::MakeFromEuler(InitEuler + FVector::UpVector * OpeningAngle * ((TimeToOpen - OpenTimer) / TimeToOpen)));
 	}
 }

@@ -10,6 +10,11 @@ class UCharacterMovementComponent;
 class USkeletalMeshComponent;
 class APickableItem;
 
+/*
+ * This component need animations on owner to properly
+ * work as it relies on anim notifies
+ */
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GC_UE4CPP_API UPickUpAbilityComponent : public UActorComponent
 {
@@ -40,13 +45,15 @@ public:
 	bool PickUpActor(APickableItem* ActorToPickUp);
 
 	UFUNCTION()
+	void PutDownPickedUpActor();
+
+	// Anim notifies handlers
+
+	UFUNCTION()
 	void BindPickedUpActor();
 
 	UFUNCTION()
 	void OnHasPickedUp();
-
-	UFUNCTION()
-	void PutDownPickedUpActor();
 
 	UFUNCTION()
 	void UnbindPickedUpActor();
@@ -54,6 +61,8 @@ public:
 	UFUNCTION()
 	void OnHasPutDown();
 
+
+	// Event fired when picked up acotr has been unbound
 	DECLARE_MULTICAST_DELEGATE_OneParam(FActorPutDownSignature, APickableItem*);
 	FActorPutDownSignature OnPutDown;
 

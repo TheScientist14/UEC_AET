@@ -47,12 +47,6 @@ void UCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	}
 }
 
-void UCharacterAnimInstance::NativeUninitializeAnimation() {
-	Super::NativeUninitializeAnimation();
-	Character = nullptr;
-	PickUpAbilityComponent = nullptr;
-}
-
 void UCharacterAnimInstance::PlayAfterGameAnimation(bool HasGameFinished, bool HasPlayerWon) {
 	HasGameEnded = HasGameFinished;
 	HasWon = HasPlayerWon;

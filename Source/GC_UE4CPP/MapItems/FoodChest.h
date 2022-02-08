@@ -10,7 +10,7 @@
 class AMainGameMode;
 class UStaticMeshComponent;
 class USceneComponent;
-class APlayerCharacter;
+class UPickUpAbilityComponent;
 class APickableItem;
 
 UCLASS()
@@ -42,7 +42,7 @@ public:
 private:
 
 	UPROPERTY()
-	APlayerCharacter* Player;
+	UPickUpAbilityComponent* PickUpAbilityComponent;
 	
 	FDelegateHandle DelegateHandle;	
 

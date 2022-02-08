@@ -21,9 +21,6 @@ public:
 	// returns where the right hand should carry the item
 	FTransform GetRightHandAnchor();
 
-	// returns where the left hand should carry the item
-	FTransform GetLeftHandAnchor();
-
 	// called by Picker when Item has been put down
 	// returns where the item would like to be put down
 	FTransform OnPutDown();
@@ -35,9 +32,6 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	USceneComponent* RightHandAnchor;
-
-	UPROPERTY(EditAnywhere)
-	USceneComponent* LeftHandAnchor;
 
 	UPROPERTY(EditAnywhere)
 	UPickUpAbilityComponent* LifterPickUpAbility;

@@ -2,11 +2,13 @@
 
 
 #include "PickUpAbilityComponent.h"
-#include "GC_UE4CPP/MapItems/PickableItem.h"
+
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+
+#include "GC_UE4CPP/MapItems/PickableItem.h"
 
 // Sets default values for this component's properties
 UPickUpAbilityComponent::UPickUpAbilityComponent()
@@ -38,8 +40,8 @@ bool UPickUpAbilityComponent::PickUpActor(APickableItem* ActorToPickUp)
 {
 	if (ActorToPickUp == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Can't pick up null"))
-			return false;
+		UE_LOG(LogTemp, Error, TEXT("Can't pick up null"));
+		return false;
 	}
 	if (!PickedUpActor && !TempPickedActor)
 	{
@@ -50,10 +52,20 @@ bool UPickUpAbilityComponent::PickUpActor(APickableItem* ActorToPickUp)
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "Trying to pick up when you already are lifting something");
+		UE_LOG(LogTemp, Error, TEXT("Trying to pick up when you already are lifting something"));
 		return false;
 	}
 }
+
+void UPickUpAbilityComponent::PutDownPickedUpActor()
+{
+	bIsPickingUpOrPuttingDown = true;
+	CharacterMovement->SetMovementMode(EMovementMode::MOVE_None);
+}
+
+/*
+ * Anim notifies handlers
+ */
 
 void UPickUpAbilityComponent::BindPickedUpActor()
 {
@@ -61,21 +73,15 @@ void UPickUpAbilityComponent::BindPickedUpActor()
 	{
 		PickedUpActor = TempPickedActor;
 		TempPickedActor = nullptr;
-		FTransform OffsetTarget = PickedUpActor->GetRightHandAnchor();
-		FTransform HandSocketTransform = Mesh->GetSocketTransform("RightHandSocket");
-		/*PickedUpActor->SetActorLocationAndRotation(
-			HandSocketTransform.GetLocation() - OffsetTarget.GetLocation(),
-			FQuat::MakeFromEuler(HandSocketTransform.GetRotation().Euler() + OffsetTarget.GetRotation().Euler()));
-		PickedUpActor->AttachToComponent(Mesh, FAttachmentTransformRules::KeepWorldTransform, "RightHandSocket");*/
 		PickedUpActor->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, "RightHandSocket");
+		// offset to properly handle mesh position
+		FTransform OffsetTarget = PickedUpActor->GetRightHandAnchor();
 		PickedUpActor->SetActorRelativeLocation(-OffsetTarget.GetLocation());
 		PickedUpActor->SetActorRelativeRotation(OffsetTarget.GetRotation());
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *OffsetTarget.GetLocation().ToString());
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *OffsetTarget.GetRotation().Euler().ToString());
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Cyan, "No actor to bind");
+		UE_LOG(LogTemp, Error, TEXT("No actor to bind"));
 	}
 }
 
@@ -84,12 +90,6 @@ void UPickUpAbilityComponent::OnHasPickedUp()
 	CharacterMovement->SetMovementMode(EMovementMode::MOVE_Walking);
 	bIsPickingUpOrPuttingDown = false;
 	CharacterMovement->MaxWalkSpeed /= 2;
-}
-
-void UPickUpAbilityComponent::PutDownPickedUpActor()
-{
-	bIsPickingUpOrPuttingDown = true;
-	CharacterMovement->SetMovementMode(EMovementMode::MOVE_None);
 }
 
 void UPickUpAbilityComponent::UnbindPickedUpActor()

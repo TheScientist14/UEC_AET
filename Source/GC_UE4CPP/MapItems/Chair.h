@@ -25,9 +25,18 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* PlayerTransform;
 
+	UPROPERTY(EditAnywhere)
+	float WaitingTimeToWin = 60;
+
 	FTransform GetPreAnimationPlayerTransform();
 
+protected:
+
+	float SitTimer;
+
 public:
+
+	virtual void Tick(float DeltaTime) override;
 
 	virtual void OnInteract(AActor* Caller) override;
 };

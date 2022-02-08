@@ -2,8 +2,9 @@
 
 
 #include "FoodChest.h"
+
 #include "PickableItem.h"
-#include "GC_UE4CPP/Characters/PlayerCharacter.h"
+//#include "GC_UE4CPP/Characters/PlayerCharacter.h"
 #include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
 
@@ -54,27 +55,39 @@ void AFoodChest::Tick(float DeltaTime)
 
 void AFoodChest::OnInteract(AActor* Caller)
 {
-	
-	Player = Cast<APlayerCharacter>(Caller);
-
-	if (Player && Player->PickUpAbilityComponent->GetPickedUpActor())
+	if (Caller)
 	{
-		APickableItem* Item = Player->PickUpAbilityComponent->GetPickedUpActor();
-		Player->PickUpAbilityComponent->PutDownPickedUpActor();
+		PickUpAbilityComponent = Caller->FindComponentByClass<UPickUpAbilityComponent>();
+		if (PickUpAbilityComponent) {
+			if (PickUpAbilityComponent->GetPickedUpActor()) {
+				APickableItem* Item = PickUpAbilityComponent->GetPickedUpActor();
+				PickUpAbilityComponent->PutDownPickedUpActor();
 
-		DelegateHandle = Player->PickUpAbilityComponent->OnPutDown.AddUObject(this, &AFoodChest::DestroyFood);
-		WaitToClose = true;
-		PlayOpeningAnimation();
-		
-		UE_LOG(LogTemp, Warning, TEXT("Interacted with chest"));
+				DelegateHandle = PickUpAbilityComponent->OnPutDown.AddUObject(this, &AFoodChest::DestroyFood);
+				WaitToClose = true;
+				PlayOpeningAnimation();
+				return;
+			}
+		}
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Chest need a non-null caller actor with a PickUpAbilityComponent to be interacted"));
 }
 
 void AFoodChest::DestroyFood(APickableItem* PrmItem)
 {
 	PrmItem->Destroy();
-	GameMode->AddStashedFood();
-	Player->PickUpAbilityComponent->OnPutDown.Remove(DelegateHandle);
+	if (GameMode) {
+		GameMode->AddStashedFood();
+	}
+	else {
+		UE_LOG(LogTemp, Error, TEXT("Failed to cast game mode to MainGameMode, stashed found counter not updated"));
+	}
+	if (PickUpAbilityComponent) {
+		PickUpAbilityComponent->OnPutDown.Remove(DelegateHandle);
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("No PickUpAbilityComponent, who dropped it ?"));
+	}
 	WaitToClose = false;
 	if (OpenTimer <= 0) {
 		PlayClosingAnimation();

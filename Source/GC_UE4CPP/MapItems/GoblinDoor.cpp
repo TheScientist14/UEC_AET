@@ -2,7 +2,9 @@
 
 
 #include "GoblinDoor.h"
+
 #include "Components/SphereComponent.h"
+
 #include "GC_UE4CPP/AI/GoblinCharacter.h"
 
 // Sets default values
@@ -21,7 +23,6 @@ void AGoblinDoor::BeginPlay() {
 
 void AGoblinDoor::OnGoblinApproaching(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if (Cast<AGoblinCharacter>(OtherActor)) {
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::White, "Goblin door need to open");
 		if(!CloseGoblins.Contains(OtherActor)){
 			if(CloseGoblins.Num() == 0){
 				Open();
@@ -39,5 +40,6 @@ void AGoblinDoor::OnGoblinLeaving(UPrimitiveComponent* OverlappedComponent, AAct
 	}
 }
 
+// overriding the auto closing
 void AGoblinDoor::OnOpened() {
 }

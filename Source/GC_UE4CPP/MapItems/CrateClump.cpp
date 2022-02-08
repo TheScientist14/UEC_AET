@@ -18,7 +18,6 @@ ACrateClump::ACrateClump()
 	StaticMesh4 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh4"));
 	StaticMesh5 = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh5"));
 
-	//StaticMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	StaticMesh1->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	StaticMesh2->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	StaticMesh3->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -31,11 +30,3 @@ void ACrateClump::BeginPlay()
 {
 	Super::BeginPlay();
 }
-
-// Called every frame
-void ACrateClump::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-
