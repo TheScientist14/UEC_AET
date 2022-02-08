@@ -35,17 +35,16 @@ void AFoodChest::BeginPlay()
 void AFoodChest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	if (OpenTimer > 0) {
-		FVector Euler = Pivot->GetComponentRotation().Euler();
-		Pivot->SetWorldRotation(FRotator::MakeFromEuler(Euler + FVector::BackwardVector * ((OpenedAngle / TimeToOpen) * DeltaTime)));
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * ((TimeToOpen - OpenTimer) / TimeToOpen)));
 		OpenTimer -= DeltaTime;
 		if (OpenTimer <= 0) {
 			PlayClosingAnimation();
 		}
 	}
 	if (CloseTimer > 0) {
-		FVector Euler = Pivot->GetComponentRotation().Euler();
-		Pivot->SetWorldRotation(FRotator::MakeFromEuler(Euler - FVector::BackwardVector * ((OpenedAngle / TimeToOpen) * DeltaTime)));
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * (CloseTimer / TimeToOpen)));
 		CloseTimer -= DeltaTime;
 		if (CloseTimer <= 0) {
 			Pivot->SetRelativeRotation(FRotator::ZeroRotator);
@@ -83,15 +82,23 @@ void AFoodChest::DestroyFood(APickableItem* PrmItem)
 }
 
 void AFoodChest::PlayOpeningAnimation() {
-	Pivot->SetRelativeRotation(FRotator::ZeroRotator);
-	OpenTimer = TimeToOpen;
-	CloseTimer = 0;
+	if (OpenTimer <= 0) {
+		OpenTimer = TimeToOpen;
+		if (CloseTimer > 0) {
+			OpenTimer -= CloseTimer;
+		}
+		CloseTimer = 0;
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * ((TimeToOpen - OpenTimer) / TimeToOpen)));
+	}
 }
 
 void AFoodChest::PlayClosingAnimation() {
-	if (!WaitToClose) {
-		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle));
-		OpenTimer = 0;
+	if (!WaitToClose && CloseTimer <= 0) {
 		CloseTimer = TimeToOpen;
+		if (OpenTimer > 0) {
+			CloseTimer -= OpenTimer;
+		}
+		OpenTimer = 0;
+		Pivot->SetRelativeRotation(FRotator::MakeFromEuler(FVector::BackwardVector * OpenedAngle * (CloseTimer / TimeToOpen)));
 	}
 }
