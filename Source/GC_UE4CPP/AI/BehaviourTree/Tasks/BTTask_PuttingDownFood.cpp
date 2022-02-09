@@ -28,14 +28,10 @@ EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent&
 		if (!OnSpot)
 		{
 			GoblinCharacter->PutDownFood();
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("PuttingDownFood !OnSpot"));
-			Cast<AEnemyController>(GoblinCharacter->GetController())->GetBlackboardComponent()->SetValueAsVector(
-				"FoodPosition", GoblinCharacter->GetTransform().GetLocation());
+			EnemyAI->GetBlackboardComponent()->SetValueAsVector("FoodPosition", GoblinCharacter->GetTransform().GetLocation());
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("PuttingDownFood OnSpot"));
-		
 			GoblinCharacter->FoodOnHand->OverridePutDownTransform(GoblinCharacter->Spot->GetFoodSpotTransform());
 			GoblinCharacter->Spot = nullptr;
 			GoblinCharacter->InteractFood();

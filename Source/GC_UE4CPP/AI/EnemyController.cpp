@@ -26,7 +26,6 @@ void AEnemyController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 
 	RunBehaviorTree(BehaviourTree);
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "If BehaviorTree");
 	UE_LOG(LogTemp, Error, TEXT("If BehaviorTree"));
 
 	AGoblinCharacter* GoblinCharacter = Cast<AGoblinCharacter>(InPawn);
@@ -41,7 +40,6 @@ void AEnemyController::OnPossess(APawn* InPawn)
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, "If BB");
 			UE_LOG(LogTemp, Error, TEXT("If BB"));
 		}
 	}

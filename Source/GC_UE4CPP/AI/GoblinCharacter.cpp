@@ -56,7 +56,6 @@ void AGoblinCharacter::InteractFood()
 {
 	if (FoodOnHand != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("InteractFood != nullptr"));
 		FoodOnHand->OnInteract(this);
 	}
 }

@@ -18,11 +18,9 @@ EBTNodeResult::Type UBTTask_SetHasSeenPlayer::ExecuteTask(UBehaviorTreeComponent
 	{
 		if (EnemyAI->GetBlackboardComponent()->GetValueAsBool("HasSeenPlayer"))
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("HasSeenPlayer false"));
 			EnemyAI->GetBlackboardComponent()->SetValueAsBool("HasSeenPlayer", false);
 		} else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("HasSeenPlayer true"));
 			EnemyAI->GetBlackboardComponent()->SetValueAsBool("HasSeenPlayer", true);
 		}
 	}
