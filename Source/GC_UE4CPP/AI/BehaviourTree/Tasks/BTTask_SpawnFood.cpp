@@ -11,7 +11,7 @@
 
 UBTTask_SpawnFood::UBTTask_SpawnFood(FObjectInitializer const& object_initialize)
 {
-	NodeName = TEXT("SpawnFood");
+	NodeName = "Spawn Food";
 }
 
 EBTNodeResult::Type UBTTask_SpawnFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

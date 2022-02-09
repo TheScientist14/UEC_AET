@@ -13,7 +13,7 @@
 
 UBTTask_GetRandomPoint::UBTTask_GetRandomPoint(FObjectInitializer const& object_initialize)
 {
-	NodeName = "GetRandomPoint";
+	NodeName = "Get Random Point";
 
 	NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
 }

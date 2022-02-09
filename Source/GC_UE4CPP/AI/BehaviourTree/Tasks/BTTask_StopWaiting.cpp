@@ -9,7 +9,7 @@
 
 UBTTask_StopWaiting::UBTTask_StopWaiting(FObjectInitializer const& object_initialize)
 {
-	NodeName = "StopWaiting";
+	NodeName = "Stop Waiting";
 }
 
 EBTNodeResult::Type UBTTask_StopWaiting::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

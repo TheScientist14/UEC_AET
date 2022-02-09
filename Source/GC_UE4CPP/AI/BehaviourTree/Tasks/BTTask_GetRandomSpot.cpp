@@ -15,7 +15,7 @@
 
 UBTTask_GetRandomSpot::UBTTask_GetRandomSpot(FObjectInitializer const& object_initialize)
 {
-	NodeName = TEXT("GetRandomSpot");
+	NodeName = "Get Random Spot";
 }
 
 EBTNodeResult::Type UBTTask_GetRandomSpot::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

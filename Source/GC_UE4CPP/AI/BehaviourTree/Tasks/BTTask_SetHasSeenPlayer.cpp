@@ -8,7 +8,7 @@
 
 UBTTask_SetHasSeenPlayer::UBTTask_SetHasSeenPlayer(FObjectInitializer const& object_initialize)
 {
-	NodeName="SetHasSeenPlayer";
+	NodeName = "Set Has Seen Player";
 }
 
 EBTNodeResult::Type UBTTask_SetHasSeenPlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

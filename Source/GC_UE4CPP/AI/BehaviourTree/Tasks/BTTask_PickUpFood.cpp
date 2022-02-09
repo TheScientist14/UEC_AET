@@ -15,7 +15,7 @@
 
 UBTTask_PickUpFood::UBTTask_PickUpFood(FObjectInitializer const& object_initialize)
 {
-	NodeName = TEXT("PickUpFood");
+	NodeName = "Pick Up Food";
 }
 
 EBTNodeResult::Type UBTTask_PickUpFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

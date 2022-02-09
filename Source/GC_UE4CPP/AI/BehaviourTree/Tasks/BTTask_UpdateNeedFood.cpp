@@ -9,7 +9,7 @@
 
 UBTTask_UpdateNeedFood::UBTTask_UpdateNeedFood(FObjectInitializer const& object_initialize)
 {
-	NodeName = "UpdateNeedFood";
+	NodeName = "Update Need Food";
 }
 
 EBTNodeResult::Type UBTTask_UpdateNeedFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

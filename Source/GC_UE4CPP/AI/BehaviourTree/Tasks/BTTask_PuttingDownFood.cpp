@@ -15,7 +15,7 @@
 
 UBTTask_PuttingDownFood::UBTTask_PuttingDownFood(FObjectInitializer const& object_initialize)
 {
-	NodeName = TEXT("PuttingDownFood");
+	NodeName = "Putting Down Food";
 }
 
 EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

@@ -11,7 +11,7 @@
 
 UBTTask_EndGame::UBTTask_EndGame(FObjectInitializer const& object_initialize)
 {
-	NodeName = "EndGame";
+	NodeName = "End Game";
 }
 
 EBTNodeResult::Type UBTTask_EndGame::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
