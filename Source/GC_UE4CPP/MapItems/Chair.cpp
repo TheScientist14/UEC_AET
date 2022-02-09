@@ -31,7 +31,7 @@ void AChair::Tick(float DeltaTime) {
 		if (SitTimer <= 0) {
 			AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
 			if (GameMode) {
-				GameMode->EndGameVictory();
+				GameMode->EndGameDefeat();
 			}
 			else {
 				UE_LOG(LogTemp, Error, TEXT("Chair couldn’t end game : cast game mode to MainGameMode failed"));
