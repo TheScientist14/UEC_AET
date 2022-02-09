@@ -49,7 +49,7 @@ void AChair::OnInteract(AActor* Caller) {
 	if (SitDownAbility) {
 		if (SitDownAbility->IsSitDown) {
 			SitDownAbility->StandUp();
-			SitTimer = 0;
+			SitTimer = -1;
 		}
 		else {
 			SitDownAbility->GetOwner()->SetActorLocation(PlayerTransform->GetComponentLocation());
