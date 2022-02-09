@@ -21,7 +21,6 @@ EBTNodeResult::Type UBTTask_EndGame::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	if (GoblinCharacter->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(this, 0)) <= Distance)
 	{
 		Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->EndGameDefeat();
-		EnemyAI->UnPossess();
 	}
 
 	return EBTNodeResult::Succeeded;

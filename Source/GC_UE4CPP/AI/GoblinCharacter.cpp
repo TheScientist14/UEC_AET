@@ -32,7 +32,8 @@ void AGoblinCharacter::BeginPlay()
 	Cast<AEnemyController>(GetController())->GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
 
 	FoodOnHand = nullptr;
-
+	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
+	GameMode->OnGameFinished.AddUObject(this, &AGoblinCharacter::OnGameEnded);
 }
 
 // Called every frame
@@ -87,4 +88,9 @@ void AGoblinCharacter::PutDownFood()
 		FoodOnHand->SetLifterPickUpAbility(nullptr);
 		GetCharacterMovement()->MaxWalkSpeed *= 2;
 	} 
+}
+
+void AGoblinCharacter::OnGameEnded(bool HasGameEnded, bool HasWon)
+{
+	GetController()->UnPossess();
 }
