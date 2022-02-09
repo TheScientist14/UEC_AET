@@ -5,11 +5,15 @@
 #include "EnemyController.h"
 #include "GC_UE4CPP/Game/MainGameState.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
+#include "GC_UE4CPP/Characters/PlayerCharacter.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 AGoblinCharacter::AGoblinCharacter()
@@ -19,7 +23,13 @@ AGoblinCharacter::AGoblinCharacter()
 	
 	PickUpAbilityComponent = CreateDefaultSubobject<UPickUpAbilityComponent>(TEXT("PickUpBehaviour"));
 	SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	SpotLightVision = CreateDefaultSubobject<USpotLightComponent>("Point light vision cone");
+	SpotLightVision->SetupAttachment(RootComponent);
+	
 }
+
+
 
 // Called when the game starts or when spawned
 void AGoblinCharacter::BeginPlay()
@@ -34,12 +44,30 @@ void AGoblinCharacter::BeginPlay()
 	FoodOnHand = nullptr;
 	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
 	GameMode->OnGameFinished.AddUObject(this, &AGoblinCharacter::OnGameEnded);
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AGoblinCharacter::OnGoblinCollision);
+	
 }
 
 // Called every frame
 void AGoblinCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void AGoblinCharacter::OnGoblinCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	if(Cast<APlayerCharacter>(OtherActor))
+	{
+		AMainGameMode* MainGameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
+		if(MainGameMode)
+		{
+			MainGameMode->EndGameDefeat();
+		}
+	}
+	
 }
 
 // Called to bind functionality to input

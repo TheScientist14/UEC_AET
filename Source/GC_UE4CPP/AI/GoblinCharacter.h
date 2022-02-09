@@ -36,6 +36,13 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	AGoblinCounter* GoblinCounter;
+
+	UPROPERTY(EditAnywhere)
+	class USpotLightComponent* SpotLightVision;
+
+	UFUNCTION()
+	void OnGoblinCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	
 
 protected:

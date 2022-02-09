@@ -17,7 +17,6 @@ UBTTask_EndGame::UBTTask_EndGame(FObjectInitializer const& object_initialize)
 EBTNodeResult::Type UBTTask_EndGame::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AGoblinCharacter* const GoblinCharacter = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	if (GoblinCharacter->GetDistanceTo(UGameplayStatics::GetPlayerCharacter(this, 0)) <= Distance)
 	{
 		Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->EndGameDefeat();
