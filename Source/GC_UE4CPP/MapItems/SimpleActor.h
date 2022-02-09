@@ -18,4 +18,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMesh;
 
+	// blocks the red cone light of goblins
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* LightBlocker;
 };

@@ -18,6 +18,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* DoorMesh;
 
+	// blocks the red cone light of goblins
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* DoorLightBlocker;
+
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* DoorPivot;
 
