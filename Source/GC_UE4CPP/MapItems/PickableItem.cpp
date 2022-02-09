@@ -88,6 +88,16 @@ void APickableItem::OverridePutDownTransform(FTransform Target) {
 	PutDownOverrideTarget = Target;
 }
 
+void APickableItem::SetOwner(AGoblinCharacter* NewOwner)
+{
+	Owner = NewOwner;
+}
+
+AGoblinCharacter* APickableItem::GetOwner()
+{
+	return Owner;
+}
+
 FTransform APickableItem::GetRightHandAnchor() {
 	return FTransform::FTransform(RightHandAnchor->GetRelativeRotation(), -RightHandAnchor->GetRelativeLocation());
 }

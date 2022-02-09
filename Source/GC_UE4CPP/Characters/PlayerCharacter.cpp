@@ -11,6 +11,8 @@
 
 #include "PickUpAbilityComponent.h"
 #include "SitDownAbilityComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "GC_UE4CPP/AI/EnemyController.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
@@ -93,6 +95,11 @@ void APlayerCharacter::Interact()
 	while(i < OverlappedActors.Num() && !HasInteracted) {
 		IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
 		if (Interactable) {
+			APickableItem* Food = Cast<APickableItem>(Interactable);
+			if (Food)
+			{
+				Cast<AEnemyController>(Food->GetOwner()->GetController())->GetBlackboardComponent()->ClearValue("FoodPosition");
+			}
 			Interactable->OnInteract(this);
 			HasInteracted = true;
 		}

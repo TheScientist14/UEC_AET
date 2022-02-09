@@ -34,8 +34,8 @@ EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent&
 		else
 		{
 			GoblinCharacter->FoodOnHand->OverridePutDownTransform(GoblinCharacter->Spot->GetFoodSpotTransform());
-			GoblinCharacter->Spot = nullptr;
 			GoblinCharacter->InteractFood();
+			GoblinCharacter->Spot = nullptr;
 			
 		}
 	}

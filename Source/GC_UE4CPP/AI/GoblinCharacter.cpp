@@ -57,10 +57,7 @@ void AGoblinCharacter::InteractFood()
 {
 	if (IsValid(FoodOnHand))
 	{
-		if (FoodOnHand->GetActorLocation() == Cast<AEnemyController>(GetController())->GetBlackboardComponent()->GetValueAsVector("FoodPosition"))
-		{
-			FoodOnHand->OnInteract(this);
-		}
+		FoodOnHand->OnInteract(this);
 	}
 }
 
@@ -77,6 +74,7 @@ void AGoblinCharacter::SpawnFood(UClass* PrmFood)
 	FoodOnHand->SetOnGroundPhysics(false);
 	PickUpAbilityComponent->PickedUpActor = FoodOnHand;
 	FoodOnHand->SetLifterPickUpAbility(PickUpAbilityComponent);
+	FoodOnHand->SetOwner(this);
 	GetCharacterMovement()->MaxWalkSpeed /= 2; 
 }
 

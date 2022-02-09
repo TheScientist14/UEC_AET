@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GC_UE4CPP/AI/GoblinCharacter.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "PickableItem.generated.h"
 
@@ -45,6 +46,8 @@ protected:
 	FTransform PutDownOverrideTarget;
 
 	bool IsPutDownTargetOverriden = false;
+	
+	class AGoblinCharacter* Owner;
 
 public:
 
@@ -57,5 +60,9 @@ public:
 	void SetOnGroundPhysics(bool IsMovable);
 
 	void OverridePutDownTransform(FTransform Target);
+
+	void SetOwner(AGoblinCharacter* NewOwner);
+
+	AGoblinCharacter* GetOwner();
 
 };
