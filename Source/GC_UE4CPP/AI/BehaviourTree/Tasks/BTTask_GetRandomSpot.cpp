@@ -20,9 +20,8 @@ UBTTask_GetRandomSpot::UBTTask_GetRandomSpot(FObjectInitializer const& object_in
 
 EBTNodeResult::Type UBTTask_GetRandomSpot::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("FindRandomSpot"));
 	//Move to init 
-	auto const Goblin = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AGoblinCharacter* const Goblin = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	AMainGameMode* GameMode = Cast<AMainGameMode>(GetWorld()->GetAuthGameMode());

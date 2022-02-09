@@ -21,24 +21,24 @@ UBTTask_PuttingDownFood::UBTTask_PuttingDownFood(FObjectInitializer const& objec
 EBTNodeResult::Type UBTTask_PuttingDownFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	//Move to init 
-	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AGoblinCharacter* const GoblinCharacter = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	if (EnemyAI)
 	{
 		if (!OnSpot)
 		{
-			cont->PutDownFood();
+			GoblinCharacter->PutDownFood();
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("PuttingDownFood !OnSpot"));
-			Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->SetValueAsVector(
-				"FoodPosition", cont->GetTransform().GetLocation());
+			Cast<AEnemyController>(GoblinCharacter->GetController())->GetBlackboardComponent()->SetValueAsVector(
+				"FoodPosition", GoblinCharacter->GetTransform().GetLocation());
 		}
 		else
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("PuttingDownFood OnSpot"));
 		
-				cont->FoodOnHand->OverridePutDownTransform(cont->Spot->GetFoodSpotTransform());
-				cont->Spot = nullptr;
-				cont->InteractFood();
+			GoblinCharacter->FoodOnHand->OverridePutDownTransform(GoblinCharacter->Spot->GetFoodSpotTransform());
+			GoblinCharacter->Spot = nullptr;
+			GoblinCharacter->InteractFood();
 			
 		}
 	}

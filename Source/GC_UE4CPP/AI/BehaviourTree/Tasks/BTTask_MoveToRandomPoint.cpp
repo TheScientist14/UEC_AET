@@ -21,8 +21,6 @@ UBTTask_MoveToRandomPoint::UBTTask_MoveToRandomPoint(FObjectInitializer const& o
 EBTNodeResult::Type UBTTask_MoveToRandomPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	//Move to init 
-	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 
 	if(EnemyAI)

@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTTask_DontNeedFood.generated.h"
+#include "BTTask_UpdateNeedFood.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UBTTask_DontNeedFood : public UBTTask_BlackboardBase
+class GC_UE4CPP_API UBTTask_UpdateNeedFood : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 public:
-	UBTTask_DontNeedFood(FObjectInitializer const& object_initialize);
+	UBTTask_UpdateNeedFood(FObjectInitializer const& object_initialize);
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
 
 };

@@ -18,12 +18,9 @@ EBTNodeResult::Type UBTTask_SpawnFood::ExecuteTask(UBehaviorTreeComponent& Owner
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("SpawnFood"));
 	//Move to init 
-	auto const Goblin = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AGoblinCharacter* const Goblin = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 
-	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
-	AMainGameMode* GameMode = Cast<AMainGameMode>(GetWorld()->GetAuthGameMode());
-
-	if(EnemyAI)
+	if(Goblin)
 	{
 		Goblin->SpawnFood(Goblin->Food);
 		return EBTNodeResult::Succeeded;

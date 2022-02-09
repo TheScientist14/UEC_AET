@@ -21,10 +21,10 @@ UBTTask_PickUpFood::UBTTask_PickUpFood(FObjectInitializer const& object_initiali
 EBTNodeResult::Type UBTTask_PickUpFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	//Move to init 
-	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	cont->InteractFood();
+	AGoblinCharacter* const GoblinCharacter = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	GoblinCharacter->InteractFood();
 
-	Cast<AEnemyController>(cont->GetController())->GetBlackboardComponent()->ClearValue(BlackboardKey.SelectedKeyName);
+	Cast<AEnemyController>(GoblinCharacter->GetController())->GetBlackboardComponent()->ClearValue(BlackboardKey.SelectedKeyName);
 	
 	return EBTNodeResult::Succeeded;
 }

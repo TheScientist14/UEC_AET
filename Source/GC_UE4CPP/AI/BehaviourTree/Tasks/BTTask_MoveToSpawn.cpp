@@ -15,13 +15,13 @@ UBTT_MoveToSpawn::UBTT_MoveToSpawn(FObjectInitializer const& object_initialize)
 
 EBTNodeResult::Type UBTT_MoveToSpawn::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AGoblinCharacter* const GoblinCharacter = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 
 	if(EnemyAI)
 	{
-		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spawn", cont->Spawn);
+		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spawn", GoblinCharacter->Spawn);
 		return EBTNodeResult::Succeeded;
 	}
 

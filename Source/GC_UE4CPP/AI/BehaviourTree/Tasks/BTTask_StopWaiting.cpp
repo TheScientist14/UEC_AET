@@ -14,13 +14,13 @@ UBTTask_StopWaiting::UBTTask_StopWaiting(FObjectInitializer const& object_initia
 
 EBTNodeResult::Type UBTTask_StopWaiting::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
+	AGoblinCharacter* const GoblinCharacter = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 
 	if(EnemyAI)
 	{	
 		EnemyAI->GetBlackboardComponent()->SetValueAsBool("Wait", false);
-		cont->Wait = false;
+		GoblinCharacter->Wait = false;
 		return EBTNodeResult::Succeeded;
 	}
 	
