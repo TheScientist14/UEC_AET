@@ -1,20 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GC_UE4CPP/AI/BehaviourTree/Tasks/BTTask_DontNeedFood.h"
+#include "GC_UE4CPP/AI/BehaviourTree/Tasks/BTTask_UpdateNeedFood.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GC_UE4CPP/AI/EnemyController.h"
-#include "GC_UE4CPP/AI/GoblinCharacter.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
-#include "Kismet/GameplayStatics.h"
 
-UBTTask_DontNeedFood::UBTTask_DontNeedFood(FObjectInitializer const& object_initialize)
+UBTTask_UpdateNeedFood::UBTTask_UpdateNeedFood(FObjectInitializer const& object_initialize)
 {
-	NodeName = "DontNeedFood";
+	NodeName = "Update Need Food";
 }
 
-EBTNodeResult::Type UBTTask_DontNeedFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_UpdateNeedFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	if(EnemyAI)

@@ -14,6 +14,12 @@ ADoorBase::ADoorBase()
 
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door Mesh"));
 	DoorMesh->SetupAttachment(DoorPivot);
+
+	DoorLightBlocker = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Light blocker"));
+	DoorLightBlocker->SetupAttachment(DoorMesh);
+	DoorLightBlocker->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	DoorLightBlocker->bHiddenInGame = true;
+	DoorLightBlocker->bCastHiddenShadow = true;
 }
 
 // Called when the game starts or when spawned

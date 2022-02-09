@@ -56,7 +56,6 @@ void AGoblinCharacter::InteractFood()
 {
 	if (FoodOnHand != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.0f, FColor::Red, TEXT("InteractFood != nullptr"));
 		FoodOnHand->OnInteract(this);
 	}
 }
@@ -65,7 +64,6 @@ void AGoblinCharacter::SpawnFood(UClass* PrmFood)
 {
 	if (FoodOnHand)
 	{
-		FoodOnHand->Destroy();
 		FoodOnHand = nullptr;
 	}
 	FoodOnHand = GetWorld()->SpawnActor<APickableItem>(PrmFood, GetActorLocation(), GetActorRotation(), SpawnInfo);

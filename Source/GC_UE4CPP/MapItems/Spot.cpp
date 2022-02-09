@@ -14,6 +14,12 @@ ASpot::ASpot()
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));
 	SetRootComponent(StaticMesh);
 
+	LightBlocker = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LightBlocker"));
+	LightBlocker->SetupAttachment(StaticMesh);
+	LightBlocker->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LightBlocker->bHiddenInGame = true;
+	LightBlocker->bCastHiddenShadow = true;
+
 	FoodEmplacement = CreateDefaultSubobject<USceneComponent>(FName("FoodEmplacement"));
 	FoodEmplacement->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }

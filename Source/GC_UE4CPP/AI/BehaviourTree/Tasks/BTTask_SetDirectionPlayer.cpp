@@ -16,8 +16,6 @@ UBTTask_SetDirectionPlayer::UBTTask_SetDirectionPlayer(FObjectInitializer const&
 EBTNodeResult::Type UBTTask_SetDirectionPlayer::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {	
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
-
-	
 	
 	FVector Direction = UGameplayStatics::GetPlayerCharacter(this, 0)->GetActorForwardVector();
 	Direction *= 5;

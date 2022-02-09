@@ -12,5 +12,10 @@ ASimpleActor::ASimpleActor()
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	SetRootComponent(StaticMesh);
 
+	LightBlocker = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LightBlocker"));
+	LightBlocker->SetupAttachment(StaticMesh);
+	LightBlocker->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LightBlocker->bHiddenInGame = true;
+	LightBlocker->bCastHiddenShadow = true;
 }
 

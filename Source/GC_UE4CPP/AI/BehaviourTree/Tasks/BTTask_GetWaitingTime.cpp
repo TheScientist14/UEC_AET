@@ -8,7 +8,7 @@
 
 UBTTask_GetWaitingTime::UBTTask_GetWaitingTime(FObjectInitializer const& object_initialize)
 {
-	NodeName = "GetWaitingTime";
+	NodeName = "Get Waiting Time";
 }
 
 EBTNodeResult::Type UBTTask_GetWaitingTime::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)

@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GC_UE4CPP/AI/BehaviourTree/Tasks/BTTask_MoveToRandomPoint.h"
+#include "GC_UE4CPP/AI/BehaviourTree/Tasks/BTTask_GetRandomPoint.h"
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -11,18 +11,16 @@
 #include "GC_UE4CPP/MapItems/Spot.h"
 
 
-UBTTask_MoveToRandomPoint::UBTTask_MoveToRandomPoint(FObjectInitializer const& object_initialize)
+UBTTask_GetRandomPoint::UBTTask_GetRandomPoint(FObjectInitializer const& object_initialize)
 {
-	NodeName = "MoveToRandomPoint";
+	NodeName = "Get Random Point";
 
 	NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
 }
 
-EBTNodeResult::Type UBTTask_MoveToRandomPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_GetRandomPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	//Move to init 
-	auto const cont = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 
 	if(EnemyAI)

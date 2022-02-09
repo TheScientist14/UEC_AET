@@ -16,7 +16,6 @@ EBTNodeResult::Type UBTTask_SetBoolValue::ExecuteTask(UBehaviorTreeComponent& Ow
 
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	
-	
 	if(EnemyAI)
 	{
 		EnemyAI->GetBlackboardComponent()->SetValueAsBool(BlackboardKey.SelectedKeyName, Value);

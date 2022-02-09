@@ -21,6 +21,9 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMesh;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* LightBlocker;
 	
 	UPROPERTY(EditAnywhere)
 	USceneComponent* FoodEmplacement;

@@ -17,4 +17,6 @@ public:
 	UBTTask_EndGame(FObjectInitializer const& object_initialize);
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory);
 
+	UPROPERTY(EditAnywhere)
+	int Distance = 150;
 };
