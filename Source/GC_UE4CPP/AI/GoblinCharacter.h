@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NavigationSystem.h"
 #include "GameFramework/Character.h"
+#include "GC_UE4CPP/MapItems/GoblinCounter.h"
 #include "GoblinCharacter.generated.h"
 
 UCLASS()
@@ -31,7 +32,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UPickUpAbilityComponent* PickUpAbilityComponent;
 
-	class APickableItem* FoodOnHand;
+	APickableItem* FoodOnHand;
+
+	UPROPERTY(EditAnywhere)
+	AGoblinCounter* GoblinCounter;
+	
 
 protected:
 	UPROPERTY(EditAnywhere)
