@@ -58,4 +58,8 @@ public:
 	void SpawnFood(UClass* PrmFood);
 
 	void PutDownFood();
+
+	UFUNCTION()
+	void OnGameEnded(bool HasGameEnded, bool HasWon);
+
 };
