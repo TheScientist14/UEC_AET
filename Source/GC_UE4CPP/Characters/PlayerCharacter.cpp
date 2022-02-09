@@ -14,7 +14,6 @@
 #include "SitDownAbilityComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
-#include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
 
 // Sets default values

@@ -55,7 +55,7 @@ void AGoblinCharacter::GetNextSpot()
 
 void AGoblinCharacter::InteractFood()
 {
-	if (FoodOnHand != nullptr)
+	if (IsValid(FoodOnHand))
 	{
 		FoodOnHand->OnInteract(this);
 	}
@@ -70,11 +70,15 @@ void AGoblinCharacter::SpawnFood(UClass* PrmFood)
 	FoodOnHand = GetWorld()->SpawnActor<APickableItem>(PrmFood, GetActorLocation(), GetActorRotation(), SpawnInfo);
 	FoodOnHand->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale,
 		"RightHandSocket");
+	FTransform OffsetTarget = FoodOnHand->GetRightHandAnchor();
+	FoodOnHand->SetActorRelativeLocation(-OffsetTarget.GetLocation());
+	FoodOnHand->SetActorRelativeRotation(OffsetTarget.GetRotation());
 	FoodOnHand->SetIsCurrentlyPickable(false);
 	FoodOnHand->SetOnGroundPhysics(false);
 	PickUpAbilityComponent->PickedUpActor = FoodOnHand;
 	FoodOnHand->SetLifterPickUpAbility(PickUpAbilityComponent);
-	GetCharacterMovement()->MaxWalkSpeed /= 2; 
+	FoodOnHand->SetOwner(this);
+	GetCharacterMovement()->MaxWalkSpeed /= 2;
 }
 
 void AGoblinCharacter::PutDownFood()

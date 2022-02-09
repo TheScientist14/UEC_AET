@@ -45,6 +45,8 @@ protected:
 	FTransform PutDownOverrideTarget;
 
 	bool IsPutDownTargetOverriden = false;
+	
+	class AGoblinCharacter* Owner;
 
 public:
 

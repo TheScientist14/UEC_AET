@@ -4,9 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "NavigationSystem.h"
-#include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "GameFramework/Character.h"
-#include "GC_UE4CPP/Characters/PickUpAbilityComponent.h"
 #include "GoblinCharacter.generated.h"
 
 UCLASS()
@@ -28,12 +26,12 @@ public:
 	bool Wait;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<APickableItem> Food;
+	TSubclassOf<class APickableItem> Food;
 
 	UPROPERTY(EditAnywhere)
-	UPickUpAbilityComponent* PickUpAbilityComponent;
+	class UPickUpAbilityComponent* PickUpAbilityComponent;
 
-	APickableItem* FoodOnHand;
+	class APickableItem* FoodOnHand;
 
 protected:
 	UPROPERTY(EditAnywhere)
