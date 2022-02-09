@@ -82,31 +82,26 @@ void APlayerCharacter::MoveRight(float DeltaY)
 // interact with picked up item if nothing to interact with
 void APlayerCharacter::Interact()
 {
-	if (SitDownAbilityComponent->IsSitDown) {
-		SitDownAbilityComponent->StandUp();
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
+	ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
+	TArray<AActor*> IgnoreActors;
+	IgnoreActors.Init(this, 1);
+	TArray<AActor*> OverlappedActors;
+	UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), InteractRange, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
+	bool HasInteracted = false;
+	int i = 0;
+	while(i < OverlappedActors.Num() && !HasInteracted) {
+		IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
+		if (Interactable) {
+			Interactable->OnInteract(this);
+			HasInteracted = true;
+		}
+		else {
+			i++;
+		}
 	}
-	else {
-		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypeFilter;
-		ObjectTypeFilter.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Visibility));
-		TArray<AActor*> IgnoreActors;
-		IgnoreActors.Init(this, 1);
-		TArray<AActor*> OverlappedActors;
-		UKismetSystemLibrary::SphereOverlapActors(this, GetActorLocation(), InteractRange, ObjectTypeFilter, nullptr, IgnoreActors, OverlappedActors);
-		bool HasInteracted = false;
-		int i = 0;
-		while(i < OverlappedActors.Num() && !HasInteracted) {
-			IInteractable* Interactable = Cast<IInteractable>(OverlappedActors[i]);
-			if (Interactable) {
-				Interactable->OnInteract(this);
-				HasInteracted = true;
-			}
-			else {
-				i++;
-			}
-		}
-		if (!HasInteracted && PickUpAbilityComponent->GetPickedUpActor()) {
-			PickUpAbilityComponent->GetPickedUpActor()->OnInteract(this);
-		}
+	if (!HasInteracted && PickUpAbilityComponent->GetPickedUpActor()) {
+		PickUpAbilityComponent->GetPickedUpActor()->OnInteract(this);
 	}
 }
 

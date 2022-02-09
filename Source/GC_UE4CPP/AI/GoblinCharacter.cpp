@@ -65,7 +65,6 @@ void AGoblinCharacter::SpawnFood(UClass* PrmFood)
 {
 	if (FoodOnHand)
 	{
-		FoodOnHand->Destroy();
 		FoodOnHand = nullptr;
 	}
 	FoodOnHand = GetWorld()->SpawnActor<APickableItem>(PrmFood, GetActorLocation(), GetActorRotation(), SpawnInfo);
