@@ -3,8 +3,6 @@
 
 #include "VictoryDefeat_UserWidget.h"
 
-#include <functional>
-
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
@@ -18,6 +16,14 @@ void UVictoryDefeat_UserWidget::NativeConstruct()
 	if (ButtonRestart)
 	{
 		ButtonRestart->OnClicked.AddUniqueDynamic(this, &UVictoryDefeat_UserWidget::ReloadLevel);
+	}
+	if (ButtonMenu)
+	{
+		ButtonMenu->OnClicked.AddUniqueDynamic(this, &UVictoryDefeat_UserWidget::MainMenu);
+	}
+	if (ButtonQuit)
+	{
+		ButtonQuit->OnClicked.AddUniqueDynamic(this, &UVictoryDefeat_UserWidget::Quit);
 	}
 }
 
@@ -64,4 +70,33 @@ void UVictoryDefeat_UserWidget::ReloadLevel()
 	{
 		UE_LOG(LogTemp, Error, TEXT("Failed to GetPlayerController()"))
 	}
+}
+
+void UVictoryDefeat_UserWidget::MainMenu()
+{
+	// Reloads the MainMenu level, sets the mouse for game use and hides the cursor
+	UGameplayStatics::OpenLevel(this, FName("MainMenu"), false);
+	APlayerController* Player = UGameplayStatics::GetPlayerController(GetWorld(),0);
+	if(Player)
+	{
+		Player->bShowMouseCursor = false;
+		Player->SetInputMode(FInputModeGameOnly());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to GetPlayerController()"))
+	}
+}
+
+void UVictoryDefeat_UserWidget::Quit()
+{
+	APlayerController* Player = Cast<APlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	// Quit for editor and game 
+#if WITH_EDITOR
+	UKismetSystemLibrary::QuitEditor();
+#endif
+	
+	UKismetSystemLibrary::QuitGame(this, Player, EQuitPreference::Quit,
+								   false);
+
 }

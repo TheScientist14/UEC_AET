@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UPickUpAbilityComponent;
 class USitDownAbilityComponent;
+class UPauseMenuUserWidget;
 
 UCLASS()
 class GC_UE4CPP_API APlayerCharacter : public ACharacter
@@ -37,6 +38,11 @@ public:
 	UPROPERTY(EditAnywhere, Category="PlayerCharacter|Camera zoom")
 	float ZoomThresholdLimit = 1;
 
+	UUserWidget* widget;
+
+	UPROPERTY(EditAnywhere,Category = "PlayerCharacter|UI")
+	TSubclassOf<UUserWidget> PauseMenu;
+
 	UPROPERTY(VisibleAnywhere)
 	UPickUpAbilityComponent* PickUpAbilityComponent;
 
@@ -53,6 +59,9 @@ public:
 
 	UFUNCTION()
 	void Interact();
+
+	UFUNCTION()
+	void Pause();
 
 	UFUNCTION()
 	void ZoomIn(float DeltaZoom);

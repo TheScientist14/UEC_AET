@@ -3,6 +3,7 @@
 
 #include "PlayerCharacter.h"
 
+#include "MainPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Camera/CameraComponent.h"
@@ -11,6 +12,7 @@
 
 #include "PickUpAbilityComponent.h"
 #include "SitDownAbilityComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
@@ -47,6 +49,8 @@ void APlayerCharacter::BeginPlay() {
 
 	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
 	GameMode->OnGameFinished.AddUObject(this, &APlayerCharacter::OnGameEnded);
+
+	PlayerController = Cast<APlayerController>(GetController());
 }
 
 //
@@ -103,6 +107,20 @@ void APlayerCharacter::Interact()
 	if (!HasInteracted && PickUpAbilityComponent->GetPickedUpActor()) {
 		PickUpAbilityComponent->GetPickedUpActor()->OnInteract(this);
 	}
+}
+
+void APlayerCharacter::Pause()
+{
+	if(PauseMenu)
+	{
+		widget = CreateWidget(PlayerController, PauseMenu);
+		widget->AddToViewport();
+		widget->SetVisibility(ESlateVisibility::Visible);
+	}
+	PlayerController->bShowMouseCursor = true;
+	PlayerController->SetInputMode(FInputModeUIOnly());
+	
+	
 }
 
 // Game ended event handler

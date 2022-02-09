@@ -20,11 +20,19 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* ButtonRestart;
+	UPROPERTY(meta = (BindWidget))
+	UButton* ButtonMenu;
+	UPROPERTY(meta = (BindWidget))
+	UButton* ButtonQuit;
 
 	void SetUI(bool PrmIsGameFinished, bool PrmIsGameWon);
 
 	UFUNCTION()
 	void ReloadLevel();
+	UFUNCTION()
+	void MainMenu();
+	UFUNCTION()
+	void Quit();
 
 
 protected:

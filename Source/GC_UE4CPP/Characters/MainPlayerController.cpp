@@ -27,6 +27,7 @@ void AMainPlayerController::OnPossess(APawn* aPawn) {
 	PlayerCharacter = Cast<APlayerCharacter>(aPawn);
 
 	InputComponent->BindAction("Interact", IE_Pressed, PlayerCharacter, &APlayerCharacter::Interact);
+	InputComponent->BindAction("Pause", IE_Pressed, PlayerCharacter, &APlayerCharacter::Pause);
 	InputComponent->BindAxis("MoveForward", PlayerCharacter, &APlayerCharacter::MoveForward);
 	InputComponent->BindAxis("MoveRight", PlayerCharacter, &APlayerCharacter::MoveRight);
 	InputComponent->BindAxis("Turn", PlayerCharacter, &APawn::AddControllerYawInput);

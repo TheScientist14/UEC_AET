@@ -45,8 +45,7 @@ void UMainMenuUserWidget::Quit()
 	// Quit for editor and game 
 #if WITH_EDITOR
 	UKismetSystemLibrary::QuitEditor();
-#else
-	UKismetSystemLibrary::QuitGame(this, Player, EQuitPreference::Quit,
-	                               false);
 #endif
+	UKismetSystemLibrary::QuitGame(this, Player, EQuitPreference::Quit,false);
+
 }
