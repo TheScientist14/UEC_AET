@@ -27,15 +27,12 @@ EBTNodeResult::Type UBTTask_GetRandomSpot::ExecuteTask(UBehaviorTreeComponent& O
 	AEnemyController* EnemyAI = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 	AMainGameMode* GameMode = Cast<AMainGameMode>(GetWorld()->GetAuthGameMode());
 
-	if(EnemyAI)
+	if (EnemyAI)
 	{
-		if (GameMode->GetFoodOnLevel() < GameMode->GetMaxFoodOnLevel())
-		{
-			Goblin->GetNextSpot();
-			EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", Goblin->Spot->GetActorLocation());
-			return EBTNodeResult::Succeeded;
-		}
+		Goblin->GetNextSpot();
+		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", Goblin->Spot->GetActorLocation());
+		return EBTNodeResult::Succeeded;
 	}
-	
+
 	return EBTNodeResult::Failed;
 }
