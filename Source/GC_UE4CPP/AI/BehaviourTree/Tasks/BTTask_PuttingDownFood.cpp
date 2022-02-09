@@ -10,6 +10,7 @@
 #include "GC_UE4CPP/AI/EnemyController.h"
 #include "GC_UE4CPP/AI/GoblinCharacter.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
+#include "GC_UE4CPP/MapItems/PickableItem.h"
 #include "GC_UE4CPP/MapItems/Spot.h"
 
 

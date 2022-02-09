@@ -55,9 +55,12 @@ void AGoblinCharacter::GetNextSpot()
 
 void AGoblinCharacter::InteractFood()
 {
-	if (FoodOnHand != nullptr)
+	if (IsValid(FoodOnHand))
 	{
-		FoodOnHand->OnInteract(this);
+		if (FoodOnHand->GetActorLocation() == Cast<AEnemyController>(GetController())->GetBlackboardComponent()->GetValueAsVector("FoodPosition"))
+		{
+			FoodOnHand->OnInteract(this);
+		}
 	}
 }
 
