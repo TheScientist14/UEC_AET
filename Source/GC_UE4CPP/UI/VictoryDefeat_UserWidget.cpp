@@ -4,8 +4,10 @@
 #include "VictoryDefeat_UserWidget.h"
 
 #include "Components/Button.h"
+#include "Components/HorizontalBox.h"
 #include "Components/TextBlock.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
+#include "GC_UE4CPP/Game/MainGameState.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -30,7 +32,7 @@ void UVictoryDefeat_UserWidget::NativeConstruct()
 void UVictoryDefeat_UserWidget::NativeOnInitialized()
 {
 	// Add listener for OnGameFinished event
-	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
+	GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
 	if(GameMode)
 	{
 		GameMode->OnGameFinished.AddUObject(this, &UVictoryDefeat_UserWidget::SetUI);
@@ -53,6 +55,15 @@ void UVictoryDefeat_UserWidget::SetUI(bool PrmIsGameFinished, bool PrmIsGameWon)
 	{
 		Text->SetText(FText::FromString(TEXT("DEFEAT :/")));
 		Text->SetColorAndOpacity(FSlateColor(FLinearColor(255, 0, 0)));
+	}
+
+	if(GameMode->MainGameState->IsUnlimited)
+	{
+		TextScore->SetText(FText::FromString(FString::Printf(TEXT("%d"),GameMode->MainGameState->StashedFood)));
+	}
+	else
+	{
+		ScoreContainer->SetVisibility(ESlateVisibility::Hidden);	
 	}
 }
 

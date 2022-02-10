@@ -17,6 +17,11 @@ class GC_UE4CPP_API UVictoryDefeat_UserWidget : public UUserWidget
 public:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Text;
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* TextScore;
+
+	UPROPERTY(meta = (BindWidget))
+	class UHorizontalBox* ScoreContainer;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* ButtonRestart;
@@ -25,6 +30,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	UButton* ButtonQuit;
 
+	class AMainGameMode* GameMode;
 	void SetUI(bool PrmIsGameFinished, bool PrmIsGameWon);
 
 	UFUNCTION()

@@ -78,7 +78,7 @@ void AMainGameMode::AddStashedFood()
 	MainGameState->StashedFood++;
 	OnStashedFoodUpdate.Broadcast(MainGameState->StashedFood, MainGameState->MaxStashedFood);
 
-	if (MainGameState->StashedFood >= MainGameState->MaxStashedFood && !Unlimited)
+	if (MainGameState->StashedFood >= MainGameState->MaxStashedFood && !MainGameState->IsUnlimited)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Testing for win condition"));
 		EndGameVictory();

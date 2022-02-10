@@ -41,14 +41,11 @@ public:
 
 	DECLARE_MULTICAST_DELEGATE(FGameModeBeginPlayFinished);
 	FGameModeBeginPlayFinished GameModeBeginPlayFinished;
-
-	UPROPERTY(EditAnywhere)
-	bool Unlimited;
-	
-private:
 	
 	UPROPERTY()
-	class AMainGameState* MainGameState;
+    class AMainGameState* MainGameState;
+	
+private:
 	
 	UPROPERTY()
 	APlayerController* Player;

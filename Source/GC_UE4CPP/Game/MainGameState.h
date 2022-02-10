@@ -31,6 +31,9 @@ public:
 
 	bool IsGameEnded = false;
 	bool IsWon = false;
+
+	UPROPERTY(EditAnywhere)
+	bool IsUnlimited;
 	
 	void AddSpotToArray(ASpot* PrmSpot);
 
