@@ -6,7 +6,9 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Services/BTService_RunEQS.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
+#include "GameFramework/Character.h"
 #include "GC_UE4CPP/AI/EnemyController.h"
+#include "Kismet/GameplayStatics.h"
 
 UBTService_EQS::UBTService_EQS(const FObjectInitializer& ObjectInitializer)
 {
@@ -129,7 +131,12 @@ void UBTService_EQS::HandleQueryResult(TSharedPtr<FEnvQueryResult> result)
 	ensure(MyMemory->RequestID != INDEX_NONE);
 	
 	Score = result->GetItemScore(0);
+
+	//ACharacter* Character = UGameplayStatics::GetPlayerCharacter(BTComp, 0);
+
 	MoveLocation = result->GetItemAsLocation(0);
+	//+ Character->GetVelocity() * 0.6;
+	
 	
 	MyMemory->RequestID = INDEX_NONE;
 }

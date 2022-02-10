@@ -10,7 +10,6 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GC_UE4CPP/MapItems/ProceduralRoom.h"
 
-
 AEnemyController::AEnemyController(FObjectInitializer const& object_initializer)
 {
 }
@@ -38,6 +37,7 @@ void AEnemyController::StartAI(){
 	{
 		if (GetBlackboardComponent())
 		{
+			GetBlackboardComponent()->SetValueAsObject("Player", UGameplayStatics::GetPlayerCharacter(this, 0));
 			GetBlackboardComponent()->SetValueAsVector("Spawn", GoblinCharacter->GetActorLocation());
 			GetBlackboardComponent()->SetValueAsBool("Wait", GoblinCharacter->Wait);
 			GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
