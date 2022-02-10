@@ -10,6 +10,7 @@
 #include "GC_UE4CPP/AI/EnemyController.h"
 #include "GC_UE4CPP/AI/GoblinCharacter.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
+#include "GC_UE4CPP/Game/MainGameState.h"
 #include "GC_UE4CPP/MapItems/Spot.h"
 
 
@@ -28,8 +29,10 @@ EBTNodeResult::Type UBTTask_GetRandomSpot::ExecuteTask(UBehaviorTreeComponent& O
 
 	if (EnemyAI)
 	{
+		UE_LOG(LogTemp, Error, TEXT("%d"), GameMode->MainGameState->Spots.Num())
 		Goblin->GetNextSpot();
 		EnemyAI->GetBlackboardComponent()->SetValueAsVector("Spot", Goblin->Spot->GetActorLocation());
+		
 		return EBTNodeResult::Succeeded;
 	}
 

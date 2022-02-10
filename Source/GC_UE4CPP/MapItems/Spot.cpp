@@ -58,14 +58,6 @@ void ASpot::SetSpotFree()
 	if (Occupied)
 	{
 		Occupied = false;
-		if(GameMode)
-		{
-			GameMode->RemoveFood();
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to cast GetGameMode to AMainGameMode"))
-		}
 	}
 }
 

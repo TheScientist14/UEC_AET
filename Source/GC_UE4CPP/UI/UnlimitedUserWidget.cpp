@@ -18,7 +18,6 @@ void UUnlimitedUserWidget::NativeConstruct()
 	if(MainGameMode)
 	{
 		MainGameMode->OnStashedFoodUpdate.AddUObject(this, &UUnlimitedUserWidget::UpdateScore);
-		UE_LOG(LogTemp, Error, TEXT("Delegate bound"));
 	}
 	else
 	{
@@ -32,7 +31,5 @@ void UUnlimitedUserWidget::NativeConstruct()
 
 void UUnlimitedUserWidget::UpdateScore(int NbFood, int NbMaxFood)
 {
-	UE_LOG(LogTemp,Warning,TEXT("update food"))
 	TextBlock->SetText(FText::FromString(FString::Printf(TEXT("%d"),NbFood)));
-	
 }

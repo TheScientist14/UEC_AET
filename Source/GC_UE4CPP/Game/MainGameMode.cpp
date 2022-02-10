@@ -26,23 +26,19 @@ void AMainGameMode::BeginPlay()
 ASpot* AMainGameMode::GetRandomSpot()
 {
 	//returns a random ASpot* that hasn't got any food on it 
-	if (MainGameState->FoodOnLevel < GetMaxFoodOnLevel())
+	ASpot* SpotReturn;
+	do
 	{
-		ASpot* SpotReturn;
-		do
-		{
-			SpotReturn = MainGameState->Spots[FMath::RandRange(0, MainGameState->Spots.Num() - 1)];
-		}
-		while (SpotReturn->HasFood());
+		SpotReturn = MainGameState->Spots[FMath::RandRange(0, MainGameState->Spots.Num() - 1)];
+	}
+	while (SpotReturn->HasFood());
 #if WITH_EDITOR
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red,
-		                                 FString::Printf(TEXT("SetSpotOccuped %s"), *SpotReturn->GetName()));
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red,
+	                                 FString::Printf(TEXT("SetSpotOccuped %s"), *SpotReturn->GetName()));
 #endif
 
-		SpotReturn->SetSpotOccupied();
-		return SpotReturn;
-	}
-	return nullptr;
+	SpotReturn->SetSpotOccupied();
+	return SpotReturn;
 }
 
 int AMainGameMode::GetFoodOnLevel()
@@ -61,7 +57,6 @@ void AMainGameMode::AddFood()
 #if WITH_EDITOR
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Green, FString::Printf(TEXT("%d"), GetFoodOnLevel()));
 #endif
-	
 }
 
 void AMainGameMode::RemoveFood()

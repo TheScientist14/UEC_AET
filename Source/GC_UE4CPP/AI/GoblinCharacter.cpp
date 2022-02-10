@@ -12,6 +12,7 @@
 #include "GC_UE4CPP/Characters/PlayerCharacter.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
 #include "GC_UE4CPP/MapItems/PickableItem.h"
+#include "GC_UE4CPP/MapItems/Spot.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -78,7 +79,26 @@ void AGoblinCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AGoblinCharacter::GetNextSpot()
 {
-	Spot = Cast<AMainGameMode>(GetWorld()->GetAuthGameMode())->GetRandomSpot();
+	AMainGameMode* MainGameMode = Cast<AMainGameMode>(GetWorld()->GetAuthGameMode());
+	if(IsValid(MainGameMode))
+	{
+
+		ASpot* Temp = MainGameMode->GetRandomSpot();
+		if(IsValid(Temp))
+		{
+			Spot = Temp;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to Get spot"));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to cast "));
+	}
+	
+	
 }
 
 void AGoblinCharacter::InteractFood()

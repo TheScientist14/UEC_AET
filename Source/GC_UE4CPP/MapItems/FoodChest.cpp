@@ -78,6 +78,7 @@ void AFoodChest::DestroyFood(APickableItem* PrmItem)
 	PrmItem->Destroy();
 	if (GameMode) {
 		GameMode->AddStashedFood();
+		GameMode->RemoveFood();
 	}
 	else {
 		UE_LOG(LogTemp, Error, TEXT("Failed to cast game mode to MainGameMode, stashed found counter not updated"));

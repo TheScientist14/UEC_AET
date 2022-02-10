@@ -23,7 +23,7 @@ EBTNodeResult::Type UBTTask_PickUpFood::ExecuteTask(UBehaviorTreeComponent& Owne
 {
 	//Move to init 
 	AGoblinCharacter* const GoblinCharacter = Cast<AGoblinCharacter>(OwnerComp.GetAIOwner()->GetPawn());
-	if (GoblinCharacter->FoodOnHand) {
+	if (IsValid(GoblinCharacter->FoodOnHand)) {
 		if ((GoblinCharacter->FoodOnHand->GetActorLocation() - OwnerComp.GetAIOwner()->GetBlackboardComponent()->GetValueAsVector(BlackboardKey.SelectedKeyName)).IsNearlyZero(100))
 		{
 			GoblinCharacter->InteractFood();
