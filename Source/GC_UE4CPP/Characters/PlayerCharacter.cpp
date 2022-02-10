@@ -15,6 +15,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GC_UE4CPP/Interfaces/Interactable.h"
 #include "GC_UE4CPP/Game/MainGameMode.h"
+#include "GC_UE4CPP/MapItems/PickableItem.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -79,8 +80,7 @@ void APlayerCharacter::MoveRight(float DeltaY)
 	AddMovementInput(Camera->GetRightVector(), DeltaY);
 }
 
-// stands up if is sitting down
-// otherwise, try to interact with the first interactable found
+// try to interact with the first interactable found
 // with a sphere overlap
 // interact with picked up item if nothing to interact with
 void APlayerCharacter::Interact()
