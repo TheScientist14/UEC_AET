@@ -74,7 +74,4 @@ public:
 	UFUNCTION()
 	void OnGameEnded(bool HasGameEnded, bool HasWon);
 
-	UFUNCTION()
-	void InitBlackboard();
-
 };

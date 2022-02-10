@@ -40,7 +40,6 @@ void AGoblinCharacter::BeginPlay()
 	FoodOnHand = nullptr;
 
 	AMainGameMode* GameMode = Cast<AMainGameMode>(UGameplayStatics::GetGameMode(this));
-	GameMode->GameModeBeginPlayFinished.AddUObject(this, &AGoblinCharacter::InitBlackboard);
 	GameState = Cast<AMainGameState>(GetWorld()->GetGameState());
 	GameMode->OnGameFinished.AddUObject(this, &AGoblinCharacter::OnGameEnded);
 
@@ -143,13 +142,4 @@ void AGoblinCharacter::PutDownFood()
 void AGoblinCharacter::OnGameEnded(bool HasGameEnded, bool HasWon)
 {
 	GetController()->UnPossess();
-}
-
-void AGoblinCharacter::InitBlackboard() {
-	AEnemyController* Controller = Cast<AEnemyController>(GetController());
-	if (Controller) {
-		Controller->GetBlackboardComponent()->SetValueAsVector("Spawn", GetActorLocation());
-		Controller->GetBlackboardComponent()->SetValueAsBool("Wait", Wait);
-		Controller->GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
-	}
 }
