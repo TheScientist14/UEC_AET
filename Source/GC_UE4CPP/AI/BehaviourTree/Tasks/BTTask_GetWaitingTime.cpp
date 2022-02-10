@@ -6,6 +6,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GC_UE4CPP/AI/EnemyController.h"
 #include "GC_UE4CPP/AI/GoblinCharacter.h"
+#include "GC_UE4CPP/MapItems/GoblinCounter.h"
 
 UBTTask_GetWaitingTime::UBTTask_GetWaitingTime(FObjectInitializer const& object_initialize)
 {

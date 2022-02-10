@@ -50,7 +50,6 @@ void UPauseMenuUserWidget::MainMenu()
 
 void UPauseMenuUserWidget::Resume()
 {
-	UE_LOG(LogTemp, Warning, TEXT("game resumed"));
 	UGameplayStatics::SetGamePaused(this, false);
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(),0);
 	PlayerController->bShowMouseCursor = false;
@@ -73,6 +72,7 @@ void UPauseMenuUserWidget::ReloadLevel()
 		UE_LOG(LogTemp, Error, TEXT("Failed to GetPlayerController()"))
 	}
 	UGameplayStatics::OpenLevel(this, FName(GetWorld()->GetName()), false);
+	
 }
 
 void UPauseMenuUserWidget::Quit()

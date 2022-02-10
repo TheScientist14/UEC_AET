@@ -21,6 +21,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="AI")
 	UBehaviorTree* BehaviourTree;
+
+	class AGoblinCharacter* GoblinCharacter;
+
+	UFUNCTION()
+	void StartAI();
 	
 private:
 	class UNavigationSystemV1* NavArea;

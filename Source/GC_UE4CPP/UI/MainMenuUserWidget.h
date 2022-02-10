@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/CheckBox.h"
 #include "MainMenuUserWidget.generated.h"
 
 /**
@@ -20,6 +21,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	UButton* ButtonQuit;
+
+	UPROPERTY(meta = (BindWidget))
+	UCheckBox* CheckBox;
 
 protected:
 	virtual void NativeConstruct() override;

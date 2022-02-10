@@ -37,7 +37,16 @@ void UMainMenuUserWidget::Play()
 {
 	// Setting the input for game use and opening levelElvyn
 	Player->SetInputMode(FInputModeGameOnly());
-	UGameplayStatics::OpenLevel(this, FName("LevelElvyn"), false);
+
+	if(CheckBox->IsChecked())
+	{
+		UGameplayStatics::OpenLevel(this, FName("UnlimitedLevel"), false);
+	}
+	else
+	{
+		UGameplayStatics::OpenLevel(this, FName("MainLevel"), false);
+	}
+	
 }
 
 void UMainMenuUserWidget::Quit()

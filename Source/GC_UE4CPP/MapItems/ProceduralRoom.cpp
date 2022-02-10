@@ -61,6 +61,7 @@ void AProceduralRoom::Spawn()
 	SpawnCrates(CrateClump2, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 90);
 	SpawnCrates(CrateClump, CrateClumpSize, ChanceOfCrateClump, SpawnHeight, 0);
 	SpawnCrates(CrateClass, CrateSize, ChanceOfSmallCrate, SpawnHeight, 0);
+	RoomHasGenerated.Broadcast();
 }
 
 void AProceduralRoom::SpawnRoom()

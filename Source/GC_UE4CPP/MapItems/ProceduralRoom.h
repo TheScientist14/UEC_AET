@@ -69,6 +69,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Room|Wall")
 	UInstancedStaticMeshComponent* InstancedStaticMeshComponentWall;
 
+	DECLARE_MULTICAST_DELEGATE(FRoomHasGeneratedSignature);
+	FRoomHasGeneratedSignature RoomHasGenerated;
+
 	void Spawn();
 	
 	void SpawnRoom();

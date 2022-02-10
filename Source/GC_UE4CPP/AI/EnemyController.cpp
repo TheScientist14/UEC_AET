@@ -6,9 +6,9 @@
 
 #include "GoblinCharacter.h"
 #include "Kismet/GameplayStatics.h"
-#include "NavigationSystem.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GC_UE4CPP/MapItems/ProceduralRoom.h"
 
 
 AEnemyController::AEnemyController(FObjectInitializer const& object_initializer)
@@ -23,16 +23,22 @@ void AEnemyController::BeginPlay()
 void AEnemyController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	
+	GoblinCharacter = Cast<AGoblinCharacter>(InPawn);
+	if(GoblinCharacter && GoblinCharacter->ProceduralRoom)
+	{
+		GoblinCharacter->ProceduralRoom->RoomHasGenerated.AddUObject(this, &AEnemyController::StartAI);
+	}
+}
 
+void AEnemyController::StartAI(){
 	RunBehaviorTree(BehaviourTree);
-
-	AGoblinCharacter* GoblinCharacter = Cast<AGoblinCharacter>(InPawn);
-
+	
 	if (GoblinCharacter)
 	{
 		if (GetBlackboardComponent())
 		{
-			GetBlackboardComponent()->SetValueAsVector("Spawn", InPawn->GetActorLocation());
+			GetBlackboardComponent()->SetValueAsVector("Spawn", GoblinCharacter->GetActorLocation());
 			GetBlackboardComponent()->SetValueAsBool("Wait", GoblinCharacter->Wait);
 			GetBlackboardComponent()->SetValueAsBool("NeedFood", true);
 		}

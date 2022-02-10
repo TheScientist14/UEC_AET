@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "NavigationSystem.h"
 #include "GameFramework/Character.h"
-#include "GC_UE4CPP/MapItems/GoblinCounter.h"
 #include "GoblinCharacter.generated.h"
 
 UCLASS()
@@ -35,7 +34,10 @@ public:
 	APickableItem* FoodOnHand;
 
 	UPROPERTY(EditAnywhere)
-	AGoblinCounter* GoblinCounter;
+	class AGoblinCounter* GoblinCounter;
+
+	UPROPERTY(EditAnywhere)
+	class AProceduralRoom* ProceduralRoom;
 
 	UPROPERTY(EditAnywhere)
 	class USpotLightComponent* SpotLightVision;
